@@ -15,31 +15,20 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
     const items = [
         {
             id: 1,
-            name: translate('home_title'),
-            link: Routes.home,
+            name: translate('unsigned_title'),
+            link: Routes.unsigned,
             icon: <HomeIcon/>,
-            submenu: [
-                {
-                    id: 1,
-                    link: Routes.home,
-                    name: 'test',
-                },
-                {
-                    id: 2,
-                    link: Routes.home,
-                    name: 'test2'
-                },
-            ]
+
         },
         {
             id: 2,
-            name: translate('table_title'),
-            link: Routes.table,
+            name: translate('signed_title'),
+            link: Routes.signed,
             icon: <HomeIcon/>,
         }, {
             id: 3,
-            name: translate('form_title'),
-            link: Routes.form,
+            name: translate('add_title'),
+            link: Routes.home,
             icon: <HomeIcon/>,
         }
     ];

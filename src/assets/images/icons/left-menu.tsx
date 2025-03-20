@@ -1,10 +1,19 @@
 export const HomeIcon = () => {
     return (
-        <svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' data-name='Layer 1' viewBox='0 0 122.88 99.75'
-             fill='currentColor'>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 8.5H13.5" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path opacity="0.4" d="M6 16.5H8" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path opacity="0.4" d="M10.5 16.5H14.5" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                  stroke-linecap="round" stroke-linejoin="round"/>
             <path
-                d='M29.09,0h64.7A5.21,5.21,0,0,1,99,5.18v89.4a5.19,5.19,0,0,1-5.18,5.17H29.09a5.19,5.19,0,0,1-5.17-5.18V5.18A5.21,5.21,0,0,1,29.09,0Zm78.52,12.46,10.59-1.52a4.71,4.71,0,0,1,4.68,4.69v68.5a4.71,4.71,0,0,1-4.68,4.68L107.77,88a1.35,1.35,0,0,1-1.31-1.34V83.14a1.34,1.34,0,0,1,1.44-1.23l8.91.73V17.22l-9,1.34a1.34,1.34,0,0,1-1.34-1.34V13.78a1.34,1.34,0,0,1,1.15-1.32ZM5,11l10.31,1.49a1.33,1.33,0,0,1,1.14,1.32v3.44a1.34,1.34,0,0,1-1.34,1.34l-9-1.34V82.64L15,81.91a1.33,1.33,0,0,1,1.43,1.23v3.49A1.35,1.35,0,0,1,15.11,88l-10.43.84A4.71,4.71,0,0,1,0,84.13V15.63a4.73,4.73,0,0,1,4.68-4.69L5,11Zm87.93-4.9H30v87.6h62.9V6.07Z'/>
+                d="M22 11.03V16.11C22 19.62 21.11 20.5 17.56 20.5H6.44C2.89 20.5 2 19.62 2 16.11V7.89C2 4.38 2.89 3.5 6.44 3.5H13.5"
+                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path opacity="0.4" d="M16.5 6L18 7.5L22 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round"/>
         </svg>
+
     );
 };
 

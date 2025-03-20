@@ -1,12 +1,16 @@
-import avatar from '../../../../../assets/images/statics/juan.jpg';
+import avatar from '../../../../../assets/images/statics/user.png';
 import {LogoutIcon} from '../../../../../assets/images/icons/logout';
 import {useHeaderRightStyles} from './header-right.style';
+import {removeToken} from "../../../../helpers/get-token";
+import {useNavigate} from "react-router-dom";
 
 const HeaderRightComponent = () => {
     const classes = useHeaderRightStyles();
+    const navigate = useNavigate();
 
     const logout = () => {
-        console.log('rest');
+        removeToken();
+        navigate('/auth/login');
     };
 
     return (

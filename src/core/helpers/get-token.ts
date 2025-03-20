@@ -7,3 +7,7 @@ export const getToken = (): string | null => {
 export const setToken = (token: string) => {
     localStorage.setItem(`${environment.applicationName}-token`, token);
 };
+
+export const removeToken = () => {
+    localStorage.setItem(`${environment.applicationName}-token`, '');
+};

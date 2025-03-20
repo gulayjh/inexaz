@@ -4,10 +4,15 @@ export const az = {
     organisation: 'Azintelecom MMC',
 
     // left menu
-    home_title: 'Ana səhifə',
-    form_title: 'Form',
-    table_title: 'Cədvəl',
+    unsigned_title: 'İmzalanmamış sənədlər',
+    signed_title: 'İmzalanmış sənədlər',
+    add_title: 'Sənəd əlavə et',
 
+    //file
+    file_number: 'No',
+    file_name: 'Ad',
+    file_size: 'Ölçü',
+    no_data: 'Məlumat yoxdur',
     // errors
     input_required: 'Bu xana mütləqdir',
     input_min_length: 'Ən azı {min} simvol olmalıdır',

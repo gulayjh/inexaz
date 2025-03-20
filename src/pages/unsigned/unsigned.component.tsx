@@ -3,7 +3,7 @@ import {Skeleton, Table} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
 import {successToast} from '../../core/shared/toast/toast';
 
-function TableComponent() {
+function UnsignedComponent() {
 
     const {data, isLoading} = usePosts();
     const columns = [
@@ -37,4 +37,4 @@ function TableComponent() {
     );
 }
 
-export default TableComponent;
+export default UnsignedComponent;

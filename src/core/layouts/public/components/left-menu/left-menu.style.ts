@@ -7,6 +7,7 @@ import sizes from '../../../../../assets/styles/abstracts/sizes';
 
 const styles = {
     leftMenu: {
+        marginTop: rem(10),
         borderRight: `2px solid ${colors.border}`,
         position: 'fixed',
         left: '0',
@@ -14,7 +15,7 @@ const styles = {
         width: rem(sizes.leftMenu),
         height: `calc(100vh - ${rem(sizes.leftMenuSpacing)})`,
         backgroundColor: '#F1F2F3',
-        padding: `${rem(20)} ${rem(15)}`,
+       // padding: `${rem(0)} ${rem(5)}`,
         transition: transition(),
 
     },

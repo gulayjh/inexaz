@@ -8,22 +8,24 @@ import NotFound from '../pages/not-found/notfound.component';
 import AuthComponent from '../core/layouts/auth/auth.component';
 import LoginComponent from '../pages/login/login.component';
 import AuthProtectedComponent from './protected/auth-protected.component';
+import UnsignedComponent from "../pages/unsigned/unsigned.component";
+import SignedComponent from "../pages/signed/signed.component";
 
 const router = createBrowserRouter([
     {
         element: <AuthProtectedComponent layout='public'><PublicComponent/></AuthProtectedComponent>,
         children: [
             {
+                path: Routes.unsigned,
+                element: <UnsignedComponent/>,
+            },
+            {
+                path: Routes.signed,
+                element: <SignedComponent/>,
+            },
+            {
                 path: Routes.home,
                 element: <HomeComponent/>,
-            },
-            {
-                path: Routes.form,
-                element: <FormComponent/>,
-            },
-            {
-                path: Routes.table,
-                element: <TableComponent/>,
             }
         ],
     },
