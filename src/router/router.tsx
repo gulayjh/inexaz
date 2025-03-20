@@ -2,7 +2,6 @@ import {createBrowserRouter} from 'react-router-dom';
 import PublicComponent from '../core/layouts/public/public.component';
 import HomeComponent from '../pages/home/home.component';
 import FormComponent from '../pages/form/form.component';
-import TableComponent from '../pages/table/table.component';
 import {Routes} from './routes';
 import NotFound from '../pages/not-found/notfound.component';
 import AuthComponent from '../core/layouts/auth/auth.component';
