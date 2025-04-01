@@ -3,7 +3,7 @@ import axiosInstance from '../../../core/configs/axios.config';
 import {ILoginFormValues} from '../login.component.d';
 
 export const login = (credentials: ILoginFormValues): Promise<{ token: string }> => {
-    return axiosInstance.post(API.posts, credentials)
+    return axiosInstance.post(API.upload, credentials)
         .then((res) => res.data);
 };
 

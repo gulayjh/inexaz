@@ -3,7 +3,7 @@ import axiosInstance from '../../../core/configs/axios.config';
 import TableModel from '../models/table.model';
 
 export const getPostsService = () => {
-    return axiosInstance.get(API.posts).then(res => {
+    return axiosInstance.get(API.upload).then(res => {
         return res.data.map((item: any) => new TableModel(item));
     });
 };
