@@ -1,20 +1,20 @@
-import {Form, Table, Upload} from "antd";
-import {useCallback, useMemo, useState} from "react";
+import {Button, Form, FormRule, Input, Table, Upload} from "antd";
+import React, {useCallback, useMemo, useState} from "react";
 import {useUploadStyles} from "./container.style";
-import {SignPlusIcon} from "../../assets/images/icons/sign";
+import {FileIcon, SignPlusIcon} from "../../assets/images/icons/sign";
 import useLocalization from "../../assets/lang";
 import {fileSize} from "../../core/helpers/file-size";
 import {generateGuid} from "../../core/helpers/generate-guid";
+import QRComponent from "../../core/shared/qr/qr.component";
+import {useNavigate} from "react-router-dom";
+import {setToken} from "../../core/helpers/get-token";
+import {useUpload} from "./actions/mutations";
+import {useLogin} from "../login/actions/mutations";
 
 function HomeComponent() {
-    const {
-
-        chooseButton,
-        upload,
-
-    } = useUploadStyles();
+    const {chooseButton, upload, list, listItem} = useUploadStyles();
     const translate = useLocalization();
-
+    const {mutate} = useUpload();
     const [fileList, setFileList] = useState<any>([]);
 
     const handleListUpload = useCallback((file: any) => {
@@ -30,38 +30,46 @@ function HomeComponent() {
     const uploadProps = useMemo(() => ({
         multiple: true,
         accept: '.pdf',
-
         showUploadList: false,
         beforeUpload,
     }), [beforeUpload]);
-    const filecolumns = [
+
+
+    const initialValues: any = {
+        fullname: '',
+        pin: '',
+    };
+    const rules: { [key: string]: FormRule[] } = useMemo(() => ({
+        fullname: [
             {
-                title: <span>{translate('file_number')}</span>,
-                dataIndex: '',
-                width: 250,
-                render: (id: number, file: any, index: number) => {
-                    return <span className='pl-20'>{index + 1}</span>;
-                },
+                required: true,
+                message: translate('input_required'),
             },
-
+        ],
+        pin: [
             {
-                title: translate('file_name'),
-                dataIndex: 'name',
-                ellipsis: true,
-                width: '350px',
-
+                required: true,
+                message: translate('input_required'),
             },
-
             {
-                title: <span className='d-flex justify-center'>{translate('file_size')}</span>,
-                dataIndex: '',
-                render: (id: number, file: any, index: number) => {
-                    return <span className='d-flex justify-center'>{fileSize(Number(file.size))}</span>;
-                },
+                min: 7,
+                message: translate('pin_min_length'),
+            }
+        ],
 
-            },
-        ]
-    ;
+    }), [translate]);
+    const navigate = useNavigate();
+
+    const onSubmit = useCallback((values: any) => {
+
+        const formData: any = new FormData();
+        formData.append(`AssignedFullName`, values.fullname);
+        formData.append(`AssignedPin`, values.pin);
+        fileList.map((item: any) => {
+            formData.append(`Document`, item);
+        });
+        mutate(formData);
+    }, [fileList]);
 
     return (
         <div>
@@ -71,9 +79,7 @@ function HomeComponent() {
                         name='FormFile' valuePropName='name'>
                         <Upload {...uploadProps} maxCount={100} fileList={fileList}
                                 disabled={fileList?.length === 100}
-                                onChange={(e) => {
-                                    handleListUpload(e);
-                                }}>
+                        >
                             <div className={chooseButton}>
                                 <span><SignPlusIcon/></span>
                                 <span><h3>{translate('add_title')}</h3></span>
@@ -82,14 +88,42 @@ function HomeComponent() {
                     </Form.Item>
                 </div>
             </Form>
-            <Table
-                dataSource={fileList}
-                columns={filecolumns}
-                rowKey={generateGuid}
-                scroll={{y: 400}}
-                pagination={false}
-                locale={{emptyText: translate('no_data')}}
-            />
+            <div className={list}>
+                {fileList && fileList.length && fileList.map((file: any, index: number) => {
+                    return (
+                        <div className={`col-lg-3 col-md-4 col-sm-6 ${listItem}`}>
+                            <FileIcon/>
+                            {file.name}
+                        </div>
+                    );
+                })}
+
+            </div>
+            <div>
+                <Form
+                    name='login'
+                    initialValues={initialValues}
+                    onFinish={onSubmit}
+                    layout='vertical'
+                >
+                    <Form.Item
+                        rules={rules.fullname}
+                        name='fullname'
+                        label='Ad Soyad'>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item
+                        rules={rules.pin}
+                        name='pin' label='FIN'>
+                        <Input maxLength={7}/>
+                    </Form.Item>
+                    <div>
+                        <Button className='w-100' type='primary' htmlType='submit'>
+                            {translate('login_sign_in_button')}
+                        </Button>
+                    </div>
+                </Form>
+            </div>
         </div>
     );
 }

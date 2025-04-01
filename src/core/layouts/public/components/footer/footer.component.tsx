@@ -18,11 +18,9 @@ const FooterComponent = ({isOpen}: { isOpen: boolean }) => {
         <div className={footerClasses}>
             <div className='row m-0'>
                 <div className='col-8'>
-                    {translate('copyright')} © {date} {projectName}, {translate('rights')}.
+                    {translate('copyright')} © {date}.
                 </div>
-                <div className='col-4 text-right'>
-                    {translate('organisation')}
-                </div>
+
             </div>
         </div>
     );

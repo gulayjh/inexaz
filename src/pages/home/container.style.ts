@@ -29,7 +29,16 @@ const styles = {
         }
     },
 
+    list: {
+        display: 'flex',
+        flexWrap: 'wrap'
+    },
+    listItem: {
+        display: 'flex',
+        flexDirection: 'column'
+
+    }
+
 };
 
-// @ts-ignore
 export const useUploadStyles = createUseStyles(styles);

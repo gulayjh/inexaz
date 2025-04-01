@@ -13,10 +13,12 @@ export const az = {
     file_name: 'Ad',
     file_size: 'Ölçü',
     no_data: 'Məlumat yoxdur',
+
     // errors
     input_required: 'Bu xana mütləqdir',
     input_min_length: 'Ən azı {min} simvol olmalıdır',
     email_invalid: 'Email düzgün deyil',
+    pin_min_length: 'FIN 7 simvol olmalıdır',
     //components
     login_sign_in_button: 'Daxil ol',
     login_title: 'Daxil ol',
