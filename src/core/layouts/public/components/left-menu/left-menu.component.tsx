@@ -15,22 +15,23 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
     const items = [
         {
             id: 1,
-            name: translate('unsigned_title'),
-            link: Routes.unsigned,
+            name: translate('add_title'),
+            link: Routes.home,
             icon: <HomeIcon/>,
-
         },
         {
             id: 2,
             name: translate('signed_title'),
             link: Routes.signed,
             icon: <HomeIcon/>,
-        }, {
+        },
+        {
             id: 3,
-            name: translate('add_title'),
-            link: Routes.home,
+            name: translate('unsigned_title'),
+            link: Routes.unsigned,
             icon: <HomeIcon/>,
-        }
+
+        },
     ];
 
     const leftMenuClasses = classNames({

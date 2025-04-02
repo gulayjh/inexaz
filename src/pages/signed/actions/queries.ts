@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query';
-import {getPostsService} from './table.service';
+import {getSessions} from './table.service';
 
-export const usePosts = ()=>{
-    return useQuery<any[], Error>('test', () => {
-        return getPostsService();
-    });
+export const useGetSession = (searchFin: string, current: number, signed: boolean) => {
+    return useQuery<any[], Error>(['employeeCompanies', [searchFin, current, signed]], () => {
+        return getSessions(searchFin, current, signed);
+    }, {staleTime: Infinity, retry: false});
 };

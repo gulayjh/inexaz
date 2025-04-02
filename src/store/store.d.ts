@@ -6,6 +6,7 @@ export interface IState {
     languages: ILanguages[];
     locale: any;
     user: any | null;
+    operationId: string | null;
 }
 
 

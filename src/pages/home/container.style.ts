@@ -21,6 +21,9 @@ const styles = {
         }
 
     },
+    form:{
+        width:'30%',
+    },
 
 
     upload: {

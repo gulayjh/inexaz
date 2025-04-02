@@ -1,4 +1,5 @@
 export interface ILoginFormValues {
-    email: string;
+    username: string;
     password: string;
+    remember: false
 }

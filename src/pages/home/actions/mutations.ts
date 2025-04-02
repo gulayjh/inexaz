@@ -1,7 +1,7 @@
 import {useMutation} from 'react-query';
 import {upload} from './upload.service';
 import {store} from '../../../store/store.config';
-import {setUser} from '../../../store/store.reducer';
+import {setOperationId, setUser} from '../../../store/store.reducer';
 import {setToken} from '../../../core/helpers/get-token';
 import {useNavigate} from 'react-router-dom';
 import {Routes} from '../../../router/routes';
@@ -11,8 +11,11 @@ export const useUpload = () => {
         mutationFn: (credentials: any) => {
             return upload(credentials);
         },
-        onSuccess: (response) => {
+        onSuccess: (response:any) => {
             console.log(response);
+            store.dispatch(setOperationId(response));
+
+
         },
     });
 };

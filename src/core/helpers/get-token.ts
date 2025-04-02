@@ -1,13 +1,13 @@
 import {environment} from '../configs/app.config';
 
 export const getToken = (): string | null => {
-    return localStorage.getItem(`${environment.applicationName}-token`);
+    return localStorage.getItem(`token`);
 };
 
 export const setToken = (token: string) => {
-    localStorage.setItem(`${environment.applicationName}-token`, token);
+    localStorage.setItem(`token`, token);
 };
 
 export const removeToken = () => {
-    localStorage.setItem(`${environment.applicationName}-token`, '');
+    localStorage.setItem(`token`, '');
 };

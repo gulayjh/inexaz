@@ -27,7 +27,9 @@ const initialState: IState = {
         }
     ],
     locale: az,
-    user: null
+    user: null,
+    operationId: null,
+
 };
 
 export const rootSlice = createSlice({
@@ -52,10 +54,13 @@ export const rootSlice = createSlice({
         setUser: (state: IState, action: PayloadAction<any>) => {
             // state.user = jwtDecode(action.payload);
             state.user = 'user';
-        }
+        },
+        setOperationId: (state: IState, action: PayloadAction<string | null>) => {
+            state.operationId = action.payload;
+        },
     },
 });
 
-export const {setLoader, toggleLeftMenu, setLocale, setUser} = rootSlice.actions;
+export const {setLoader, toggleLeftMenu, setLocale, setUser, setOperationId} = rootSlice.actions;
 
 export default rootSlice.reducer;

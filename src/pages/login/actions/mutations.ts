@@ -10,11 +10,11 @@ import {Routes} from '../../../router/routes';
 export const useLogin = () => {
     const navigate = useNavigate();
     return useMutation({
-        mutationFn: (credentials: ILoginFormValues) => {
+        mutationFn: (credentials: any) => {
             return login(credentials);
         },
-        onSuccess: (response) => {
-            setToken('token');
+        onSuccess: (response:any) => {
+            setToken(response);
             store.dispatch(setUser(response));
             navigate(Routes.home);
         },

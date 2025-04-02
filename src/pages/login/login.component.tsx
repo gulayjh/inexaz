@@ -5,8 +5,9 @@ import {ILoginFormValues} from './login.component.d';
 import useLocalization from '../../assets/lang';
 import {FormRule} from 'antd';
 import {useLogin} from './actions/mutations';
-import {setToken} from "../../core/helpers/get-token";
-import {Routes, useNavigate} from "react-router-dom";
+import {setToken} from '../../core/helpers/get-token';
+import {Routes, useNavigate} from 'react-router-dom';
+import {Checkbox} from 'antd/lib';
 
 const LoginComponent = () => {
     const translate = useLocalization();
@@ -15,8 +16,9 @@ const LoginComponent = () => {
 
     const {title, page, panel, subtitle} = useLoginStyles();
     const initialValues: ILoginFormValues = {
-        email: '',
+        username: '',
         password: '',
+        remember: false,
     };
     const rules: { [key: string]: FormRule[] } = useMemo(() => ({
         username: [
@@ -24,11 +26,19 @@ const LoginComponent = () => {
                 required: true,
                 message: translate('input_required'),
             },
+            {
+                min: 5,
+                message: translate('input_min_length', {min: 5}),
+            }
         ],
         password: [
             {
                 required: true,
                 message: translate('input_required'),
+            },
+            {
+                min: 8,
+                message: translate('input_min_length', {min: 8}),
             }
         ],
 
@@ -36,9 +46,14 @@ const LoginComponent = () => {
     const navigate = useNavigate();
 
     const onSubmit = useCallback((values: ILoginFormValues) => {
-        setToken('token');
-        navigate('/');
-        //mutate(values);
+        const postData = {
+            'userName': values.username,
+            'password': values.password,
+            'rememberMe': values.remember
+        };
+        console.log(values);
+
+        mutate(postData);
     }, [mutate]);
 
     return (
@@ -65,12 +80,18 @@ const LoginComponent = () => {
                             rules={rules.username}
                             name='username'
                             label='Username'>
-                            <Input/>
+                            <Input maxLength={50}/>
                         </Form.Item>
                         <Form.Item
                             rules={rules.password}
                             name='password' label='Password'>
-                            <Input type='password'/>
+                            <Input type='password' maxLength={50}/>
+                        </Form.Item>
+                        <Form.Item
+                            name='remember'
+                            valuePropName='checked'
+                        >
+                            <Checkbox>{translate('login_remember')}</Checkbox>
                         </Form.Item>
                         <div>
                             <Button loading={isLoading} className='w-100' type='primary' htmlType='submit'>
