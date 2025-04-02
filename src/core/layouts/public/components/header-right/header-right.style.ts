@@ -1,5 +1,6 @@
 import {createUseStyles} from 'react-jss';
 import {rem} from '../../../../../assets/styles/abstracts/functions';
+import colors from "../../../../../assets/styles/abstracts/color";
 
 const styles = {
     items: {
@@ -18,6 +19,19 @@ const styles = {
     },
     logout: {
         cursor: 'pointer',
+    },
+    sub: {
+        background: colors.light,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        boxShadow: '0px 20px 20px rgb(126 142 177 / 12%)',
+    },
+    subItem: {
+        paddingLeft:rem(10),
+
+        display: 'flex',
+        cursor: 'pointer'
     },
 };
 

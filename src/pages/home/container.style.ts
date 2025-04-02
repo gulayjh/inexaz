@@ -21,8 +21,8 @@ const styles = {
         }
 
     },
-    form:{
-        width:'30%',
+    form: {
+        width: '30%',
     },
 
 
@@ -38,7 +38,30 @@ const styles = {
     },
     listItem: {
         display: 'flex',
-        flexDirection: 'column'
+        marginBottom: rem(15),
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width: rem(200),
+        height: rem(150),
+        backgroundColor: 'white',
+        borderRadius: rem(10),
+        padding: rem(10),
+        boxShadow: '0px 20px 20px rgb(126 142 177 / 12%)',
+        '& span': {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: rem(100),
+            '& svg': {
+                transform: 'scale(3)'
+            }
+        },
+        '& h5': {
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: rem(180)
+        }
 
     }
 

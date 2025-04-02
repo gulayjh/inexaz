@@ -12,9 +12,7 @@ const HeaderComponent = () => {
                     <div className='col-12 p-0'>
                         <HeaderNavbarComponent/>
                     </div>
-                   {/* <div className='col-12 p-0'>
-                        <HeaderSubComponent/>
-                    </div>*/}
+
                 </div>
             </div>
         </div>

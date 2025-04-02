@@ -14,6 +14,17 @@ const styles = {
             width: rem(100),
         }
     },
+    sub: {
+        background: colors.light,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        boxShadow: '0px 20px 20px rgb(126 142 177 / 12%)',
+    },
+    subItem: {
+        display: 'flex',
+        cursor: 'pointer'
+    },
 };
 
 export const useHeaderNavbarStyles = createUseStyles(styles);

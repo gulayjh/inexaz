@@ -98,21 +98,22 @@ function HomeComponent() {
                     <div className={list}>
                         {fileList.map((file: any, index: number) => {
                             return (
-                                <div className={`col-lg-3 col-md-4 col-sm-6 ${listItem}`} key={index}>
-                                    <FileIcon/>
-                                    {file.name}
+                                <div className='col-lg-2 col-md-4 col-sm-6' key={index}>
+                                    <div className={listItem} title={file.name}>
+                                        <span><FileIcon/></span>
+                                        <h5>{file.name}</h5>
+                                    </div>
                                 </div>
                             );
                         })}
 
                     </div>
-                    <div>
+                    <div className='col-lg-4 col-md-4 col-sm-12'>
                         <Form
                             name='login'
                             initialValues={initialValues}
                             onFinish={onSubmit}
                             layout='vertical'
-                            className={form}
                         >
                             <Form.Item
                                 rules={rules.fullname}
@@ -135,7 +136,8 @@ function HomeComponent() {
                 </>
                 : null}
             {operationId ?
-                <div className={form}>
+                <div className='col-lg-4 col-md-4 col-sm-12 mt-25'>
+
                     <Input value={operationId} readOnly/>
                 </div>
                 : null}

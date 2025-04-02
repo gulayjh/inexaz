@@ -3,10 +3,19 @@ import logo from '../../../../../assets/images/statics/inex.png';
 import {useHeaderNavbarStyles} from './header-navbar.style';
 import {NavLink} from 'react-router-dom';
 import {Routes} from '../../../../../router/routes';
+import HeaderSubComponent from "../header-sub/header-sub.component";
+import {toggleLeftMenu} from "../../../../../store/store.reducer";
+import {useDispatch} from "react-redux";
+import {LeftMenuToggle} from "../../../../../assets/images/icons/left-menu-toggle";
+import React from "react";
 
 const HeaderNavbarComponent = () => {
     const classes = useHeaderNavbarStyles();
+    const dispatch = useDispatch();
 
+    const toggleMenu = () => {
+        dispatch(toggleLeftMenu());
+    };
     return (
         <div className={`${classes.navbar} py-8 pl-30 pr-20`}>
             <div className='row align-center'>
@@ -17,7 +26,7 @@ const HeaderNavbarComponent = () => {
                         </NavLink>
                     </div>
                 </div>
-                <div className='col-4'>
+                <div className='d-flex justify-end col-4 pr-50'>
                     <HeaderRightComponent/>
                 </div>
             </div>
