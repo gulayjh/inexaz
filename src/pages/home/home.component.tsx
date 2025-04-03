@@ -1,7 +1,7 @@
 import {Button, Form, FormRule, Input, Table, Upload} from 'antd';
 import React, {useCallback, useMemo, useState} from 'react';
 import {useUploadStyles} from './container.style';
-import {FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
+import {DeleteIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
 import {fileSize} from '../../core/helpers/file-size';
 import {generateGuid} from '../../core/helpers/generate-guid';
@@ -14,7 +14,7 @@ import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
 
 function HomeComponent() {
-    const {chooseButton, upload, list, listItem, form} = useUploadStyles();
+    const {chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
     const translate = useLocalization();
     const {mutate} = useUpload();
     const [fileList, setFileList] = useState<any>([]);
@@ -24,6 +24,11 @@ function HomeComponent() {
         setFileList((prevFileList: any) => [...prevFileList, file].slice(0, 100));
     }, [fileList]);
 
+    const handleRemove = useCallback((id: any, fileSize: number) => {
+        setTimeout(() => {
+            setFileList((prevFileList: any) => prevFileList.filter((item: any) => item.uid !== id));
+        }, 300);
+    }, [fileList]);
 
     const beforeUpload = useCallback((file: any) => {
         handleListUpload(file);
@@ -78,10 +83,10 @@ function HomeComponent() {
     console.log(operationId);
     return (
         <div>
-            <Form name='basic' layout='vertical'>
+            <Form name="basic" layout="vertical">
                 <div className={upload}>
                     <Form.Item
-                        name='FormFile' valuePropName='name'>
+                        name="FormFile" valuePropName="name">
                         <Upload {...uploadProps} maxCount={100} fileList={fileList}
                                 disabled={fileList?.length === 100}
                         >
@@ -98,36 +103,42 @@ function HomeComponent() {
                     <div className={list}>
                         {fileList.map((file: any, index: number) => {
                             return (
-                                <div className='col-lg-2 col-md-4 col-sm-6' key={index}>
+                                <div className="col-lg-2 col-md-4 col-sm-6" key={index}>
                                     <div className={listItem} title={file.name}>
                                         <span><FileIcon/></span>
                                         <h5>{file.name}</h5>
+                                        <span className={deleteButton} onClick={() => {
+                                            handleRemove(file.uid, file.size);
+                                        }}>
+                                        <DeleteIcon/>
+                                    </span>
+
                                     </div>
                                 </div>
                             );
                         })}
 
                     </div>
-                    <div className='col-lg-4 col-md-4 col-sm-12'>
+                    <div className="col-lg-4 col-md-4 col-sm-12">
                         <Form
-                            name='login'
+                            name="login"
                             initialValues={initialValues}
                             onFinish={onSubmit}
-                            layout='vertical'
+                            layout="vertical"
                         >
                             <Form.Item
                                 rules={rules.fullname}
-                                name='fullname'
-                                label='Ad Soyad'>
+                                name="fullname"
+                                label="Ad Soyad">
                                 <Input/>
                             </Form.Item>
                             <Form.Item
                                 rules={rules.pin}
-                                name='pin' label='FIN'>
+                                name="pin" label="FIN">
                                 <Input maxLength={7}/>
                             </Form.Item>
                             <div>
-                                <Button className='w-100' type='primary' htmlType='submit'>
+                                <Button className="w-100" type="primary" htmlType="submit">
                                     {translate('upload')}
                                 </Button>
                             </div>
@@ -136,7 +147,7 @@ function HomeComponent() {
                 </>
                 : null}
             {operationId ?
-                <div className='col-lg-4 col-md-4 col-sm-12 mt-25'>
+                <div className="col-lg-4 col-md-4 col-sm-12 mt-25">
 
                     <Input value={operationId} readOnly/>
                 </div>

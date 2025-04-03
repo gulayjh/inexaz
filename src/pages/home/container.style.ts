@@ -38,6 +38,7 @@ const styles = {
     },
     listItem: {
         display: 'flex',
+        position: 'relative',
         marginBottom: rem(15),
         flexDirection: 'column',
         justifyContent: 'center',
@@ -61,8 +62,17 @@ const styles = {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             width: rem(180)
-        }
+        },
 
+
+    },
+    deleteButton: {
+        width: rem(10),
+        height: rem(10),
+        position: 'absolute',
+        top: rem(-25),
+        right: rem(20),
+        cursor: 'pointer'
     }
 
 };

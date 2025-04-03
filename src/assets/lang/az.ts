@@ -15,6 +15,13 @@ export const az = {
     no_data: 'Məlumat yoxdur',
     upload: 'Yüklə',
 
+    //session
+    session_fullname: 'Ad, soyad',
+    session_pin: 'FİN',
+    session_date: 'Tarix',
+    session_link: 'Link',
+
+
     // errors
     input_required: 'Bu xana mütləqdir',
     input_min_length: 'Ən azı {min} simvol olmalıdır',

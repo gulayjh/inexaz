@@ -5,6 +5,7 @@ import {successToast} from '../../core/shared/toast/toast';
 import {useState} from 'react';
 import {useSigningsStyles} from '../unsigned/signing.style';
 import useLocalization from '../../assets/lang';
+import {DownloadIcon} from '../../assets/images/icons/sign';
 
 function SignedComponent() {
     const [searchField, setSearchField] = useState('');
@@ -19,9 +20,11 @@ function SignedComponent() {
                 title: <>
                     <div className={panel}>
                         <span>№</span>
-                        <span>{translate('file_number')}</span>
-                        <span>{translate('file_name')}</span>
-                        <span>{translate('file_size')}</span>
+                        <span>{translate('session_fullname')}</span>
+                        <span>{translate('session_pin')}</span>
+                        <span>{translate('session_date')}</span>
+                        <span>{translate('session_link')}</span>
+
                     </div>
 
                 </>,
@@ -29,31 +32,32 @@ function SignedComponent() {
                 render: (id: number, signing: any, index: number) => {
                     console.log(signing);
                     return <div>
-                        <Collapse bordered={false} expandIconPosition='end' ghost>
+                        <Collapse bordered={false} expandIconPosition="end" ghost>
                             <Panel header={
                                 <div className={panel}>
                                     <span className={bold}>{index + (current - 1) * 15 + 1}. </span>
                                     <span className={bold}>{signing.assignedFullName}</span>
                                     <span className={bold}>{signing.assignedPin}</span>
-                                    <span className={bold}>{signing.created}</span>
+                                    <span className={bold}>{signing?.created.substring(0, 10)}</span>
                                     <span className={bold}>{signing.dynamicLinkPart}</span>
                                 </div>
                             }
-                                   key='1'>
+                                   key="1">
 
                                 <div className={list}>
                                     {signing.documents && signing.documents.length && signing.documents.map((item: any, index: number) => {
                                         return (
                                             <div className={listItem}>
                                                 <span>{index + 1}. {item.name}</span>
-
-                                            </div>
+                                                <a href={item?.sourceUrl} download="document.pdf" target="_blank"
+                                                   rel="noopener noreferrer">l
+                                                    <DownloadIcon/>
+                                                </a></div>
                                         );
                                     })}
                                 </div>
                             </Panel>
                         </Collapse>
-
                     </div>
                         ;
                 },
