@@ -104,7 +104,7 @@ const colors = {
     main: '#4361ee',
     leftMenuShadow: '0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06)',
     boxShadow: '0 0 40px 0 rgba(94, 92, 154, 0.6 )',
-    paleBlack: '#030305',
+    paleBlack: '#002056',
     paleHover: '#bfc9d4',
 
 };

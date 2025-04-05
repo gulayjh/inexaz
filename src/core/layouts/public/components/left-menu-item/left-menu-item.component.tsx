@@ -6,7 +6,7 @@ import {useState} from 'react';
 import {ArrowDown, ArrowRight} from '../../../../../assets/images/icons/arrows';
 import classNames from 'classnames';
 
-const LeftMenuItemComponent = ({name, link, icon, submenu}: ILeftMenuItemProps) => {
+const LeftMenuItemComponent = ({name, link, icon, submenu, show}: ILeftMenuItemProps) => {
     const classes = useLeftMenuItemStyles();
     const [submenuOpen, setSubmenuOpen] = useState(false);
 
@@ -56,10 +56,11 @@ const LeftMenuItemComponent = ({name, link, icon, submenu}: ILeftMenuItemProps) 
                         className={classes.link}
                         to={{pathname: link}}
                     >
-                        <div className={classes.itemText}>
-                            {icon}
-                            <span>{name}</span>
-                        </div>
+                        {show ?
+                            <div className={classes.itemText}>
+                                {icon}
+                                <span>{name}</span>
+                            </div> : null}
                     </NavLink>
             }
 

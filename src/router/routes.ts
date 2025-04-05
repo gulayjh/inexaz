@@ -6,7 +6,8 @@ export enum Routes {
     form = '/form',
     login = '/auth/login',
     signed = '/signed',
-    unsigned = '/unsigned'
+    unsigned = '/unsigned',
+    users = 'users'
 }
 
 

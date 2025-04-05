@@ -14,6 +14,7 @@ const AuthProtectedComponent = ({children, layout = 'public'}: IAuthProtectedRou
             dispatch(setUser(token));
         }
     }, []);
+
         switch (layout) {
             case 'auth':
                 return getToken() ? <Navigate to={Routes.home} replace /> : children;

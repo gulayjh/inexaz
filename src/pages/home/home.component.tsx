@@ -1,5 +1,5 @@
 import {Button, Form, FormRule, Input, Table, Upload} from 'antd';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useUploadStyles} from './container.style';
 import {DeleteIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
@@ -12,16 +12,23 @@ import {useUpload} from './actions/mutations';
 import {useLogin} from '../login/actions/mutations';
 import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
+import {errorToast} from '../../core/shared/toast/toast';
+import {store} from '../../store/store.config';
+import {setOperationId} from '../../store/store.reducer';
 
 function HomeComponent() {
-    const {chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
+    const {title, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
     const translate = useLocalization();
     const {mutate} = useUpload();
     const [fileList, setFileList] = useState<any>([]);
     const operationId = useSelector((state: IState) => state.operationId);
 
+    useEffect(() => {
+        store.dispatch(setOperationId(null));
+
+    }, []);
     const handleListUpload = useCallback((file: any) => {
-        setFileList((prevFileList: any) => [...prevFileList, file].slice(0, 100));
+        setFileList((prevFileList: any) => [...prevFileList, file].slice(0, 5));
     }, [fileList]);
 
     const handleRemove = useCallback((id: any, fileSize: number) => {
@@ -31,8 +38,12 @@ function HomeComponent() {
     }, [fileList]);
 
     const beforeUpload = useCallback((file: any) => {
-        handleListUpload(file);
+        if (file.size < 30000000) {
+            handleListUpload(file);
+        }else{
+            errorToast(translate('file_size_error'));
 
+        }
         return false;
     }, []);
 
@@ -80,10 +91,12 @@ function HomeComponent() {
         });
         mutate(formData);
     }, [fileList]);
-    console.log(operationId);
     return (
         <div>
             <Form name="basic" layout="vertical">
+
+                <h3 className={title}>{translate('add_title')}</h3>
+
                 <div className={upload}>
                     <Form.Item
                         name="FormFile" valuePropName="name">
@@ -91,8 +104,8 @@ function HomeComponent() {
                                 disabled={fileList?.length === 100}
                         >
                             <div className={chooseButton}>
-                                <span><SignPlusIcon/></span>
-                                <span><h3>{translate('add_title')}</h3></span>
+                                <span className='pr-5'><SignPlusIcon/></span>
+                                <span><h3>{translate('add')}</h3></span>
                             </div>
                         </Upload>
                     </Form.Item>
@@ -103,7 +116,7 @@ function HomeComponent() {
                     <div className={list}>
                         {fileList.map((file: any, index: number) => {
                             return (
-                                <div className="col-lg-2 col-md-4 col-sm-6" key={index}>
+                                <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
                                     <div className={listItem} title={file.name}>
                                         <span><FileIcon/></span>
                                         <h5>{file.name}</h5>
@@ -148,6 +161,7 @@ function HomeComponent() {
                 : null}
             {operationId ?
                 <div className="col-lg-4 col-md-4 col-sm-12 mt-25">
+                    <h3 className={title}>{translate('session_link')}</h3>
 
                     <Input value={operationId} readOnly/>
                 </div>

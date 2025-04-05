@@ -42,8 +42,8 @@ const styles = {
         marginBottom: rem(15),
         flexDirection: 'column',
         justifyContent: 'center',
-        width: rem(200),
-        height: rem(150),
+        width: rem(250),
+        height: rem(200),
         backgroundColor: 'white',
         borderRadius: rem(10),
         padding: rem(10),
@@ -52,7 +52,7 @@ const styles = {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: rem(100),
+            height: rem(150),
             '& svg': {
                 transform: 'scale(3)'
             }
@@ -61,7 +61,7 @@ const styles = {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            width: rem(180)
+            width: rem(225)
         },
 
 
@@ -70,10 +70,18 @@ const styles = {
         width: rem(10),
         height: rem(10),
         position: 'absolute',
-        top: rem(-25),
+        top: rem(-50),
         right: rem(20),
         cursor: 'pointer'
-    }
+    },
+    title: {
+        fontFamily: fonts.fontBold,
+        lineHeight: rem(32),
+        fontSize: rem(18),
+        marginBottom: rem(25),
+        marginTop: rem(10),
+        color: '#474975'
+    },
 
 };
 

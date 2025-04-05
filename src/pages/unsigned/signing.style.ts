@@ -3,9 +3,7 @@ import fonts from '../../assets/styles/abstracts/fonts';
 import {rem} from '../../assets/styles/abstracts/functions';
 
 
-
 const styles = {
-
 
 
     list: {
@@ -31,6 +29,15 @@ const styles = {
             width: rem(650),
             whiteSpace: 'nowrap',
 
+        },
+        '& div': {
+            display: 'flex',
+            width: rem(80),
+            '& span': {
+                cursor: 'pointer'
+
+            }
+
         }
     },
 
@@ -40,6 +47,14 @@ const styles = {
         display: 'inline-block',
     },
 
+    title: {
+        fontFamily: fonts.fontBold,
+        lineHeight: rem(32),
+        fontSize: rem(18),
+        marginBottom: rem(25),
+        marginTop: rem(10),
+        color: '#474975'
+    },
     panel: {
         display: 'flex',
         justifyContent: 'flex-start',

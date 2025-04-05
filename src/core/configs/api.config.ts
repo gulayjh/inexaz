@@ -1,4 +1,4 @@
-import {environment} from "./app.config";
+import {environment} from './app.config';
 
 const base = environment.apiMain;
 export const API = {
@@ -6,5 +6,8 @@ export const API = {
     upload: base + '/sessions',
     login: base + '/auth/login',
     sessions: base + '/sessions',
+    users: base + '/users',
+    changePassword: base + '/users/changePassword'
+
 
 };

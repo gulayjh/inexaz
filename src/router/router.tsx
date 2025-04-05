@@ -9,6 +9,7 @@ import LoginComponent from '../pages/login/login.component';
 import AuthProtectedComponent from './protected/auth-protected.component';
 import UnsignedComponent from "../pages/unsigned/unsigned.component";
 import SignedComponent from "../pages/signed/signed.component";
+import UsersComponent from '../pages/user/users.component';
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: Routes.home,
                 element: <HomeComponent/>,
+            },
+            {
+                path: Routes.users,
+                element: <UsersComponent/>,
             }
         ],
     },

@@ -1,16 +1,19 @@
 import {memo} from 'react';
 import LeftMenuItemComponent from '../left-menu-item/left-menu-item.component';
 import {generateGuid} from '../../../../helpers/generate-guid';
-import {HomeIcon} from '../../../../../assets/images/icons/left-menu';
+import {HomeIcon, SignedIcon, UnsignedIcon, UsersIcon} from '../../../../../assets/images/icons/left-menu';
 import {Routes} from '../../../../../router/routes';
 import {useLeftMenuStyles} from './left-menu.style';
 import classNames from 'classnames';
 import useLocalization from '../../../../../assets/lang';
+import {useSelector} from 'react-redux';
+import {IState} from '../../../../../store/store';
 
 const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
     const classes = useLeftMenuStyles();
 
     const translate = useLocalization();
+    const user = useSelector((state: IState) => state.user);
 
     const items = [
         {
@@ -18,18 +21,31 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             name: translate('add_title'),
             link: Routes.home,
             icon: <HomeIcon/>,
+            show: true,
         },
         {
             id: 2,
             name: translate('signed_title'),
             link: Routes.signed,
-            icon: <HomeIcon/>,
+            icon: <SignedIcon/>,
+            show: true,
+
         },
         {
             id: 3,
             name: translate('unsigned_title'),
             link: Routes.unsigned,
-            icon: <HomeIcon/>,
+            icon: <UnsignedIcon/>,
+            show: true,
+
+        },
+        {
+            id: 4,
+            name: translate('users'),
+            link: Routes.users,
+            icon: <UsersIcon/>,
+            show: user?.Roles && user?.Roles === 'SuperAdmin',
+
 
         },
     ];
@@ -50,6 +66,8 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
                             link={i.link}
                             icon={i.icon}
                             submenu={i.submenu}
+                            show={i.show}
+
                         />
                     ))
                 }

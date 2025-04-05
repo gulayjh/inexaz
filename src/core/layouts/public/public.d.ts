@@ -3,5 +3,6 @@ export interface ILeftMenuItemProps {
     link: string;
     icon: any;
     submenu: any;
+    show: boolean;
 }
 
