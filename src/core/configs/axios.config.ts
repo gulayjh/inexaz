@@ -1,17 +1,17 @@
-import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
-import { environment } from './app.config';
-import { store } from '../../store/store.config';
-import { setLoader } from '../../store/store.reducer';
-import { errorToast } from '../shared/toast/toast';
-import { getToken, setToken } from '../helpers/get-token';
+import axios, {AxiosResponse, InternalAxiosRequestConfig, AxiosError} from 'axios';
+import {environment} from './app.config';
+import {store} from '../../store/store.config';
+import {setLoader} from '../../store/store.reducer';
+import {errorToast} from '../shared/toast/toast';
+import {getToken, setToken} from '../helpers/get-token';
 
 const axiosInstance = axios.create({
+    withCredentials: true,
     headers: {
         'Authorization': 'Bearer ' + getToken(),
     },
 });
 
-// Request Interceptor
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         store.dispatch(setLoader(true));
@@ -24,7 +24,6 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// Response Interceptor with Retry Logic
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => {
         store.dispatch(setLoader(false));
@@ -40,7 +39,7 @@ axiosInstance.interceptors.response.use(
                 originalRequest._retry = true; // Prevent multiple retries
 
                 try {
-                    const refreshResponse = await axios.put(`${environment.apiMain}/auth/refresh`, {}, { withCredentials: true });
+                    const refreshResponse = await axios.put(`${environment.apiMain}/auth/refresh`, {}, {withCredentials: true});
                     const newToken = refreshResponse.data.token;
 
                     setToken(newToken); // Save new token
@@ -56,7 +55,7 @@ axiosInstance.interceptors.response.use(
         }
 
         // @ts-ignore
-        errorToast(error.response?.data?.message ? error.response?.data?.message:'Xəta baş verdi');
+        errorToast(error.response?.data?.message ? error.response?.data?.message : 'Xəta baş verdi');
         return Promise.reject(error);
     }
 );
