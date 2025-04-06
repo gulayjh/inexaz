@@ -18,7 +18,6 @@ function UnsignedComponent() {
     const {list, listItem, bold, panel, title} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
-
     const handleSearchChange = debounce(useCallback((value: string) => {
         setSearchField(value);
         setCurrent(1);
@@ -33,6 +32,8 @@ function UnsignedComponent() {
                         <span>{translate('session_pin')}</span>
                         <span>{translate('session_date')}</span>
                         <span>{translate('session_link')}</span>
+                        <span>{translate('session_status')}</span>
+
                     </div>
 
                 </>,
@@ -47,6 +48,10 @@ function UnsignedComponent() {
                                     <span className={bold}>{signing.assignedPin}</span>
                                     <span className={bold}>{signing?.created.substring(0, 10)}</span>
                                     <span className={bold}>{signing.dynamicLinkPart}</span>
+                                    <span className={bold} style={{flexBasis: '10%'}}>
+                                        {signing.status === 1 ? 'pending' : signing.status === 2 ? 'aktiv' : 'deaktiv'}
+                                    </span>
+
                                 </div>
                             }
                                    key="1">

@@ -12,6 +12,7 @@ const styles = {
         alignItems: 'center',
         '& span': {
             cursor: 'pointer',
+            width:'100%'
         }
     },
     title: {

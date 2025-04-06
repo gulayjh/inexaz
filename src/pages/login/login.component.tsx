@@ -51,7 +51,6 @@ const LoginComponent = () => {
             'password': values.password,
             'rememberMe': values.remember
         };
-        console.log(values);
 
         mutate(postData);
     }, [mutate]);

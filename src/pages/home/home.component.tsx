@@ -40,7 +40,7 @@ function HomeComponent() {
     const beforeUpload = useCallback((file: any) => {
         if (file.size < 30000000) {
             handleListUpload(file);
-        }else{
+        } else {
             errorToast(translate('file_size_error'));
 
         }
@@ -93,79 +93,82 @@ function HomeComponent() {
     }, [fileList]);
     return (
         <div>
-            <Form name="basic" layout="vertical">
+            <h3 className={title}>{translate('add_title')}</h3>
 
-                <h3 className={title}>{translate('add_title')}</h3>
-
-                <div className={upload}>
-                    <Form.Item
-                        name="FormFile" valuePropName="name">
-                        <Upload {...uploadProps} maxCount={100} fileList={fileList}
-                                disabled={fileList?.length === 100}
-                        >
-                            <div className={chooseButton}>
-                                <span className='pr-5'><SignPlusIcon/></span>
-                                <span><h3>{translate('add')}</h3></span>
-                            </div>
-                        </Upload>
-                    </Form.Item>
-                </div>
-            </Form>
-            {fileList && fileList.length ?
-                <>
-                    <div className={list}>
-                        {fileList.map((file: any, index: number) => {
-                            return (
-                                <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
-                                    <div className={listItem} title={file.name}>
-                                        <span><FileIcon/></span>
-                                        <h5>{file.name}</h5>
-                                        <span className={deleteButton} onClick={() => {
-                                            handleRemove(file.uid, file.size);
-                                        }}>
-                                        <DeleteIcon/>
-                                    </span>
-
-                                    </div>
-                                </div>
-                            );
-                        })}
-
-                    </div>
-                    <div className="col-lg-4 col-md-4 col-sm-12">
-                        <Form
-                            name="login"
-                            initialValues={initialValues}
-                            onFinish={onSubmit}
-                            layout="vertical"
-                        >
-                            <Form.Item
-                                rules={rules.fullname}
-                                name="fullname"
-                                label="Ad Soyad">
-                                <Input/>
-                            </Form.Item>
-                            <Form.Item
-                                rules={rules.pin}
-                                name="pin" label="FIN">
-                                <Input maxLength={7}/>
-                            </Form.Item>
-                            <div>
-                                <Button className="w-100" type="primary" htmlType="submit">
-                                    {translate('upload')}
-                                </Button>
-                            </div>
-                        </Form>
-                    </div>
-                </>
-                : null}
             {operationId ?
                 <div className="col-lg-4 col-md-4 col-sm-12 mt-25">
                     <h3 className={title}>{translate('session_link')}</h3>
 
                     <Input value={operationId} readOnly/>
                 </div>
-                : null}
+                :
+                <>
+                    <Form name="basic" layout="vertical">
+
+                        <div className={upload}>
+                            <Form.Item
+                                name="FormFile" valuePropName="name">
+                                <Upload {...uploadProps} maxCount={100} fileList={fileList}
+                                        disabled={fileList?.length === 100}
+                                >
+                                    <div className={chooseButton}>
+                                        <span className="pr-5"><SignPlusIcon/></span>
+                                        <span><h3>{translate('add')}</h3></span>
+                                    </div>
+                                </Upload>
+                            </Form.Item>
+                        </div>
+                    </Form>
+                    {fileList && fileList.length ?
+                        <>
+                            <div className={list}>
+                                {fileList.map((file: any, index: number) => {
+                                    return (
+                                        <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
+                                            <div className={listItem} title={file.name}>
+                                                <span><FileIcon/></span>
+                                                <h5>{file.name}</h5>
+                                                <span className={deleteButton} onClick={() => {
+                                                    handleRemove(file.uid, file.size);
+                                                }}>
+                                        <DeleteIcon/>
+                                    </span>
+
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+
+                            </div>
+                            <div className="col-lg-4 col-md-4 col-sm-12">
+                                <Form
+                                    name="login"
+                                    initialValues={initialValues}
+                                    onFinish={onSubmit}
+                                    layout="vertical"
+                                >
+                                    <Form.Item
+                                        rules={rules.fullname}
+                                        name="fullname"
+                                        label="Ad Soyad">
+                                        <Input/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        rules={rules.pin}
+                                        name="pin" label="FIN">
+                                        <Input maxLength={7}/>
+                                    </Form.Item>
+                                    <div>
+                                        <Button className="w-100" type="primary" htmlType="submit">
+                                            {translate('upload')}
+                                        </Button>
+                                    </div>
+                                </Form>
+                            </div>
+                        </>
+                        : null}
+                </>}
+
 
         </div>
     );

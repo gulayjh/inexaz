@@ -37,7 +37,6 @@ function SignedComponent() {
                 </>,
                 dataIndex: 'dynamicLinkPart',
                 render: (id: number, signing: any, index: number) => {
-                    console.log(signing);
                     return <div>
                         <Collapse bordered={false} expandIconPosition="end" ghost>
                             <Panel header={

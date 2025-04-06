@@ -59,7 +59,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'flex-start',
         '& >span': {
-            flexBasis: '30%',
+            flexBasis: '20%',
             width: '100%',
             paddingRight: rem(5),
 
@@ -68,10 +68,10 @@ const styles = {
             flexBasis: '5%',
             width: '100%'
         },
-        '& >span:nth-child(4)': {
+        '& >span:last-child': {
             '& span': {
-                width: '60%',
-
+                flexBasis: '5%',
+                width: '100%'
             }
         },
 

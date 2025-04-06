@@ -22,6 +22,7 @@ export const az = {
     session_pin: 'FİN',
     session_date: 'Tarix',
     session_link: 'Link',
+    session_status: 'Status',
     session_search: 'Axtarın...',
 
 
@@ -43,10 +44,16 @@ export const az = {
     users_password: 'Şifrə',
     users_new: 'Yeni İstifadəçi',
     users_create: 'Yarat',
+    users_roles: 'Rollar',
     users_edit: 'Dəyiş',
     users_change_password: 'Şifrəni dəyiş',
     users_old_password: 'Əvvəlki şifrə',
     users_new_password: 'Yeni şifrə',
     users_username: 'İstifadəçi adı',
+    users_super:'Super Admin',
+    users_admin:'Admin',
+    users_user:'User',
+    users_logout:'Çıxış et'
+
 
 };

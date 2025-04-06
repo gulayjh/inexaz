@@ -1,13 +1,15 @@
 import {useGetUser} from './actions/queries';
-import {Button, Collapse, Form, FormRule, Input, Skeleton, Table} from 'antd';
+import {Button, Collapse, Form, FormRule, Input, Select, Skeleton, Table} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import useLocalization from '../../assets/lang';
 import {DeleteIcon, EditIcon, UserIcon} from '../../assets/images/icons/sign';
 import ModalComponent from '../../core/shared/modal/modal.component';
 import {useCreateUser, useDeleteUser, useEditPassword, useEditUser} from './actions/mutations';
 import {useQueryClient} from 'react-query';
 import {useUserStyles} from './user.style';
+import {useSelector} from 'react-redux';
+import {IState} from '../../store/store';
 
 function UsersComponent() {
     const [searchField, setSearchField] = useState('');
@@ -17,31 +19,41 @@ function UsersComponent() {
     const translate = useLocalization();
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState<number>();
+    const [rolesList, setRolesList] = useState<any>([]);
+    const userMain = useSelector((state: IState) => state.user);
 
     const [editForm] = Form.useForm();
     const [createForm] = Form.useForm();
-    const [passwordChange] = Form.useForm();
 
     const {mutate: createUser} = useCreateUser(() => {
         setShowModal(false);
         createForm.resetFields();
+        setRolesList([]);
         queryClient.invalidateQueries(['getUsers']);
     });
     const {mutate: editUser} = useEditUser(() => {
         setShowEditModal(false);
         editForm.resetFields();
+        setRolesList([]);
         queryClient.invalidateQueries(['getUsers']);
     });
-    const {mutate: editPassword} = useEditPassword(() => {
-        setShowEditModal(false);
-        passwordChange.resetFields();
-        queryClient.invalidateQueries(['getUsers']);
-    });
+
     const {mutate: deleteUser} = useDeleteUser(() => {
         queryClient.invalidateQueries(['getUsers']);
     });
+
+    const options = [
+        {label: translate('users_super'), value: 1},
+        {label: translate('users_admin'), value: 2},
+        {label: translate('users_user'), value: 3},
+
+    ];
+
+    const handleChange = useCallback((e: any) => {
+        setRolesList(e);
+
+    }, [rolesList]);
 
     const queryClient = useQueryClient();
 
@@ -51,6 +63,7 @@ function UsersComponent() {
             username: user.userName,
             password: user.password,
             deleteDocumentPassword: user.deleteDocumentPassword,
+            roles: user.roles
         });
         setSelectedUser(user.id);
 
@@ -67,13 +80,6 @@ function UsersComponent() {
             deleteUser(postData);
         }
     }, [selectedUser]);
-
-    const handleEditPassword = useCallback((user: any) => {
-        passwordChange.setFieldsValue({
-            oldPassword: user.password,
-        });
-        setShowPasswordModal(true);
-    }, [showPasswordModal]);
 
 
     const columns = [
@@ -92,30 +98,52 @@ function UsersComponent() {
             ellipsis: true,
         },
         {
+            title: translate('users_roles'),
+            render: (user: any) => {
+                return (
+                    <>
+                        {user?.roles && user.roles.map((role: any, index: number) => (
+                            <span key={index}>
+                                {index > 0 ? ', ' : ''}
+                                {role === 1 ? translate('users_super') : role === 2 ? translate('users_admin') : translate('users_admin')}
+                    </span>
+                        ))}
+                    </>
+                );
+            }
+        },
+        {
             title: '',
-            width: '200px',
+            width: '150px',
             render: (user: any) => {
                 return (
                     <div className={list}>
                         <span onClick={() => {
                             handleEdit(user);
-                        }}> <UserIcon/></span>
-                        <span onClick={() => {
-                            handleEditPassword(user);
                         }}> <EditIcon/></span>
-                        <span onClick={() => {
-                            handleDelete(user);
-                        }}> <DeleteIcon/></span>
+                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(2) && userMain.Roles!=='SuperAdmin') ? <span> </span> :
+                            <span onClick={() => {
+                                handleDelete(user);
+                            }}> <DeleteIcon/></span>
+                        }
 
                     </div>
                 );
             }
         }
     ];
+
+    useEffect(() => {
+        if (showModal) {
+            createForm.setFieldsValue(initialValues);
+        }
+    }, [showModal]);
+
     const initialValues: any = {
         username: '',
         password: '',
         deleteDocumentPassword: '',
+        roles: []
     };
     const rules: { [key: string]: FormRule[] } = useMemo(() => ({
         username: [
@@ -146,12 +174,10 @@ function UsersComponent() {
             'userName': values.username,
             'password': values.password,
             'deleteDocumentPassword': values.deleteDocumentPassword,
-            'roles': [
-                1
-            ]
+            'roles': rolesList
         };
         createUser(postData);
-    }, [showModal]);
+    }, [showModal, rolesList]);
 
     const onChange = useCallback((values: any) => {
         const postData = {
@@ -159,21 +185,12 @@ function UsersComponent() {
             'userName': values.username,
             'password': values.password,
             'deleteDocumentPassword': values.deleteDocumentPassword,
-            'roles': [
-                1
-            ]
+            'roles': rolesList
         };
         editUser(postData);
-    }, [selectedUser]);
+    }, [selectedUser, rolesList]);
 
-    const onPasswordChange = useCallback((values: any) => {
-        const postData = {
-            'oldPassword': values.oldPassword,
-            'newPassword': values.newPassword,
-        };
-        editPassword(postData);
 
-    }, []);
     return (
         <div>
             <div className="d-flex justify-between align-center mb-25">
@@ -192,6 +209,7 @@ function UsersComponent() {
             }
             <ModalComponent showModal={showModal} handleClose={() => {
                 setShowModal(false);
+                setRolesList([]);
                 createForm.resetFields();
             }}>
                 <Form
@@ -217,6 +235,20 @@ function UsersComponent() {
                         name="deleteDocumentPassword" label="Delete Document Password">
                         <Input maxLength={50}/>
                     </Form.Item>
+                    <Form.Item
+                        name="roles"
+                        label="Roles">
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            style={{width: '100%'}}
+                            placeholder="Please select"
+                            options={options}
+                            onChange={(e) => {
+                                handleChange(e);
+                            }}
+                        />
+                    </Form.Item>
                     <div>
                         <Button loading={isLoading} className="w-100" type="primary" htmlType="submit">
                             {translate('users_create')}
@@ -227,6 +259,7 @@ function UsersComponent() {
 
             <ModalComponent showModal={showEditModal} handleClose={() => {
                 setShowEditModal(false);
+                setRolesList([]);
                 editForm.resetFields();
             }}>
                 <Form
@@ -251,6 +284,20 @@ function UsersComponent() {
                         name="deleteDocumentPassword" label="Delete Document Password">
                         <Input maxLength={50}/>
                     </Form.Item>
+                    <Form.Item
+                        name="roles"
+                        label="Roles">
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            style={{width: '100%'}}
+                            placeholder="Please select"
+                            options={options}
+                            onChange={(e) => {
+                                handleChange(e);
+                            }}
+                        />
+                    </Form.Item>
                     <div>
                         <Button loading={isLoading} className="w-100" type="primary" htmlType="submit">
                             {translate('users_edit')}
@@ -259,35 +306,7 @@ function UsersComponent() {
                 </Form>
             </ModalComponent>
 
-            <ModalComponent showModal={showPasswordModal} handleClose={() => {
-                setShowPasswordModal(false);
-                passwordChange.resetFields();
-            }}>
-                <Form
-                    form={passwordChange}
-                    name="PasswordChange"
-                    onFinish={onPasswordChange}
-                    layout="vertical"
-                >
-                    <Form.Item
-                        rules={rules.password}
-                        name="oldPassword"
-                        label={translate('users_old_password')}>
-                        <Input maxLength={50}/>
-                    </Form.Item>
-                    <Form.Item
-                        rules={rules.password}
-                        name="newPassword"
-                        label={translate('users_new_password')}>
-                        <Input maxLength={50}/>
-                    </Form.Item>
-                    <div>
-                        <Button loading={isLoading} className="w-100" type="primary" htmlType="submit">
-                            {translate('users_edit')}
-                        </Button>
-                    </div>
-                </Form>
-            </ModalComponent>
+
         </div>
     );
 }
