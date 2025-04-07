@@ -41,8 +41,9 @@ axiosInstance.interceptors.response.use(
                 try {
                     const refreshResponse = await axios.put(`${environment.apiMain}/auth/refresh`, {}, {withCredentials: true});
                     const newToken = refreshResponse.data.token;
-
-                    setToken(newToken); // Save new token
+                    if (newToken && newToken.length > 0) {
+                        setToken(newToken); // Save new token
+                    }
                     axiosInstance.defaults.headers['Authorization'] = `Bearer ${newToken}`;
                     originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 

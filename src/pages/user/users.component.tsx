@@ -103,9 +103,10 @@ function UsersComponent() {
                 return (
                     <>
                         {user?.roles && user.roles.map((role: any, index: number) => (
+
                             <span key={index}>
                                 {index > 0 ? ', ' : ''}
-                                {role === 1 ? translate('users_super') : role === 2 ? translate('users_admin') : translate('users_admin')}
+                                {role === 1 ? translate('users_super') : role === 2 ? translate('users_admin') : translate('users_user')}
                     </span>
                         ))}
                     </>

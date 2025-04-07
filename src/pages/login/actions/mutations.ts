@@ -14,7 +14,9 @@ export const useLogin = () => {
             return login(credentials);
         },
         onSuccess: (response: any) => {
-            setToken(response);
+            if (response && response.length > 0) {
+                setToken(response);
+            }
             store.dispatch(setUser(response));
             navigate(Routes.home);
         },

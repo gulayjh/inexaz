@@ -6,15 +6,14 @@ import {setToken} from '../../../core/helpers/get-token';
 import {useNavigate} from 'react-router-dom';
 import {Routes} from '../../../router/routes';
 
-export const useUpload = () => {
+export const useUpload = (onSucces: any) => {
     return useMutation({
         mutationFn: (credentials: any) => {
             return upload(credentials);
         },
-        onSuccess: (response:any) => {
+        onSuccess: (response: any) => {
             store.dispatch(setOperationId(response));
-
-
+            onSucces();
         },
     });
 };

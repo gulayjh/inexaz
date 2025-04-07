@@ -44,7 +44,7 @@ function SignedComponent() {
                                     <span className={bold}>{index + (current - 1) * 15 + 1}. </span>
                                     <span className={bold}>{signing.assignedFullName}</span>
                                     <span className={bold}>{signing.assignedPin}</span>
-                                    <span className={bold}>{signing?.created.substring(0, 10)}</span>
+                                    <span className={bold}>{`${signing?.created.substring(0, 10).replaceAll('-', '.').split('.').reverse().join('.')}` +'  '+ `${signing?.created.substring(11, 19)}` }</span>
                                     <span className={bold}>{signing.dynamicLinkPart}</span>
                                 </div>
                             }

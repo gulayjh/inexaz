@@ -1,7 +1,7 @@
 import {Button, Form, FormRule, Input, Table, Upload} from 'antd';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useUploadStyles} from './container.style';
-import {DeleteIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
+import {DeleteIcon, DownloadIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
 import {fileSize} from '../../core/helpers/file-size';
 import {generateGuid} from '../../core/helpers/generate-guid';
@@ -12,14 +12,22 @@ import {useUpload} from './actions/mutations';
 import {useLogin} from '../login/actions/mutations';
 import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
-import {errorToast} from '../../core/shared/toast/toast';
+import {errorToast, successToast} from '../../core/shared/toast/toast';
 import {store} from '../../store/store.config';
 import {setOperationId} from '../../store/store.reducer';
+import {ArrowCircleDown} from '../../assets/images/icons/arrows';
 
 function HomeComponent() {
     const {title, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
     const translate = useLocalization();
-    const {mutate} = useUpload();
+
+    const onUploadSucces = useCallback(() => {
+        successToast('Uğurlu əməliyyat!');
+    }, []);
+
+    const {mutate} = useUpload(() => {
+        onUploadSucces();
+    });
     const [fileList, setFileList] = useState<any>([]);
     const operationId = useSelector((state: IState) => state.operationId);
 
@@ -27,6 +35,8 @@ function HomeComponent() {
         store.dispatch(setOperationId(null));
 
     }, []);
+
+
     const handleListUpload = useCallback((file: any) => {
         setFileList((prevFileList: any) => [...prevFileList, file].slice(0, 5));
     }, [fileList]);
@@ -78,7 +88,6 @@ function HomeComponent() {
         ],
 
     }), [translate]);
-    const navigate = useNavigate();
 
 
     const onSubmit = useCallback((values: any) => {
@@ -91,15 +100,30 @@ function HomeComponent() {
         });
         mutate(formData);
     }, [fileList]);
+    const handleCopy = useCallback((text: string) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                console.log('Text copied to clipboard!');
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+    }, [operationId]);
+
     return (
         <div>
             <h3 className={title}>{translate('add_title')}</h3>
 
             {operationId ?
-                <div className="col-lg-4 col-md-4 col-sm-12 mt-25">
+                <div className="col-lg-6 col-md-4 col-sm-12 mt-25">
                     <h3 className={title}>{translate('session_link')}</h3>
+                    <div className="d-flex align-center">
 
-                    <Input value={operationId} readOnly/>
+                        <Input value={operationId} readOnly/>
+                        <span title='Linki kopyala' style={{cursor:'pointer', paddingLeft:'10px'}} onClick={() => {
+                            handleCopy(operationId);
+                        }}><ArrowCircleDown/></span>
+                    </div>
                 </div>
                 :
                 <>

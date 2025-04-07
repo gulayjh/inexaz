@@ -1,4 +1,4 @@
-import {Collapse, Skeleton, Table} from 'antd';
+import {Collapse, Pagination, Skeleton, Table} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
 import {ReactNode, useCallback, useState} from 'react';
 import {useGetSession} from '../signed/actions/queries';
@@ -23,6 +23,11 @@ function UnsignedComponent() {
         setCurrent(1);
     }, []), 500);
 
+
+    const handleCurrent = useCallback((value: number) => {
+        setCurrent(value);
+    }, []);
+
     const columns = [
             {
                 title: <>
@@ -46,7 +51,8 @@ function UnsignedComponent() {
                                     <span className={bold}>{index + (current - 1) * 15 + 1}. </span>
                                     <span className={bold}>{signing.assignedFullName}</span>
                                     <span className={bold}>{signing.assignedPin}</span>
-                                    <span className={bold}>{signing?.created.substring(0, 10)}</span>
+                                    <span
+                                        className={bold}>{`${signing?.created.substring(0, 10).replaceAll('-', '.').split('.').reverse().join('.')}` + '  ' + `${signing?.created.substring(11, 19)}`}</span>
                                     <span className={bold}>{signing.dynamicLinkPart}</span>
                                     <span className={bold} style={{flexBasis: '10%'}}>
                                         {signing.status === 1 ? 'pending' : signing.status === 2 ? 'aktiv' : 'deaktiv'}
@@ -92,12 +98,23 @@ function UnsignedComponent() {
             <h3 className={title}>{translate('unsigned_title')}</h3>
             <SearchComponent placeholder={translate('session_search')} handleSearch={handleSearchChange}/>
             {
-                isLoading ? <Skeleton active/> : <Table
-                    dataSource={data}
-                    columns={columns}
-                    pagination={false}
-                    rowKey={generateGuid}
-                />
+                isLoading ? <Skeleton active/> :
+                    <>
+                        <Table
+                            dataSource={data}
+                            columns={columns}
+                            pagination={false}
+                            rowKey={generateGuid}
+                        />
+                        {<div className='mt-25'>
+                            <Pagination size="small" pageSize={10} current={current} onChange={handleCurrent}
+                                        total={25}
+                                        showSizeChanger={false}
+                                        hideOnSinglePage={true}
+
+                            />
+                        </div>}
+                    </>
             }
         </div>
     );
