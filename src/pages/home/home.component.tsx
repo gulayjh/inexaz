@@ -1,28 +1,27 @@
 import {Button, Form, FormRule, Input, Table, Upload} from 'antd';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useUploadStyles} from './container.style';
-import {DeleteIcon, DownloadIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
+import {DeleteIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
-import {fileSize} from '../../core/helpers/file-size';
-import {generateGuid} from '../../core/helpers/generate-guid';
-import QRComponent from '../../core/shared/qr/qr.component';
-import {useNavigate} from 'react-router-dom';
-import {getToken, setToken} from '../../core/helpers/get-token';
 import {useUpload} from './actions/mutations';
-import {useLogin} from '../login/actions/mutations';
 import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
 import {errorToast, successToast} from '../../core/shared/toast/toast';
 import {store} from '../../store/store.config';
 import {setOperationId} from '../../store/store.reducer';
 import {ArrowCircleDown} from '../../assets/images/icons/arrows';
+import {useQueryClient} from 'react-query';
+import {useNavigate} from 'react-router-dom';
 
 function HomeComponent() {
     const {title, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
     const translate = useLocalization();
-
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const onUploadSucces = useCallback(() => {
         successToast('Uğurlu əməliyyat!');
+        queryClient.invalidateQueries(['getSession']);
+
     }, []);
 
     const {mutate} = useUpload(() => {
@@ -118,9 +117,8 @@ function HomeComponent() {
                 <div className="col-lg-6 col-md-4 col-sm-12 mt-25">
                     <h3 className={title}>{translate('session_link')}</h3>
                     <div className="d-flex align-center">
-
-                        <Input value={operationId} readOnly/>
-                        <span title='Linki kopyala' style={{cursor:'pointer', paddingLeft:'10px'}} onClick={() => {
+                        <Input onClick={()=>navigate(`/session/${operationId}`)} value={`inexaz.netlify.app/session/+${operationId}`} readOnly/>
+                        <span title="Linki kopyala" style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
                             handleCopy(operationId);
                         }}><ArrowCircleDown/></span>
                     </div>

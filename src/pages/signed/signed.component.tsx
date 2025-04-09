@@ -1,10 +1,10 @@
 import {useGetSession} from './actions/queries';
-import {Collapse, Skeleton, Table} from 'antd';
+import {Collapse, Skeleton, Table, Tooltip} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
 import {useCallback, useState} from 'react';
 import {useSigningsStyles} from '../unsigned/signing.style';
 import useLocalization from '../../assets/lang';
-import {DownloadIcon, LookUpIcon} from '../../assets/images/icons/sign';
+import {Active, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
 import {downloadPDF} from '../../core/helpers/downloadPdf';
 import SearchComponent from '../../core/shared/search/search.component';
 import {debounce} from '../../core/helpers/debounce';
@@ -44,11 +44,28 @@ function SignedComponent() {
                                     <span className={bold}>{index + (current - 1) * 15 + 1}. </span>
                                     <span className={bold}>{signing.assignedFullName}</span>
                                     <span className={bold}>{signing.assignedPin}</span>
-                                    <span className={bold}>{`${signing?.created.substring(0, 10).replaceAll('-', '.').split('.').reverse().join('.')}` +'  '+ `${signing?.created.substring(11, 19)}` }</span>
+                                    <span
+                                        className={bold}>{signing?.created}</span>
                                     <span className={bold}>{signing.dynamicLinkPart}</span>
+                                    <span className={bold} style={{flexBasis: '10%'}}>
+                                        {signing.status === 1 ?
+                                            <Tooltip title={'gözləmədə'}
+                                                     overlayInnerStyle={{backgroundColor: '#474975', color: 'white'}}>
+                                                <span><Pending/></span>
+                                            </Tooltip>
+                                            : signing.status === 2 ?
+                                                <Tooltip title={'aktiv'}>
+                                                    <span><Active/></span>
+                                                </Tooltip>
+                                                :
+                                                <Tooltip title={'imzalanmış'}>
+                                                    <span><Signed/></span>
+                                                </Tooltip>}
+                                    </span>
+
                                 </div>
                             }
-                                   key="1">
+                                   key={index}>
 
                                 <div className={list}>
                                     {signing.documents && signing.documents.length && signing.documents.map((item: any, index: number) => {

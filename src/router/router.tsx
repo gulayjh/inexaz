@@ -10,6 +10,7 @@ import AuthProtectedComponent from './protected/auth-protected.component';
 import UnsignedComponent from "../pages/unsigned/unsigned.component";
 import SignedComponent from "../pages/signed/signed.component";
 import UsersComponent from '../pages/user/users.component';
+import SessionComponent from '../pages/session/sessions.component';
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: Routes.users,
                 element: <UsersComponent/>,
+            },
+            {
+                path: Routes.session,
+                element: <SessionComponent/>,
             }
         ],
     },

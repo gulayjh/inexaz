@@ -1,7 +1,7 @@
 import axios, {AxiosResponse, InternalAxiosRequestConfig, AxiosError} from 'axios';
 import {environment} from './app.config';
 import {store} from '../../store/store.config';
-import {setLoader} from '../../store/store.reducer';
+import {setLoader, setUser} from '../../store/store.reducer';
 import {errorToast} from '../shared/toast/toast';
 import {getToken, setToken} from '../helpers/get-token';
 
@@ -40,16 +40,15 @@ axiosInstance.interceptors.response.use(
 
                 try {
                     const refreshResponse = await axios.put(`${environment.apiMain}/auth/refresh`, {}, {withCredentials: true});
-                    const newToken = refreshResponse.data.token;
-                    if (newToken && newToken.length > 0) {
+                    const newToken = refreshResponse.data;
                         setToken(newToken); // Save new token
-                    }
+                    store.dispatch(setUser(newToken));
                     axiosInstance.defaults.headers['Authorization'] = `Bearer ${newToken}`;
                     originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
                     return axiosInstance(originalRequest); // Retry request with new token
                 } catch (refreshError) {
-                    localStorage.removeItem(`${environment.applicationName}-token`);
+                    localStorage.removeItem(`token`);
                     window.location.href = 'auth/login'; // Redirect to login if refresh fails
                 }
             }

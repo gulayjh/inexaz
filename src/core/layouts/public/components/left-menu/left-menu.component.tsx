@@ -44,11 +44,12 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             name: translate('users'),
             link: Routes.users,
             icon: <UsersIcon/>,
-            show: user?.Roles && user?.Roles === 'SuperAdmin',
+            show: user?.Roles.includes('Admin')  || user?.Roles.includes('SuperAdmin')
 
 
         },
     ];
+    console.log(user);
 
     const leftMenuClasses = classNames({
         [classes.leftMenu]: true,

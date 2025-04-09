@@ -52,17 +52,20 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show}: ILeftMenuItemP
                         }
                     </>
                     :
-                    <NavLink
-                        className={classes.link}
-                        to={{pathname: link}}
-                    >
-                        {show ?
+
+                    show ?
+                        <NavLink
+                            className={classes.link}
+                            to={{pathname: link}}
+                        >
                             <div className={classes.itemText}>
                                 {icon}
                                 <span>{name}</span>
-                            </div> : null}
-                    </NavLink>
+                            </div>
+                        </NavLink>
+                        : null
             }
+
 
         </li>
     );

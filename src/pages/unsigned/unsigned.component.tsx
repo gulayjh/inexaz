@@ -1,10 +1,10 @@
-import {Collapse, Pagination, Skeleton, Table} from 'antd';
+import {Collapse, Pagination, Skeleton, Table, Tooltip} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
 import {ReactNode, useCallback, useState} from 'react';
 import {useGetSession} from '../signed/actions/queries';
 import {useSigningsStyles} from './signing.style';
 import useLocalization from '../../assets/lang';
-import {DownloadIcon, LookUpIcon} from '../../assets/images/icons/sign';
+import {Active, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
 import {downloadPDF} from '../../core/helpers/downloadPdf';
 import {debounce} from '../../core/helpers/debounce';
 import SearchComponent from '../../core/shared/search/search.component';
@@ -52,15 +52,27 @@ function UnsignedComponent() {
                                     <span className={bold}>{signing.assignedFullName}</span>
                                     <span className={bold}>{signing.assignedPin}</span>
                                     <span
-                                        className={bold}>{`${signing?.created.substring(0, 10).replaceAll('-', '.').split('.').reverse().join('.')}` + '  ' + `${signing?.created.substring(11, 19)}`}</span>
+                                        className={bold}>{signing?.created}</span>
                                     <span className={bold}>{signing.dynamicLinkPart}</span>
                                     <span className={bold} style={{flexBasis: '10%'}}>
-                                        {signing.status === 1 ? 'pending' : signing.status === 2 ? 'aktiv' : 'deaktiv'}
+                                        {signing.status === 1 ?
+                                            <Tooltip title={'gözləmədə'}
+                                                     overlayInnerStyle={{backgroundColor: '#474975', color: 'white'}}>
+                                                <span><Pending/></span>
+                                            </Tooltip>
+                                            : signing.status === 2 ?
+                                                <Tooltip title={'aktiv'}>
+                                                    <span><Active/></span>
+                                                </Tooltip>
+                                                :
+                                                <Tooltip title={'imzalanmış'}>
+                                                    <span><Signed/></span>
+                                                </Tooltip>}
                                     </span>
 
                                 </div>
                             }
-                                   key="1">
+                                   key={index}>
 
                                 <div className={list}>
                                     {signing.documents && signing.documents.length && signing.documents.map((item: any, index: number) => {
@@ -106,7 +118,7 @@ function UnsignedComponent() {
                             pagination={false}
                             rowKey={generateGuid}
                         />
-                        {<div className='mt-25'>
+                        {<div className="mt-25">
                             <Pagination size="small" pageSize={10} current={current} onChange={handleCurrent}
                                         total={25}
                                         showSizeChanger={false}
