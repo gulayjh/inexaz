@@ -14,10 +14,12 @@ function UnsignedComponent() {
 
     const [searchField, setSearchField] = useState('');
     const [current, setCurrent] = useState<number>(1);
+    const [page, setPage] = useState(1);
     const {data, isLoading} = useGetSession(searchField, current, false);
     const {list, listItem, bold, panel, title} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
+
     const handleSearchChange = debounce(useCallback((value: string) => {
         setSearchField(value);
         setCurrent(1);
@@ -113,19 +115,25 @@ function UnsignedComponent() {
                 isLoading ? <Skeleton active/> :
                     <>
                         <Table
-                            dataSource={data}
+                            dataSource={data.data}
                             columns={columns}
-                            pagination={false}
+                            pagination={{
+                                current: page, 
+                                pageSize: 10, 
+                                total: data.count,
+                                onChange: (newPage) => setPage(newPage), 
+                                showSizeChanger: false, 
+                            }}
                             rowKey={generateGuid}
                         />
-                        {<div className="mt-25">
+                        {/* {<div className="mt-25">
                             <Pagination size="small" pageSize={10} current={current} onChange={handleCurrent}
                                         total={25}
                                         showSizeChanger={false}
                                         hideOnSinglePage={true}
 
                             />
-                        </div>}
+                        </div>} */}
                     </>
             }
         </div>

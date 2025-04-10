@@ -13,6 +13,7 @@ function SignedComponent() {
     const [searchField, setSearchField] = useState('');
     const [current, setCurrent] = useState<number>(1);
     const {data, isLoading} = useGetSession(searchField, current, true);
+    const [page, setPage] = useState(1);
     const {list, listItem, bold, panel, title} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
@@ -103,9 +104,15 @@ function SignedComponent() {
             <SearchComponent placeholder={translate('session_search')} handleSearch={handleSearchChange}/>
             {
                 isLoading ? <Skeleton active/> : <Table
-                    dataSource={data}
+                    dataSource={data.data}
                     columns={columns}
-                    pagination={false}
+                    pagination={{
+                        current: page, 
+                        pageSize: 10, 
+                        total: data.count,
+                        onChange: (newPage) => setPage(newPage), 
+                        showSizeChanger: false, 
+                    }}
                     rowKey={generateGuid}
                 />
             }

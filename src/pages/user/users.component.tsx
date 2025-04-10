@@ -119,10 +119,15 @@ function UsersComponent() {
             render: (user: any) => {
                 return (
                     <div className={list}>
+                        {userMain?.UserName === user?.userName || (user?.roles.includes(1) && !userMain.Roles.includes("SuperAdmin"))
+                        ? <span></span>
+                        :
                         <span onClick={() => {
                             handleEdit(user);
                         }}> <EditIcon/></span>
-                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(2) && userMain.Roles!=='SuperAdmin') ? <span> </span> :
+                        }
+                        
+                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(1) && !userMain.Roles.includes("SuperAdmin")) ? <span> </span> :
                             <span onClick={() => {
                                 handleDelete(user);
                             }}> <DeleteIcon/></span>

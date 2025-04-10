@@ -10,7 +10,7 @@ export const getSessions = (searchFin: string, current: number, signed: boolean)
             isSigned:signed
         }
     }).then(res => {
-       return res.data.data;
+       return res.data;
         
     });
 };
