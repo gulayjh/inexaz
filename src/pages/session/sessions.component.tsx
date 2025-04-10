@@ -13,7 +13,7 @@ function SessionComponent() {
     const {list, title} = useUserStyles();
 
     const { id } = useParams<{ id: string }>();
-    console.log(environment);
+
     return (
         <div>
             {environment.applicationDomain}

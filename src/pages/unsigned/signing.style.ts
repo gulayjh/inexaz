@@ -68,6 +68,10 @@ const styles = {
             flexBasis: '5%',
             width: '100%'
         },
+        '& >span:nth-child(5)': {
+            flexBasis: '40%',
+            width: '100%'
+        },
         '& >span:last-child': {
             '& span': {
                 flexBasis: '5%',

@@ -10,6 +10,8 @@ import {useQueryClient} from 'react-query';
 import {useUserStyles} from './user.style';
 import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
+import {errorToast} from '../../core/shared/toast/toast';
+import {useCheckUser} from '../home/actions/queries';
 
 function UsersComponent() {
     const [searchField, setSearchField] = useState('');
@@ -25,6 +27,8 @@ function UsersComponent() {
 
     const [editForm] = Form.useForm();
     const [createForm] = Form.useForm();
+
+    const check = useCheckUser();
 
     const {mutate: createUser} = useCreateUser(() => {
         setShowModal(false);
@@ -119,10 +123,16 @@ function UsersComponent() {
             render: (user: any) => {
                 return (
                     <div className={list}>
-                        <span onClick={() => {
-                            handleEdit(user);
-                        }}> <EditIcon/></span>
-                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(2) && userMain.Roles!=='SuperAdmin') ? <span> </span> :
+                        {userMain?.UserName === user?.userName || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin'))
+                            ? <span></span>
+                            :
+                            <span onClick={() => {
+                                handleEdit(user);
+                            }}> <EditIcon/></span>
+                        }
+
+                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin')) ?
+                            <span> </span> :
                             <span onClick={() => {
                                 handleDelete(user);
                             }}> <DeleteIcon/></span>
@@ -167,6 +177,12 @@ function UsersComponent() {
                 message: translate('input_min_length', {min: 8}),
             }
         ],
+        roles: [
+            {
+                required: true,
+                message: translate('input_required'),
+            },
+        ]
 
     }), [translate]);
 
@@ -181,22 +197,23 @@ function UsersComponent() {
     }, [showModal, rolesList]);
 
     const onChange = useCallback((values: any) => {
-        const postData = {
-            'id': selectedUser,
-            'userName': values.username,
-            'password': values.password,
-            'deleteDocumentPassword': values.deleteDocumentPassword,
-            'roles': rolesList
-        };
-        editUser(postData);
+            const postData = {
+                'id': selectedUser,
+                'userName': values.username,
+                'password': values.password,
+                'deleteDocumentPassword': values.deleteDocumentPassword,
+                'roles': rolesList
+            };
+            editUser(postData);
+
     }, [selectedUser, rolesList]);
 
 
     return (
         <div>
-            <div className="d-flex justify-between align-center mb-25">
+            <div className='d-flex justify-between align-center mb-25'>
                 <h3 className={title}>{translate('users')}</h3>
-                <Button type="primary" onClick={() => {
+                <Button type='primary' onClick={() => {
                     setShowModal(true);
                 }}>{translate('users_new')}</Button>
             </div>
@@ -215,35 +232,36 @@ function UsersComponent() {
             }}>
                 <Form
                     form={createForm}
-                    name="create"
+                    name='create'
                     initialValues={initialValues}
                     onFinish={onSubmit}
-                    layout="vertical"
+                    layout='vertical'
                 >
                     <Form.Item
                         rules={rules.username}
-                        name="username"
-                        label="Username">
+                        name='username'
+                        label='Username'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="password" label="Password">
+                        name='password' label='Password'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="deleteDocumentPassword" label="Delete Document Password">
+                        name='deleteDocumentPassword' label='Delete Document Password'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
-                        name="roles"
-                        label="Roles">
+                        name='roles'
+                        label='Roles'
+                        rules={rules.roles}>
                         <Select
-                            mode="multiple"
+                            mode='multiple'
                             allowClear
                             style={{width: '100%'}}
-                            placeholder="Please select"
+                            placeholder='Please select'
                             options={options}
                             onChange={(e) => {
                                 handleChange(e);
@@ -251,7 +269,7 @@ function UsersComponent() {
                         />
                     </Form.Item>
                     <div>
-                        <Button loading={isLoading} className="w-100" type="primary" htmlType="submit">
+                        <Button loading={isLoading} className='w-100 mt-10' type='primary' htmlType='submit'>
                             {translate('users_create')}
                         </Button>
                     </div>
@@ -267,32 +285,33 @@ function UsersComponent() {
                     form={editForm}
                     initialValues={initialValues}
                     onFinish={onChange}
-                    layout="vertical"
+                    layout='vertical'
                 >
                     <Form.Item
                         rules={rules.username}
-                        name="username"
-                        label="Username">
+                        name='username'
+                        label='Username'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="password" label="Password">
+                        name='password' label='Password'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="deleteDocumentPassword" label="Delete Document Password">
+                        name='deleteDocumentPassword' label='Delete Document Password'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
-                        name="roles"
-                        label="Roles">
+                        name='roles'
+                        label='Roles'
+                        rules={rules.roles}>
                         <Select
-                            mode="multiple"
+                            mode='multiple'
                             allowClear
                             style={{width: '100%'}}
-                            placeholder="Please select"
+                            placeholder='Please select'
                             options={options}
                             onChange={(e) => {
                                 handleChange(e);
@@ -300,7 +319,7 @@ function UsersComponent() {
                         />
                     </Form.Item>
                     <div>
-                        <Button loading={isLoading} className="w-100" type="primary" htmlType="submit">
+                        <Button loading={isLoading} className='w-100 mt-10' type='primary' htmlType='submit'>
                             {translate('users_edit')}
                         </Button>
                     </div>

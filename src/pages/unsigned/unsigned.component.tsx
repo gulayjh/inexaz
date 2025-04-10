@@ -8,21 +8,26 @@ import {Active, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/im
 import {downloadPDF} from '../../core/helpers/downloadPdf';
 import {debounce} from '../../core/helpers/debounce';
 import SearchComponent from '../../core/shared/search/search.component';
+import {useCheckUser} from '../home/actions/queries';
 
 
 function UnsignedComponent() {
 
     const [searchField, setSearchField] = useState('');
     const [current, setCurrent] = useState<number>(1);
+    const [page, setPage] = useState(1);
     const {data, isLoading} = useGetSession(searchField, current, false);
     const {list, listItem, bold, panel, title} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
+    const check = useCheckUser();
+
+
     const handleSearchChange = debounce(useCallback((value: string) => {
         setSearchField(value);
         setCurrent(1);
     }, []), 500);
-
+    
 
     const handleCurrent = useCallback((value: number) => {
         setCurrent(value);
@@ -31,7 +36,7 @@ function UnsignedComponent() {
     const columns = [
             {
                 title: <>
-                    <div className={panel}>
+                    <div className={panel} style={{textAlign:'center'}}>
                         <span>№</span>
                         <span>{translate('session_fullname')}</span>
                         <span>{translate('session_pin')}</span>
@@ -53,7 +58,7 @@ function UnsignedComponent() {
                                     <span className={bold}>{signing.assignedPin}</span>
                                     <span
                                         className={bold}>{signing?.created}</span>
-                                    <span className={bold}>{signing.dynamicLinkPart}</span>
+                                    <span className={bold}>{`inexaz.netlify.app/session/+${signing.dynamicLinkPart}`}</span>
                                     <span className={bold} style={{flexBasis: '10%'}}>
                                         {signing.status === 1 ?
                                             <Tooltip title={'gözləmədə'}
@@ -113,19 +118,25 @@ function UnsignedComponent() {
                 isLoading ? <Skeleton active/> :
                     <>
                         <Table
-                            dataSource={data}
+                            dataSource={data.data}
                             columns={columns}
-                            pagination={false}
+                            pagination={{
+                                current: page, 
+                                pageSize: 10, 
+                                total: data.count,
+                                onChange: (newPage) => setPage(newPage), 
+                                showSizeChanger: false, 
+                            }}
                             rowKey={generateGuid}
                         />
-                        {<div className="mt-25">
+                        {/* {<div className="mt-25">
                             <Pagination size="small" pageSize={10} current={current} onChange={handleCurrent}
                                         total={25}
                                         showSizeChanger={false}
                                         hideOnSinglePage={true}
 
                             />
-                        </div>}
+                        </div>} */}
                     </>
             }
         </div>

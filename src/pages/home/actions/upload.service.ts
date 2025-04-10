@@ -6,3 +6,9 @@ export const upload = (credentials: any): Promise<{ token: string }> => {
         .then((res) => res.data);
 };
 
+export const checkUser = () => {
+    return axiosInstance.get(API.check).then(res => {
+        return res.data;
+    });
+};
+

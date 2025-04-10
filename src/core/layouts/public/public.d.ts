@@ -4,5 +4,6 @@ export interface ILeftMenuItemProps {
     icon: any;
     submenu: any;
     show: boolean;
+    hasUnderLine:boolean;
 }
 

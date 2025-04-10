@@ -102,7 +102,7 @@ const HeaderRightComponent = () => {
 
     ];
 
-    console.log(user);
+
     return (
         <>
             <ul className={classes.items}>

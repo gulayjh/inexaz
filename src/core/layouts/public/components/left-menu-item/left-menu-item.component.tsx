@@ -5,8 +5,9 @@ import {generateGuid} from '../../../../helpers/generate-guid';
 import {useState} from 'react';
 import {ArrowDown, ArrowRight} from '../../../../../assets/images/icons/arrows';
 import classNames from 'classnames';
+import { Divider } from 'antd';
 
-const LeftMenuItemComponent = ({name, link, icon, submenu, show}: ILeftMenuItemProps) => {
+const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: ILeftMenuItemProps) => {
     const classes = useLeftMenuItemStyles();
     const [submenuOpen, setSubmenuOpen] = useState(false);
 
@@ -42,6 +43,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show}: ILeftMenuItemP
                                                         {item.icon}
                                                         <span>{item.name}</span>
                                                     </NavLink>
+                                                    
                                                 </li>
                                             );
                                         })
@@ -54,6 +56,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show}: ILeftMenuItemP
                     :
 
                     show ?
+                    
                         <NavLink
                             className={classes.link}
                             to={{pathname: link}}
@@ -63,6 +66,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show}: ILeftMenuItemP
                                 <span>{name}</span>
                             </div>
                         </NavLink>
+                        
                         : null
             }
 

@@ -8,7 +8,8 @@ export const API = {
     logout: base + '/auth/logout',
     sessions: base + '/sessions',
     users: base + '/users',
-    changePassword: base + '/users/changePassword'
+    changePassword: base + '/users/changePassword',
+    check: base + '/auth/check'
 
 
 };

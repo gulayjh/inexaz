@@ -8,14 +8,17 @@ import {Active, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/im
 import {downloadPDF} from '../../core/helpers/downloadPdf';
 import SearchComponent from '../../core/shared/search/search.component';
 import {debounce} from '../../core/helpers/debounce';
+import {useCheckUser} from '../home/actions/queries';
 
 function SignedComponent() {
     const [searchField, setSearchField] = useState('');
     const [current, setCurrent] = useState<number>(1);
     const {data, isLoading} = useGetSession(searchField, current, true);
+    const [page, setPage] = useState(1);
     const {list, listItem, bold, panel, title} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
+    const check = useCheckUser();
 
     const handleSearchChange = debounce(useCallback((value: string) => {
         setSearchField(value);
@@ -103,9 +106,15 @@ function SignedComponent() {
             <SearchComponent placeholder={translate('session_search')} handleSearch={handleSearchChange}/>
             {
                 isLoading ? <Skeleton active/> : <Table
-                    dataSource={data}
+                    dataSource={data.data}
                     columns={columns}
-                    pagination={false}
+                    pagination={{
+                        current: page, 
+                        pageSize: 10, 
+                        total: data.count,
+                        onChange: (newPage) => setPage(newPage), 
+                        showSizeChanger: false, 
+                    }}
                     rowKey={generateGuid}
                 />
             }

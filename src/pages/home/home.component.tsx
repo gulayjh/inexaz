@@ -9,13 +9,15 @@ import {IState} from '../../store/store';
 import {errorToast, successToast} from '../../core/shared/toast/toast';
 import {store} from '../../store/store.config';
 import {setOperationId} from '../../store/store.reducer';
-import {ArrowCircleDown} from '../../assets/images/icons/arrows';
+import {ArrowCircleDown, ArrowLeft, ArrowRight} from '../../assets/images/icons/arrows';
 import {useQueryClient} from 'react-query';
 import {useNavigate} from 'react-router-dom';
+import {useCheckUser} from './actions/queries';
 
 function HomeComponent() {
     const {title, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
     const translate = useLocalization();
+    const check = useCheckUser();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const onUploadSucces = useCallback(() => {
@@ -47,7 +49,7 @@ function HomeComponent() {
     }, [fileList]);
 
     const beforeUpload = useCallback((file: any) => {
-        if (file.size < 30000000) {
+        if (file.size < 10485760) {
             handleListUpload(file);
         } else {
             errorToast(translate('file_size_error'));
@@ -114,27 +116,31 @@ function HomeComponent() {
             <h3 className={title}>{translate('add_title')}</h3>
 
             {operationId ?
-                <div className="col-lg-6 col-md-4 col-sm-12 mt-25">
+                <div className='col-lg-6 col-md-4 col-sm-12 mt-25'>
                     <h3 className={title}>{translate('session_link')}</h3>
-                    <div className="d-flex align-center">
-                        <Input onClick={()=>navigate(`/session/${operationId}`)} value={`inexaz.netlify.app/session/+${operationId}`} readOnly/>
-                        <span title="Linki kopyala" style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
+                    <div className='d-flex align-center'>
+                        <Input onClick={() => handleCopy(`inexaz.netlify.app/session/+${operationId}`)}
+                               value={`inexaz.netlify.app/session/+${operationId}`} readOnly/>
+                        <span title='Linki kopyala' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
                             handleCopy(operationId);
                         }}><ArrowCircleDown/></span>
+                        <span title='Linkə keçid et' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
+                            navigate(`/session/${operationId}`);
+                        }}><ArrowLeft/></span>
                     </div>
                 </div>
                 :
                 <>
-                    <Form name="basic" layout="vertical">
+                    <Form name='basic' layout='vertical'>
 
                         <div className={upload}>
                             <Form.Item
-                                name="FormFile" valuePropName="name">
+                                name='FormFile' valuePropName='name'>
                                 <Upload {...uploadProps} maxCount={100} fileList={fileList}
                                         disabled={fileList?.length === 100}
                                 >
                                     <div className={chooseButton}>
-                                        <span className="pr-5"><SignPlusIcon/></span>
+                                        <span className='pr-5'><SignPlusIcon/></span>
                                         <span><h3>{translate('add')}</h3></span>
                                     </div>
                                 </Upload>
@@ -146,7 +152,7 @@ function HomeComponent() {
                             <div className={list}>
                                 {fileList.map((file: any, index: number) => {
                                     return (
-                                        <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
+                                        <div className='col-lg-4 col-md-6 col-sm-12' key={index}>
                                             <div className={listItem} title={file.name}>
                                                 <span><FileIcon/></span>
                                                 <h5>{file.name}</h5>
@@ -162,26 +168,26 @@ function HomeComponent() {
                                 })}
 
                             </div>
-                            <div className="col-lg-4 col-md-4 col-sm-12">
+                            <div className='col-lg-4 col-md-4 col-sm-12'>
                                 <Form
-                                    name="login"
+                                    name='login'
                                     initialValues={initialValues}
                                     onFinish={onSubmit}
-                                    layout="vertical"
+                                    layout='vertical'
                                 >
                                     <Form.Item
                                         rules={rules.fullname}
-                                        name="fullname"
-                                        label="Ad Soyad">
+                                        name='fullname'
+                                        label='Ad Soyad'>
                                         <Input/>
                                     </Form.Item>
                                     <Form.Item
                                         rules={rules.pin}
-                                        name="pin" label="FIN">
+                                        name='pin' label='FIN'>
                                         <Input maxLength={7}/>
                                     </Form.Item>
                                     <div>
-                                        <Button className="w-100" type="primary" htmlType="submit">
+                                        <Button className='w-100' type='primary' htmlType='submit'>
                                             {translate('upload')}
                                         </Button>
                                     </div>
