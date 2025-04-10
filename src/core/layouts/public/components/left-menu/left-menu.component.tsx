@@ -22,6 +22,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             link: Routes.home,
             icon: <HomeIcon/>,
             show: true,
+            hasUnderLine:true
         },
         {
             id: 2,
@@ -29,6 +30,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             link: Routes.signed,
             icon: <SignedIcon/>,
             show: true,
+            hasUnderLine:false
 
         },
         {
@@ -37,6 +39,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             link: Routes.unsigned,
             icon: <UnsignedIcon/>,
             show: true,
+            hasUnderLine:false
 
         },
         {
@@ -44,6 +47,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             name: translate('users'),
             link: Routes.users,
             icon: <UsersIcon/>,
+            hasUnderLine:true,
             show: user?.Roles.includes('Admin')  || user?.Roles.includes('SuperAdmin')
 
 
@@ -68,6 +72,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
                             icon={i.icon}
                             submenu={i.submenu}
                             show={i.show}
+                            hasUnderLine={i.hasUnderLine}
 
                         />
                     ))
