@@ -9,9 +9,11 @@ import {downloadPDF} from '../../core/helpers/downloadPdf';
 import {debounce} from '../../core/helpers/debounce';
 import SearchComponent from '../../core/shared/search/search.component';
 import {useCheckUser} from '../home/actions/queries';
+import {useNavigate} from 'react-router-dom';
 
 
 function UnsignedComponent() {
+    const navigate = useNavigate();
 
     const [searchField, setSearchField] = useState('');
     const [current, setCurrent] = useState<number>(1);
@@ -58,7 +60,9 @@ function UnsignedComponent() {
                                     <span className={bold}>{signing.assignedPin}</span>
                                     <span
                                         className={bold}>{signing?.created}</span>
-                                    <span className={bold}>{`inexaz.netlify.app/session/+${signing.dynamicLinkPart}`}</span>
+                                    <span onClick={() => {
+                                        navigate(`/session/${signing.dynamicLinkPart}`);
+                                    }} className={bold}>{`inexaz.netlify.app/session/${signing.dynamicLinkPart}`}</span>
                                     <span className={bold} style={{flexBasis: '10%'}}>
                                         {signing.status === 1 ?
                                             <Tooltip title={'gözləmədə'}

@@ -104,7 +104,7 @@ function HomeComponent() {
     const handleCopy = useCallback((text: string) => {
         navigator.clipboard.writeText(text)
             .then(() => {
-                console.log('Text copied to clipboard!');
+                successToast('Uğurla kopyalandı!');
             })
             .catch(err => {
                 console.error('Failed to copy text: ', err);
@@ -119,10 +119,10 @@ function HomeComponent() {
                 <div className='col-lg-6 col-md-4 col-sm-12 mt-25'>
                     <h3 className={title}>{translate('session_link')}</h3>
                     <div className='d-flex align-center'>
-                        <Input onClick={() => handleCopy(`inexaz.netlify.app/session/+${operationId}`)}
+                        <Input onClick={() => handleCopy(`inexaz.netlify.app/session/${operationId}`)}
                                value={`inexaz.netlify.app/session/+${operationId}`} readOnly/>
                         <span title='Linki kopyala' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
-                            handleCopy(operationId);
+                            handleCopy(`inexaz.netlify.app/session/${operationId}`);
                         }}><ArrowCircleDown/></span>
                         <span title='Linkə keçid et' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
                             navigate(`/session/${operationId}`);
