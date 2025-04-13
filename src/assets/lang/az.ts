@@ -16,8 +16,11 @@ export const az = {
     no_data: 'Məlumat yoxdur',
     upload: 'Yüklə',
     add: 'Əlavə edin',
+    submit: 'Təsdiqlə',
+    sign: 'İmzala',
 
     //session
+    session_title: 'Sessiya',
     session_fullname: 'Ad, soyad',
     session_pin: 'FİN',
     session_date: 'Tarix',
@@ -50,10 +53,10 @@ export const az = {
     users_old_password: 'Əvvəlki şifrə',
     users_new_password: 'Yeni şifrə',
     users_username: 'İstifadəçi adı',
-    users_super:'Super Admin',
-    users_admin:'Admin',
-    users_user:'User',
-    users_logout:'Çıxış et'
+    users_super: 'Super Admin',
+    users_admin: 'Admin',
+    users_user: 'User',
+    users_logout: 'Çıxış et'
 
 
 };

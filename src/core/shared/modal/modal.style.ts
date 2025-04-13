@@ -1,9 +1,5 @@
 import {createUseStyles} from 'react-jss';
-import colors from '../../../assets/styles/abstracts/color';
-import fonts from '../../../assets/styles/abstracts/fonts';
-import {rem} from '../../../assets/styles/abstracts/functions';
-import {breakpoint} from '../../../assets/styles/abstracts/mixins';
-import sizes from '../../../assets/styles/abstracts/sizes';
+
 
 const styles = {
     modal: {

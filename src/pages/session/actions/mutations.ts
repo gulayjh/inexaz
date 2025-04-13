@@ -1,20 +1,12 @@
 import {useMutation} from 'react-query';
-import {createUser, passwordEdit, userDelete, userEdit} from './user.service';
+import {store} from '../../../store/store.config';
+import {setOperationId} from '../../../store/store.reducer';
+import {startSession} from './session.service';
 
-export const useEditUser = (onSucces: any) => {
+export const useSessionStart = (onSucces: any) => {
     return useMutation({
-        mutationFn: (credentials: any) => {
-            return userEdit(credentials);
-        },
-        onSuccess: (response: any) => {
-            onSucces();
-        },
-    });
-};
-export const useCreateUser = (onSucces: any) => {
-    return useMutation({
-        mutationFn: (credentials: any) => {
-            return createUser(credentials);
+        mutationFn: (linkPart: any) => {
+            return startSession(linkPart);
         },
         onSuccess: (response: any) => {
             onSucces();
@@ -22,24 +14,3 @@ export const useCreateUser = (onSucces: any) => {
     });
 };
 
-export const useEditPassword = (onSuccess: any) => {
-    return useMutation({
-        mutationFn: (credentials: any) => {
-            return passwordEdit(credentials);
-        },
-        onSuccess: (response: any) => {
-            onSuccess();
-        },
-    });
-};
-
-export const useDeleteUser = (onSuccess: any) => {
-    return useMutation({
-        mutationFn: (credentials: any) => {
-            return userDelete(credentials.id, credentials);
-        },
-        onSuccess: (response: any) => {
-            onSuccess();
-        },
-    });
-};

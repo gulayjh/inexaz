@@ -1,8 +1,10 @@
 import {useQuery} from 'react-query';
-import {getUsers} from './user.service';
+import {getSession} from './session.service';
 
-export const useGetUser = (searchFin: string, current: number) => {
-    return useQuery<any[], Error>(['getUsers', [searchFin, current]], () => {
-        return getUsers(searchFin, current);
-    }, {staleTime: Infinity, retry: false});
+export const useGetSession = (linkPart: any) => {
+    return useQuery<any, Error>(['getSessionByLink', [linkPart]], () => {
+        return getSession(linkPart);
+    }, {
+        staleTime: Infinity, retry: false, enabled: typeof linkPart === 'string' && linkPart.trim() !== ''
+    });
 };

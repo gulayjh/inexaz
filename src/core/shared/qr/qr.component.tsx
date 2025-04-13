@@ -1,41 +1,76 @@
 import './qr.style';
-import {useEffect, useState} from "react";
-import {hubConnection} from "../../configs/signalR";
-import {Button} from 'antd';
+import {useCallback, useEffect, useState} from 'react';
+import {Button, message as antdMessage} from 'antd';
+import signalRService from '../../configs/signalR';
+import {base64ToBlobUrl} from '../../helpers/base64-to-blob';
+import {goTo} from '../../../router/routes';
+import useLocalization from '../../../assets/lang';
+import {useModalStyles} from '../modal/modal.style';
+import {useQRStyles} from './qr.style';
 
-const QRComponent = ({sessionId}: any) => {
-    const [messages, setMessages] = useState<any[]>([]);
+const QRComponent = ({operationId, qrCode, buttonLink}: any) => {
+    const [status, setStatus] = useState<string | null>(null);
+    const [signedDocument, setSignedDocument] = useState<{ name: string, url: string } | null>(null);
+    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
+    const translate = useLocalization();
+    const {qrMainContent} = useQRStyles();
+
     useEffect(() => {
-        if (!sessionId) return;
-
-        hubConnection.off("ReceiveMessage");
-
-        hubConnection.on("ReceiveMessage", (message: any) => {
-            setMessages((prevMessages) => [...prevMessages, {message}]);
+        signalRService.startConnection(operationId, () => {
+            setConnectionStatus('connected');
+        });
+        signalRService.onGetSuccessStatus(() => {
+            setStatus('Success');
+            antdMessage.success('Document signed successfully.');
         });
 
-        const startAndRegister = async () => {
-            try {
-                if (hubConnection.state !== "Connected") {
-                    await hubConnection.start();
-                }
-                await hubConnection.invoke("RegisterOperation", sessionId);
-            } catch (err) {
-                console.error("SignalR Connection or Registration Error:", err);
-            }
-        };
+        signalRService.onGetErrorStatus((errorMsg: string) => {
+            setStatus('Error');
+            antdMessage.error(`Error: ${errorMsg}`);
+        });
 
-        startAndRegister();
+        signalRService.onGetSignedDocument((documentName: string, documentUrl: string) => {
+            setSignedDocument({name: documentName, url: documentUrl});
+            antdMessage.success(`Signed document received: ${documentName}`);
+        });
 
+        // Cleanup on unmount
         return () => {
-            hubConnection.off("ReceiveMessage");
+            signalRService.disconnectFromSigningHub(operationId);
         };
-    }, [sessionId]);
+    }, [operationId]);
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            signalRService.disconnectFromSigningHub(operationId);
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [operationId]);
+
+
 
     return (
         <div>
-            <h2>QR Component</h2>
-            <Button onClick={() => console.log(messages)}>Show Messages</Button>
+            {connectionStatus === 'connected' ?
+                <div className={qrMainContent}>
+                    <img src={base64ToBlobUrl(qrCode)}/>
+                    <Button type='primary' onClick={() => {
+                        window.location.href = buttonLink;
+                    }}>
+                        <span>{translate('sign')}</span>
+                    </Button>
+                </div>
+                : null}
+            {signedDocument && (
+                <div>
+                    <p>Document: {signedDocument.name}</p>
+                    <a href={signedDocument.url} target="_blank" rel="noopener noreferrer">Open Document</a>
+                </div>
+            )}
+
         </div>
     );
 };
