@@ -69,6 +69,7 @@ function UsersComponent() {
             deleteDocumentPassword: user.deleteDocumentPassword,
             roles: user.roles
         });
+        setRolesList(user.roles);
         setSelectedUser(user.id);
 
     }, [showEditModal, selectedUser]);
@@ -215,6 +216,7 @@ function UsersComponent() {
                 <h3 className={title}>{translate('users')}</h3>
                 <Button type='primary' onClick={() => {
                     setShowModal(true);
+                    setRolesList([]);
                 }}>{translate('users_new')}</Button>
             </div>
             {

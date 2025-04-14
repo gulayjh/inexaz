@@ -49,8 +49,6 @@ class SignalRService {
     }
 
     connectToSigningHub(operationId: string) {
-        console.log(operationId);
-
         if (this.connection && this.getConnectionState() === HubConnectionState.Connected) {
             this.connection.invoke('Connect', operationId)
                 .catch(err => console.error('Error invoking Connect:', err));
@@ -79,6 +77,7 @@ class SignalRService {
 
     // --- Listeners for server-to-client events ---
     onGetSuccessStatus(callback: () => void) {
+        console.log("Invoking Connect with:");
         this.connection?.on('GetSuccessStatus', callback);
     }
 

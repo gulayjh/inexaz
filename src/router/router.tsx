@@ -32,10 +32,7 @@ const router = createBrowserRouter([
                 path: Routes.users,
                 element: <UsersComponent/>,
             },
-            {
-                path: Routes.session,
-                element: <SessionComponent/>,
-            }
+
         ],
     },
     {
@@ -45,6 +42,16 @@ const router = createBrowserRouter([
             {
                 path: Routes.login,
                 element: <LoginComponent/>,
+            },
+        ],
+    },
+    {
+        path: Routes.session,
+        element: <AuthProtectedComponent layout='session'><AuthComponent/></AuthProtectedComponent>,
+        children: [
+            {
+                path: Routes.session,
+                element: <SessionComponent/>,
             }
         ],
     },

@@ -90,7 +90,7 @@ function UnsignedComponent() {
                                                 <span>{index + 1}. {item.name}</span>
                                                 <div>
                                                 <span>
-                                                <a href={item?.sourceUrl} download="document.pdf" target="_blank"
+                                                <a href={item?.sourceUrl} target="_blank"
                                                    rel="noopener noreferrer">
                                                     <LookUpIcon/>
                                                 </a>

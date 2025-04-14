@@ -7,31 +7,72 @@ import {goTo} from '../../../router/routes';
 import useLocalization from '../../../assets/lang';
 import {useModalStyles} from '../modal/modal.style';
 import {useQRStyles} from './qr.style';
+import {errorToast, successToast} from '../toast/toast';
 
-const QRComponent = ({operationId, qrCode, buttonLink}: any) => {
+const QRComponent = ({operationId, qrCode, buttonLink, handleClose}: any) => {
     const [status, setStatus] = useState<string | null>(null);
     const [signedDocument, setSignedDocument] = useState<{ name: string, url: string } | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
     const translate = useLocalization();
     const {qrMainContent} = useQRStyles();
+    const [width, setWidth] = useState(0);
+
+    const handleWindowResize = () => {
+        setWidth(window.innerWidth);
+    };
+
+
+    const [secondsLeft, setSecondsLeft] = useState(300); // 5 minutes = 300 seconds
+    const [isRunning, setIsRunning] = useState(true);
 
     useEffect(() => {
-        signalRService.startConnection(operationId, () => {
-            setConnectionStatus('connected');
-        });
+        if (!isRunning || secondsLeft <= 0) return;
+
+        const interval = setInterval(() => {
+            setSecondsLeft(prev => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isRunning, secondsLeft]);
+
+    const formatTime = (secs: number) => {
+        const minutes = Math.floor(secs / 60);
+        const seconds = secs % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
+
+    const handlePause = () => setIsRunning(false);
+    const handleResume = () => setIsRunning(true);
+    const handleReset = () => {
+        setSecondsLeft(300);
+        setIsRunning(false);
+    };
+
+
+    useEffect(() => {
+        handleWindowResize();
+        window.addEventListener('resize', handleWindowResize);
+        return () => window.removeEventListener('resize', handleWindowResize);
+    }, []);
+    useEffect(() => {
         signalRService.onGetSuccessStatus(() => {
             setStatus('Success');
-            antdMessage.success('Document signed successfully.');
+            successToast('Document signed successfully.');
+            handleClose();
         });
 
         signalRService.onGetErrorStatus((errorMsg: string) => {
             setStatus('Error');
-            antdMessage.error(`Error: ${errorMsg}`);
+            errorToast(`Error: ${errorMsg}`);
+            handleClose();
         });
 
         signalRService.onGetSignedDocument((documentName: string, documentUrl: string) => {
             setSignedDocument({name: documentName, url: documentUrl});
             antdMessage.success(`Signed document received: ${documentName}`);
+        });
+        signalRService.startConnection(operationId, () => {
+            setConnectionStatus('connected');
         });
 
         // Cleanup on unmount
@@ -51,17 +92,22 @@ const QRComponent = ({operationId, qrCode, buttonLink}: any) => {
     }, [operationId]);
 
 
-
     return (
         <div>
             {connectionStatus === 'connected' ?
                 <div className={qrMainContent}>
-                    <img src={base64ToBlobUrl(qrCode)}/>
-                    <Button type='primary' onClick={() => {
-                        window.location.href = buttonLink;
-                    }}>
-                        <span>{translate('sign')}</span>
-                    </Button>
+                    {width > 1024 ?
+                        <>
+                            <img src={base64ToBlobUrl(qrCode)}/>
+                            <h2>{formatTime(secondsLeft)}</h2>
+                        </>
+                        :
+                        <Button type="primary" onClick={() => {
+                            window.location.href = buttonLink;
+                        }}>
+                            <span>{translate('sign')}</span>
+                        </Button>
+                    }
                 </div>
                 : null}
             {signedDocument && (

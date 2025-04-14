@@ -51,9 +51,7 @@ function SignedComponent() {
                                     <span className={bold}>{signing.assignedPin}</span>
                                     <span
                                         className={bold}>{signing?.created}</span>
-                                    <span onClick={() => {
-                                        navigate(`/session/${signing.dynamicLinkPart}`);
-                                    }} className={bold}>{`inexaz.netlify.app/session/${signing.dynamicLinkPart}`}</span>                                    <span className={bold} style={{flexBasis: '10%'}}>
+                                    <span className={bold}>{`inexaz.netlify.app/session/${signing.dynamicLinkPart}`}</span>                                    <span className={bold} style={{flexBasis: '10%'}}>
                                         {signing.status === 1 ?
                                             <Tooltip title={'gözləmədə'}
                                                      overlayInnerStyle={{backgroundColor: '#474975', color: 'white'}}>
@@ -77,7 +75,7 @@ function SignedComponent() {
                                     {signing.documents && signing.documents.length && signing.documents.map((item: any, index: number) => {
                                         return (
                                             <div className={listItem}>
-                                                <span>{index + 1}. {item.name}</span>
+                                                <span>{index + 1}.  {item.name}</span>
                                                 <div>
                                                 <span>
                                                 <a href={item?.sourceUrl} download="document.pdf" target="_blank"

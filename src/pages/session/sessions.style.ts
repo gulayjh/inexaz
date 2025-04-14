@@ -4,6 +4,9 @@ import {rem} from '../../assets/styles/abstracts/functions';
 
 
 const styles = {
+    mainContent: {
+        padding: rem(50),
+    },
 
     list: {
         display: 'flex',

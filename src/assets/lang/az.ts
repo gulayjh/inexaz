@@ -26,7 +26,7 @@ export const az = {
     session_date: 'Tarix',
     session_link: 'Link',
     session_status: 'Status',
-    session_search: 'Axtarın...',
+    session_search: 'Ad, soyad və FIN üzrə axtarın...',
 
 
     // errors

@@ -1,7 +1,7 @@
 import {Button, Form, FormRule, Input, Table, Upload} from 'antd';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useUploadStyles} from './container.style';
-import {DeleteIcon, FileIcon, SignPlusIcon} from '../../assets/images/icons/sign';
+import {DeleteIcon, FileIcon, InfoIcon, SignPlusIcon} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
 import {useUpload} from './actions/mutations';
 import {useSelector} from 'react-redux';
@@ -15,7 +15,7 @@ import {useNavigate} from 'react-router-dom';
 import {useCheckUser} from './actions/queries';
 
 function HomeComponent() {
-    const {title, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
+    const {title, titleInfo, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
     const translate = useLocalization();
     const check = useCheckUser();
     const queryClient = useQueryClient();
@@ -114,13 +114,17 @@ function HomeComponent() {
     return (
         <div>
             <h3 className={title}>{translate('add_title')}</h3>
+            <div className={titleInfo}><InfoIcon/>
+
+                <span>Sənədlərin hər birinin həcmi 10 mbdan artıq olmamalı, maksimum sayı isə 5 olmalıdır.</span>
+            </div>
 
             {operationId ?
                 <div className='col-lg-6 col-md-4 col-sm-12 mt-25'>
                     <h3 className={title}>{translate('session_link')}</h3>
                     <div className='d-flex align-center'>
                         <Input onClick={() => handleCopy(`inexaz.netlify.app/session/${operationId}`)}
-                               value={`inexaz.netlify.app/session/+${operationId}`} readOnly/>
+                               value={`inexaz.netlify.app/session/${operationId}`} readOnly/>
                         <span title='Linki kopyala' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
                             handleCopy(`inexaz.netlify.app/session/${operationId}`);
                         }}><ArrowCircleDown/></span>

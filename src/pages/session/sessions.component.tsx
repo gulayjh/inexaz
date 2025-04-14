@@ -15,7 +15,7 @@ import QRComponent from '../../core/shared/qr/qr.component';
 
 function SessionComponent() {
 
-    const {title, list, listItem, button} = useUserStyles();
+    const {mainContent, title, list, listItem, button} = useUserStyles();
 
     const translate = useLocalization();
     const queryClient = useQueryClient();
@@ -53,7 +53,7 @@ function SessionComponent() {
     }, []);
 
     return (
-        <div>
+        <div className={mainContent}>
             <h3 className={title}>{translate('session_title')}</h3>
 
             {data && data?.documents && data.documents.length > 0 && (
@@ -82,8 +82,8 @@ function SessionComponent() {
                     </Button>
                     {qrCode && buttonLink ?
                         <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
-                            <QRComponent operationId={data?.id} qrCode={qrCode}
-                                         buttonLink={buttonLink}/>
+                            <QRComponent operationId={data?.operation?.id} qrCode={qrCode}
+                                         buttonLink={buttonLink} handleClose={() => setShowModal(false)} />
 
                         </ModalComponent>
                         : null}
