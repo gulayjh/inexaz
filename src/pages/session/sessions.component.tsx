@@ -11,7 +11,7 @@ import {useQueryClient} from 'react-query';
 import {useSessionStart} from './actions/mutations';
 import ModalComponent from '../../core/shared/modal/modal.component';
 import QRComponent from '../../core/shared/qr/qr.component';
-import signalRService from 'core/configs/signalR';
+import signalRService from '../../core/configs/signalR';
 
 
 function SessionComponent() {
