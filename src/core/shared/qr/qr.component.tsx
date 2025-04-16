@@ -22,7 +22,7 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose}: any) => {
     };
 
 
-    const [secondsLeft, setSecondsLeft] = useState(300); // 5 minutes = 300 seconds
+    const [secondsLeft, setSecondsLeft] = useState(18000); // 5 minutes = 300 seconds
     const [isRunning, setIsRunning] = useState(true);
 
     useEffect(() => {
@@ -36,9 +36,11 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose}: any) => {
     }, [isRunning, secondsLeft]);
 
     const formatTime = (secs: number) => {
-        const minutes = Math.floor(secs / 60);
+        const hours = Math.floor(secs / 3600);
+        const minutes = Math.floor((secs % 3600) / 60);
         const seconds = secs % 60;
-        return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     };
 
     const handlePause = () => setIsRunning(false);

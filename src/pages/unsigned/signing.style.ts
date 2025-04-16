@@ -1,6 +1,7 @@
 import {createUseStyles} from 'react-jss';
 import fonts from '../../assets/styles/abstracts/fonts';
 import {rem} from '../../assets/styles/abstracts/functions';
+import colors from '../../assets/styles/abstracts/color';
 
 
 const styles = {
@@ -59,24 +60,13 @@ const styles = {
         display: 'flex',
         justifyContent: 'flex-start',
         '& >span': {
-            flexBasis: '20%',
             width: '100%',
-            paddingRight: rem(5),
+            textAlign: 'left',
 
         },
         '& >span:nth-child(1)': {
-            flexBasis: '5%',
-            width: '100%'
-        },
-        '& >span:nth-child(5)': {
-            flexBasis: '40%',
-            width: '100%'
-        },
-        '& >span:last-child': {
-            '& span': {
-                flexBasis: '5%',
-                width: '100%'
-            }
+            width: rem(200)
+
         },
 
     },

@@ -51,12 +51,31 @@ const styles = {
         cursor: 'pointer'
     },
     title: {
-        fontFamily: fonts.fontBold,
-        lineHeight: rem(32),
-        fontSize: rem(18),
-        marginBottom: rem(25),
-        marginTop: rem(10),
-        color: '#474975'
+        '& h5': {
+            display: 'flex',
+            alignItems: 'center',
+            fontFamily: fonts.font,
+            lineHeight: rem(24),
+            fontSize: rem(16),
+            marginBottom: rem(15),
+            marginTop: rem(10),
+            color: '#474975',
+            '& >span': {
+                display: 'flex',
+                alignItems: 'center',
+                paddingLeft: rem(5),
+                '& >span': {
+                    paddingRight: rem(10),
+                }
+            }
+        },
+        '& h3': {
+            fontFamily: fonts.fontBold,
+            lineHeight: rem(24),
+            fontSize: rem(18),
+            marginBottom: rem(15),
+            color: '#474975',
+        },
     },
 
 };
