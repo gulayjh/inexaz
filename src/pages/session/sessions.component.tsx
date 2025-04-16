@@ -33,7 +33,7 @@ function SessionComponent() {
             console.log("Ishledi status")
         })
     }, [signalRService])
-    
+
     useEffect(() => {
         if (data && data.status === 2) {
             setShowModal(true);
@@ -89,7 +89,7 @@ function SessionComponent() {
                     </Button>
                     {qrCode && buttonLink ?
                         <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
-                            <QRComponent operationId={data?.operation?.id} qrCode={qrCode}
+                            <QRComponent operationId={data?.dynamicLinkPart} qrCode={qrCode}
                                          buttonLink={buttonLink} handleClose={() => setShowModal(false)} />
 
                         </ModalComponent>
