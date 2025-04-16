@@ -84,7 +84,7 @@ function SessionComponent() {
                     <Button disabled={data.status === 2} style={{width: '250px', marginLeft: '15px', marginTop: '30px'}}
                             type="primary" onClick={() => {
                         onSubmit(data?.dynamicLinkPart);
-                    }}>
+                    }}> 
                         {translate('submit')}
                     </Button>
                     {qrCode && buttonLink ?
