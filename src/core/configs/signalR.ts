@@ -77,7 +77,7 @@ class SignalRService {
 
     // --- Listeners for server-to-client events ---
     onGetSuccessStatus(callback: () => void) {
-        console.log("Invoking Connect with:");
+        
         this.connection?.on('GetSuccessStatus', callback);
     }
 

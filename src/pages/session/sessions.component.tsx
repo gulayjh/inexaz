@@ -11,6 +11,7 @@ import {useQueryClient} from 'react-query';
 import {useSessionStart} from './actions/mutations';
 import ModalComponent from '../../core/shared/modal/modal.component';
 import QRComponent from '../../core/shared/qr/qr.component';
+import signalRService from 'core/configs/signalR';
 
 
 function SessionComponent() {
@@ -27,6 +28,12 @@ function SessionComponent() {
     const [qrCode, setQrCode] = useState('');
     const [buttonLink, setButtonLink] = useState('');
 
+    useEffect(() => {
+        signalRService.onGetSuccessStatus(() => {
+            console.log("Ishledi status")
+        })
+    }, [signalRService])
+    
     useEffect(() => {
         if (data && data.status === 2) {
             setShowModal(true);
