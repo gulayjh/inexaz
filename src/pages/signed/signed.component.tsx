@@ -129,12 +129,12 @@ function SignedComponent() {
             <SearchComponent placeholder={translate('session_search')} handleSearch={handleSearchChange}/>
             {
                 isLoading ? <Skeleton active/> : <Table
-                    dataSource={data.data}
+                    dataSource={data?.data}
                     columns={columns}
                     pagination={{
                         current: page,
                         pageSize: 10,
-                        total: data.count,
+                        total: data?.count,
                         onChange: (newPage) => setPage(newPage),
                         showSizeChanger: false,
                     }}

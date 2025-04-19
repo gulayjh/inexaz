@@ -35,10 +35,20 @@ const styles = {
     },
     subItem: {
         paddingLeft: rem(10),
-
         display: 'flex',
         cursor: 'pointer'
     },
+    subItemHide: {
+        display: 'none',
+        paddingLeft: rem(10),
+        cursor: 'pointer'
+    },
+    userTitle: {
+        color: '#474975',
+        fontFamily: fonts.fontBold,
+        lineHeight: rem(32),
+        textAlign: 'center'
+    }
 };
 
 export const useHeaderRightStyles = createUseStyles(styles);

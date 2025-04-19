@@ -35,6 +35,7 @@ export const az = {
     email_invalid: 'Email düzgün deyil',
     pin_min_length: 'FIN 7 simvol olmalıdır',
     file_size_error: 'Sənədin ölçüsü limiti keçir.',
+    input_password_mismatch:'Şifrələr eyni deyil',
 
     //components
     login_sign_in_button: 'Daxil ol',

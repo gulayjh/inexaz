@@ -3,6 +3,7 @@ import {rem} from '../../assets/styles/abstracts/functions';
 import {createUseStyles} from 'react-jss';
 import sizes from '../../assets/styles/abstracts/sizes';
 import fonts from '../../assets/styles/abstracts/fonts';
+import {breakpoint} from '../../assets/styles/abstracts/mixins';
 
 const styles = {
 
@@ -55,7 +56,8 @@ const styles = {
             height: rem(150),
             '& svg': {
                 transform: 'scale(3)'
-            }
+            },
+
         },
         '& h5': {
             whiteSpace: 'nowrap',
@@ -64,6 +66,9 @@ const styles = {
             width: rem(225)
         },
 
+        [breakpoint(1200)]: {
+            margin: `${rem(15)} auto`,
+        },
 
     },
     deleteButton: {
@@ -92,11 +97,12 @@ const styles = {
         color: '#474975',
         marginBottom: rem(25),
 
-        '& span':{
+        '& span': {
             paddingLeft: rem(5),
         }
     },
 
 };
 
+// @ts-ignore
 export const useUploadStyles = createUseStyles(styles);

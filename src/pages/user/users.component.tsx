@@ -12,12 +12,13 @@ import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
 import {errorToast} from '../../core/shared/toast/toast';
 import {useCheckUser} from '../home/actions/queries';
+import devizeSize from '../../core/helpers/devize-size';
 
 function UsersComponent() {
     const [searchField, setSearchField] = useState('');
     const [current, setCurrent] = useState<number>(1);
     const {data, isLoading} = useGetUser(searchField, current);
-    const {list, title} = useUserStyles();
+    const {list, title, listItem, bold, panel} = useUserStyles();
     const translate = useLocalization();
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -86,7 +87,7 @@ function UsersComponent() {
         }
     }, [selectedUser]);
 
-
+    const width = devizeSize();
     const columns = [
         {
             title: '№',
@@ -144,6 +145,69 @@ function UsersComponent() {
             }
         }
     ];
+    const {Panel} = Collapse;
+    const mobileColumns = [
+        {
+            title: (
+                <>
+                    <div className={panel} style={{padding: '0 25px'}}>
+                        <span>{translate('users_username')}</span>
+                    </div>
+                </>
+            ),
+            dataIndex: 'id',
+            render: (id: number, user: any, index: number) => {
+                return (
+                    <div>
+                        <Collapse bordered={false} expandIconPosition="end" ghost>
+                            <Panel
+                                key={index}
+                                header={
+                                    <div className={panel}>
+                                        <span className={bold}>{user?.userName}</span>
+                                    </div>
+                                }
+                            >
+                                <div>
+                                    <div>
+                                        <span  className={bold}>{translate('users_password')}: </span>
+                                        <span>{user?.password}</span>
+                                    </div>
+                                    <div>
+                                        <span  className={bold}>{translate('users_roles')}: </span>
+                                        {user?.roles && user.roles.map((role: any, index: number) => (
+
+                                            <span key={index}>
+                                {index > 0 ? ', ' : ''}
+                                                {role === 1 ? translate('users_super') : role === 2 ? translate('users_admin') : translate('users_user')}</span>
+                                        ))}
+                                    </div>
+                                    <div className={list}>
+                                        {userMain?.UserName === user?.userName || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin'))
+                                            ? <span></span>
+                                            :
+                                            <span onClick={() => {
+                                                handleEdit(user);
+                                            }}> <EditIcon/></span>
+                                        }
+
+                                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin')) ?
+                                            <span> </span> :
+                                            <span onClick={() => {
+                                                handleDelete(user);
+                                            }}> <DeleteIcon/></span>
+                                        }
+
+                                    </div>
+                                </div>
+                            </Panel>
+                        </Collapse>
+                    </div>
+                );
+            },
+        },
+    ];
+
 
     useEffect(() => {
         if (showModal) {
@@ -183,7 +247,25 @@ function UsersComponent() {
                 required: true,
                 message: translate('input_required'),
             },
-        ]
+        ],
+        confirmPassword: [
+            {
+                required: true,
+                message: translate('input_required'),
+            },
+            {
+                min: 8,
+                message: translate('input_min_length', {min: 8}),
+            },
+            {
+                validator: (_, value) => {
+                    if (!value || value === createForm.getFieldValue('password')) {
+                        return Promise.resolve();
+                    }
+                    return Promise.reject(new Error(translate('input_password_mismatch')));
+                }
+            }
+        ],
 
     }), [translate]);
 
@@ -198,23 +280,23 @@ function UsersComponent() {
     }, [showModal, rolesList]);
 
     const onChange = useCallback((values: any) => {
-            const postData = {
-                'id': selectedUser,
-                'userName': values.username,
-                'password': values.password,
-                'deleteDocumentPassword': values.deleteDocumentPassword,
-                'roles': rolesList
-            };
-            editUser(postData);
+        const postData = {
+            'id': selectedUser,
+            'userName': values.username,
+            'password': values.password,
+            'deleteDocumentPassword': values.deleteDocumentPassword,
+            'roles': rolesList
+        };
+        editUser(postData);
 
     }, [selectedUser, rolesList]);
 
 
     return (
         <div>
-            <div className='d-flex justify-between align-center mb-25'>
+            <div className="d-flex justify-between align-center mb-25">
                 <h3 className={title}>{translate('users')}</h3>
-                <Button type='primary' onClick={() => {
+                <Button type="primary" onClick={() => {
                     setShowModal(true);
                     setRolesList([]);
                 }}>{translate('users_new')}</Button>
@@ -222,7 +304,7 @@ function UsersComponent() {
             {
                 isLoading ? <Skeleton active/> : <Table
                     dataSource={data}
-                    columns={columns}
+                    columns={width > 1024 ? columns : mobileColumns}
                     pagination={false}
                     rowKey={generateGuid}
                 />
@@ -234,36 +316,41 @@ function UsersComponent() {
             }}>
                 <Form
                     form={createForm}
-                    name='create'
+                    name="create"
                     initialValues={initialValues}
                     onFinish={onSubmit}
-                    layout='vertical'
+                    layout="vertical"
                 >
                     <Form.Item
                         rules={rules.username}
-                        name='username'
-                        label='Username'>
+                        name="username"
+                        label="Username">
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name='password' label='Password'>
+                        name="password" label="Password">
+                        <Input maxLength={50}/>
+                    </Form.Item>
+                    <Form.Item
+                        rules={rules.confirmPassword}
+                        name="confirmPassword" label="Password">
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name='deleteDocumentPassword' label='Delete Document Password'>
+                        name="deleteDocumentPassword" label="Delete Document Password">
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
-                        name='roles'
-                        label='Roles'
+                        name="roles"
+                        label="Roles"
                         rules={rules.roles}>
                         <Select
-                            mode='multiple'
+                            mode="multiple"
                             allowClear
                             style={{width: '100%'}}
-                            placeholder='Please select'
+                            placeholder="Please select"
                             options={options}
                             onChange={(e) => {
                                 handleChange(e);
@@ -271,7 +358,7 @@ function UsersComponent() {
                         />
                     </Form.Item>
                     <div>
-                        <Button loading={isLoading} className='w-100 mt-10' type='primary' htmlType='submit'>
+                        <Button loading={isLoading} className="w-100 mt-10" type="primary" htmlType="submit">
                             {translate('users_create')}
                         </Button>
                     </div>
@@ -287,33 +374,33 @@ function UsersComponent() {
                     form={editForm}
                     initialValues={initialValues}
                     onFinish={onChange}
-                    layout='vertical'
+                    layout="vertical"
                 >
                     <Form.Item
                         rules={rules.username}
-                        name='username'
-                        label='Username'>
+                        name="username"
+                        label="Username">
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name='password' label='Password'>
+                        name="password" label="Password">
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name='deleteDocumentPassword' label='Delete Document Password'>
+                        name="deleteDocumentPassword" label="Delete Document Password">
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
-                        name='roles'
-                        label='Roles'
+                        name="roles"
+                        label="Roles"
                         rules={rules.roles}>
                         <Select
-                            mode='multiple'
+                            mode="multiple"
                             allowClear
                             style={{width: '100%'}}
-                            placeholder='Please select'
+                            placeholder="Please select"
                             options={options}
                             onChange={(e) => {
                                 handleChange(e);
@@ -321,7 +408,7 @@ function UsersComponent() {
                         />
                     </Form.Item>
                     <div>
-                        <Button loading={isLoading} className='w-100 mt-10' type='primary' htmlType='submit'>
+                        <Button loading={isLoading} className="w-100 mt-10" type="primary" htmlType="submit">
                             {translate('users_edit')}
                         </Button>
                     </div>

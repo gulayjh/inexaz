@@ -16,6 +16,7 @@ import {useLogout} from '../../../../../pages/login/actions/mutations';
 import {store} from '../../../../../store/store.config';
 import {Routes} from '../../../../../router/routes';
 import {IState} from '../../../../../store/store';
+import devizeSize from '../../../../helpers/devize-size';
 
 const HeaderRightComponent = () => {
     const classes = useHeaderRightStyles();
@@ -29,6 +30,7 @@ const HeaderRightComponent = () => {
     const {mutate: logout} = useLogout(() => {
         onLogout();
     });
+    const width = devizeSize();
 
     const handleLogout = () => {
         logout();
@@ -76,9 +78,30 @@ const HeaderRightComponent = () => {
                 message: translate('input_min_length', {min: 8}),
             }
         ],
-
+        confirmPassword: [
+            {
+                required: true,
+                message: translate('input_required'),
+            },
+            {
+                min: 8,
+                message: translate('input_min_length', {min: 8}),
+            },
+            {
+                validator: (_, value) => {
+                    if (!value || value === passwordChange.getFieldValue('newPassword')) {
+                        return Promise.resolve();
+                    }
+                    return Promise.reject(new Error(translate('input_password_mismatch')));
+                }
+            }
+        ],
     }), [translate]);
     const items = [
+        {
+            label: (<h3 className={classes.userTitle}>{user && user.UserName}</h3>),
+            key: '0'
+        },
         {
             label: (
                 <span className="custom-dropdown-btn" onClick={() => {
@@ -87,7 +110,7 @@ const HeaderRightComponent = () => {
                     {translate('users_change_password')}
                 </span>
             ),
-            key: '0',
+            key: '1',
         },
         {
             label: (
@@ -97,7 +120,7 @@ const HeaderRightComponent = () => {
                     {translate('users_logout')}
                 </span>
             ),
-            key: '1',
+            key: '2',
         },
 
     ];
@@ -106,9 +129,6 @@ const HeaderRightComponent = () => {
     return (
         <>
             <ul className={classes.items}>
-                <li className='pr-10'>
-                    {user && user.UserName}
-                </li>
                 <li className={classes.avatar}>
                     <Dropdown menu={{items}} trigger={['click']} placement="bottomCenter">
                         <a onClick={(e) => e.preventDefault()}>
@@ -117,38 +137,48 @@ const HeaderRightComponent = () => {
                         </a>
                     </Dropdown>
                 </li>
-                <li className={classes.subItem} onClick={toggleMenu}>
-                    <LeftMenuToggle/>
-                </li>
+                {width > 1024 ? null :
+                    <li className={classes.subItem} onClick={toggleMenu}>
+                        <LeftMenuToggle/>
+                    </li>
+                }
             </ul>
             <ModalComponent showModal={showPasswordModal} handleClose={() => {
                 setShowPasswordModal(false);
                 passwordChange.resetFields();
             }}>
-                <Form
-                    form={passwordChange}
-                    name="PasswordChange"
-                    onFinish={onPasswordChange}
-                    layout="vertical"
-                >
-                    <Form.Item
-                        rules={rules.password}
-                        name="oldPassword"
-                        label={translate('users_old_password')}>
-                        <Input maxLength={50}/>
-                    </Form.Item>
-                    <Form.Item
-                        rules={rules.password}
-                        name="newPassword"
-                        label={translate('users_new_password')}>
-                        <Input maxLength={50}/>
-                    </Form.Item>
-                    <div>
-                        <Button className="w-100" type="primary" htmlType="submit">
-                            {translate('users_edit')}
-                        </Button>
-                    </div>
-                </Form>
+                <div>
+                    <Form
+                        form={passwordChange}
+                        name="PasswordChange"
+                        onFinish={onPasswordChange}
+                        layout="vertical"
+                    >
+                        <Form.Item
+                            rules={rules.password}
+                            name="oldPassword"
+                            label={translate('users_old_password')}>
+                            <Input maxLength={50}/>
+                        </Form.Item>
+                        <Form.Item
+                            rules={rules.password}
+                            name="newPassword"
+                            label={translate('users_new_password')}>
+                            <Input maxLength={50}/>
+                        </Form.Item>
+                        <Form.Item
+                            rules={rules.confirmPassword}
+                            name="confirmPassword"
+                            label={translate('users_new_password')}>
+                            <Input maxLength={50}/>
+                        </Form.Item>
+                        <div>
+                            <Button className="w-100" type="primary" htmlType="submit">
+                                {translate('users_edit')}
+                            </Button>
+                        </div>
+                    </Form>
+                </div>
             </ModalComponent>
         </>
     );

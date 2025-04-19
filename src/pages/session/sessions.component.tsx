@@ -21,6 +21,7 @@ function SessionComponent() {
     const {id} = useParams<{ id: string }>();
 
     const {data, isLoading} = useGetSession(id);
+
     const [showModal, setShowModal] = useState(false);
     const [qrCode, setQrCode] = useState('');
     const [buttonLink, setButtonLink] = useState('');
@@ -45,7 +46,6 @@ function SessionComponent() {
     const {mutate} = useSessionStart(() => {
         onSubmitSuccess();
     });
-    console.log(data);
     const onSubmit = useCallback((link: string) => {
         mutate(link);
 
@@ -105,7 +105,6 @@ function SessionComponent() {
                             >
                                 {translate('sign')}
                             </Button> : null}
-
                         {qrCode && buttonLink ?
                             <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
                                 <QRComponent operationId={data?.dynamicLinkPart} qrCode={qrCode}
