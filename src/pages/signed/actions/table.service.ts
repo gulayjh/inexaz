@@ -7,11 +7,25 @@ export const getSessions = (searchFin: string, current: number, signed: boolean)
             search: searchFin?.trim(),
             page: current,
             take: 10,
-            isSigned:signed
+            isSigned: signed
         }
     }).then(res => {
-       return res.data;
-        
+        return res.data;
+
     });
 };
 
+export const getSessionsPost = (searchFin: string, current: number, signed: boolean, startDate: any, endDate: any) => {
+    return axiosInstance.post(API.getSessions, {
+        search: searchFin?.trim(),
+        page: current,
+        take: 10,
+        isSigned: signed,
+        startDate: startDate,
+        endDate: endDate
+
+    }).then(res => {
+        return res.data;
+
+    });
+};

@@ -27,6 +27,8 @@ export const az = {
     session_link: 'Link',
     session_status: 'Status',
     session_search: 'Ad, soyad və FIN üzrə axtarın...',
+    signing_from_date: 'Tarixdən',
+    signing_to_date: 'Tarixədək',
 
 
     // errors

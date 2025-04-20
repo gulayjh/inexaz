@@ -2,6 +2,7 @@ import {createUseStyles} from 'react-jss';
 import fonts from '../../assets/styles/abstracts/fonts';
 import {rem} from '../../assets/styles/abstracts/functions';
 import colors from '../../assets/styles/abstracts/color';
+import {breakpoint} from '../../assets/styles/abstracts/mixins';
 
 
 const styles = {
@@ -39,7 +40,14 @@ const styles = {
 
             }
 
-        }
+        },
+        [breakpoint(1200)]: {
+            '& span:nth-child(1)': {
+                width: '100%',
+                maxWidth: rem(100),
+            }
+
+        },
     },
 
     bold: {
@@ -65,10 +73,15 @@ const styles = {
 
         },
         '& >span:nth-child(1)': {
-            width: rem(200)
+            width: rem(200),
 
         },
+        [breakpoint(1200)]: {
+            '& span:nth-child(1)': {
+                width: rem(50)
+            }
 
+        },
     },
 
 

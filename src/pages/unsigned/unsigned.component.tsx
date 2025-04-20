@@ -1,10 +1,9 @@
-import {Collapse, Pagination, Skeleton, Table, Tooltip} from 'antd';
+import {Collapse, DatePicker, Skeleton, Table, Tooltip} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
-import React, {ReactNode, useCallback, useState} from 'react';
-import {useGetSession} from '../signed/actions/queries';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useSigningsStyles} from './signing.style';
 import useLocalization from '../../assets/lang';
-import {Active, DeleteIcon, DownloadIcon, EditIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
+import {Active, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
 import {downloadPDF} from '../../core/helpers/downloadPdf';
 import {debounce} from '../../core/helpers/debounce';
 import SearchComponent from '../../core/shared/search/search.component';
@@ -13,6 +12,8 @@ import {useNavigate} from 'react-router-dom';
 import {successToast} from '../../core/shared/toast/toast';
 import {ArrowCircleDown, ArrowLeft} from '../../assets/images/icons/arrows';
 import devizeSize from '../../core/helpers/devize-size';
+import {useGetSessionPost} from '../signed/actions/mutations';
+import moment from 'moment';
 
 
 function UnsignedComponent() {
@@ -21,11 +22,45 @@ function UnsignedComponent() {
 
     const [searchField, setSearchField] = useState('');
     const [page, setPage] = useState(1);
-    const {data, isLoading} = useGetSession(searchField, page, false);
     const {list, listItem, bold, panel, title} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
     const check = useCheckUser();
+    const [dateFilter, setFilterDate] = useState<boolean>(false);
+
+    const [sessionData, setSessionData] = useState<any>();
+    const [startDate, setStartDate] = useState({date: undefined, dateString: undefined});
+    const [endDate, setEndDate] = useState({date: undefined, dateString: undefined});
+    const {mutate: getSession} = useGetSessionPost((value) => {
+        setSessionData(value);
+    });
+
+    useEffect(() => {
+        getSession({
+            searchFin: searchField,
+            current: page,
+            signed: false,
+            startDate: startDate.date,
+            endDate: endDate.date
+
+        });
+    }, [searchField, page, dateFilter, startDate, endDate]);
+
+    const handleFilterDate = useCallback(() => {
+        setFilterDate(!dateFilter);
+    }, [dateFilter]);
+
+
+    const handleFromTime = useCallback((date: any, dateString: any) => {
+        setPage(1);
+        setStartDate({date, dateString});
+    }, []);
+
+    const handleToTime = useCallback((date: any, dateString: any) => {
+        setPage(1);
+        setEndDate({date, dateString});
+
+    }, []);
 
 
     const handleSearchChange = debounce(useCallback((value: string) => {
@@ -174,15 +209,17 @@ function UnsignedComponent() {
                                 <div>
                                     <div>
                                         <div>
-                                            <span className={bold}>{translate('session_pin')}</span>
+                                            <span className={bold}>{translate('session_pin')}: </span>
                                             <span>{signing.assignedPin}</span>
                                         </div>
                                         <div>
-                                            <span className={bold}>{translate('session_date')}</span>
+                                            <span className={bold}>{translate('session_date')}: </span>
                                             <span>{signing?.created}</span>
                                         </div>
-                                        <div>
-                                                <span>
+                                        <div className="d-flex justify-between">
+                                            <span className={bold}>{translate('session_link')}</span>
+
+                                            <span>
                                         <span
                                             onClick={() => handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`)}
                                             className={bold}><ArrowCircleDown/>
@@ -225,21 +262,40 @@ function UnsignedComponent() {
             },
         },
     ];
-
     return (
         <div className="mt-10">
             <h3 className={title}>{translate('unsigned_title')}</h3>
             <SearchComponent placeholder={translate('session_search')} handleSearch={handleSearchChange}/>
+            <div className="d-flex mt-10 mb-25">
+
+                <DatePicker className="mr-15" value={startDate?.date} placeholder={translate('signing_from_date')}
+                            onChange={handleFromTime}
+                            disabledDate={(current: any) => {
+                                return current && current > moment().endOf('day');
+                            }}
+                />
+                <DatePicker placeholder={translate('signing_to_date')}
+                            onChange={handleToTime}
+                            value={endDate.date}
+                            disabledDate={(current: any) => {
+                                return current && current < moment(startDate.dateString).endOf('day');
+                            }}/>
+                {/*                <Button onClick={() => {
+                    handleFilterDate();
+                }} type="primary">{translate('submit')}</Button>*/}
+            </div>
+
+
             {
-                isLoading ? <Skeleton active/> :
+                sessionData ?
                     <>
                         <Table
-                            dataSource={data?.data}
+                            dataSource={sessionData?.data}
                             columns={width > 1024 ? columns : mobileColumns}
                             pagination={{
                                 current: page,
                                 pageSize: 10,
-                                total: data?.count,
+                                total: sessionData?.count,
                                 onChange: (newPage) => setPage(newPage),
                                 showSizeChanger: false,
                             }}
@@ -247,6 +303,7 @@ function UnsignedComponent() {
                         />
 
                     </>
+                    : <Skeleton active/>
             }
         </div>
     );

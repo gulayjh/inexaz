@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query';
 import {getSessions} from './table.service';
 
-export const useGetSession = (searchFin: string, current: number, signed: boolean) => {
+export const useGetSession = (searchFin: string, current: number, signed: boolean, onSuccess: any) => {
     return useQuery<any, Error>(['getSession', searchFin, current, signed], () => {
         return getSessions(searchFin, current, signed);
-    }, {staleTime: 0, retry: false, refetchOnMount:true});
+    }, {staleTime: 0, retry: false, refetchOnMount: true});
 };

@@ -6,7 +6,7 @@ import sizes from '../../../assets/styles/abstracts/sizes';
 const styles = {
     public: {},
     content: {
-      //  marginLeft: rem(sizes.leftMenu),
+        marginLeft: rem(sizes.leftMenu),
         minHeight: 'calc(100vh - 50px) !important',
         padding: rem(60) +' '+ rem(20) +' '+ rem(0),
         transition: transition(),
