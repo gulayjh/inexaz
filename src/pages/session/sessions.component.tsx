@@ -25,11 +25,13 @@ function SessionComponent() {
     const [showModal, setShowModal] = useState(false);
     const [qrCode, setQrCode] = useState('');
     const [buttonLink, setButtonLink] = useState('');
+    const [expireDate, setExpireDate] = useState('');
 
 
     useEffect(() => {
         setQrCode(data?.operation?.qrCode);
         setButtonLink(data?.operation?.buttonLink);
+        setExpireDate(data?.operation?.expireDate);
         if (data && data.status === 2) {
             setShowModal(true);
         } else {
@@ -108,7 +110,9 @@ function SessionComponent() {
                         {qrCode && buttonLink ?
                             <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
                                 <QRComponent operationId={data?.dynamicLinkPart} qrCode={qrCode}
-                                             buttonLink={buttonLink} handleClose={() => setShowModal(false)}/>
+                                             buttonLink={buttonLink} handleClose={() => setShowModal(false)}
+                                             expireDate={expireDate}
+                                             onExpire={() => setShowModal(false)}/>
 
                             </ModalComponent>
                             : null}

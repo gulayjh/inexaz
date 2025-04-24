@@ -9,47 +9,65 @@ import {useModalStyles} from '../modal/modal.style';
 import {useQRStyles} from './qr.style';
 import {errorToast, successToast} from '../toast/toast';
 
-const QRComponent = ({operationId, qrCode, buttonLink, handleClose}: any) => {
+const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, onExpire}: any) => {
     const [status, setStatus] = useState<string | null>(null);
     const [signedDocument, setSignedDocument] = useState<{ name: string, url: string } | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
     const translate = useLocalization();
     const {qrMainContent} = useQRStyles();
     const [width, setWidth] = useState(0);
+    const [timeEnd, setTimeEnd] = useState(false);
 
     const handleWindowResize = () => {
         setWidth(window.innerWidth);
     };
 
+    const [secondsLeft, setSecondsLeft] = useState<number>(0);
+    const [isRunning, setIsRunning] = useState<boolean>(true);
 
-    const [secondsLeft, setSecondsLeft] = useState(18000); // 5 minutes = 300 seconds
-    const [isRunning, setIsRunning] = useState(true);
+    // Initialize the countdown based on expireDate
+    useEffect(() => {
+        const now = new Date();
+        const expire = new Date(expireDate);
+        const diffInSeconds = Math.floor((expire.getTime() - now.getTime()) / 1000);
 
+        if (diffInSeconds <= 0) {
+            setSecondsLeft(0);
+            setIsRunning(false);
+            onExpire?.();
+        } else {
+            setSecondsLeft(diffInSeconds);
+            setIsRunning(true);
+        }
+    }, [expireDate, onExpire]);
+
+    // Countdown logic
     useEffect(() => {
         if (!isRunning || secondsLeft <= 0) return;
 
         const interval = setInterval(() => {
-            setSecondsLeft(prev => prev - 1);
+            setSecondsLeft(prev => Math.max(prev - 1, 0));
         }, 1000);
 
         return () => clearInterval(interval);
     }, [isRunning, secondsLeft]);
 
+    // When countdown reaches 0
+    useEffect(() => {
+        if (secondsLeft === 0 && isRunning) {
+            setIsRunning(false);
+            onExpire?.();
+        }
+    }, [secondsLeft, isRunning, onExpire]);
+
     const formatTime = (secs: number) => {
-        const hours = Math.floor(secs / 3600);
+        const days = Math.floor(secs / (3600 * 24));
+        const hours = Math.floor((secs % (3600 * 24)) / 3600);
         const minutes = Math.floor((secs % 3600) / 60);
         const seconds = secs % 60;
 
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        return `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     };
-
-    const handlePause = () => setIsRunning(false);
-    const handleResume = () => setIsRunning(true);
-    const handleReset = () => {
-        setSecondsLeft(300);
-        setIsRunning(false);
-    };
-
 
     useEffect(() => {
         handleWindowResize();

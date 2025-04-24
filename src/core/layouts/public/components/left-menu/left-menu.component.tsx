@@ -27,6 +27,14 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
         },
         {
             id: 2,
+            name: translate('verify_title'),
+            link: Routes.verify,
+            icon: <HomeIcon/>,
+            show: true,
+            hasUnderLine: true
+        },
+        {
+            id: 3,
             name: translate('signed_title'),
             link: Routes.signed,
             icon: <SignedIcon/>,
@@ -35,7 +43,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
 
         },
         {
-            id: 3,
+            id: 4,
             name: translate('unsigned_title'),
             link: Routes.unsigned,
             icon: <UnsignedIcon/>,
@@ -44,7 +52,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
 
         },
         {
-            id: 4,
+            id: 5,
             name: translate('users'),
             link: Routes.users,
             icon: <UsersIcon/>,

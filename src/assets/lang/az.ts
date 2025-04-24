@@ -8,6 +8,7 @@ export const az = {
     signed_title: 'İmzalanmış sənədlər',
     add_title: 'Sənəd əlavə et',
     users: 'İstifadəçilər',
+    verify_title: 'Sənəd yoxla',
 
     //file
     file_number: 'No',
@@ -30,6 +31,18 @@ export const az = {
     signing_from_date: 'Tarixdən',
     signing_to_date: 'Tarixədək',
 
+    //check
+    check_title: 'İmzalanmış sənədlərin siyahısı',
+    check_doc: 'İmza sənədi',
+    check_no_signed: '0 şəxs imzalayıb',
+    check_pin: 'FİN: ',
+    check_voen: 'VÖEN: ',
+    check_center: 'Mərkəz: ',
+    check_role: 'Rol: ',
+    check_sign_type: 'İmzalama növü: ',
+    check_sign_time: 'Vaxt: ',
+    check_sign_country: 'Ölkə: ',
+
 
     // errors
     input_required: 'Bu xana mütləqdir',
@@ -38,6 +51,7 @@ export const az = {
     pin_min_length: 'FIN 7 simvol olmalıdır',
     file_size_error: 'Sənədin ölçüsü limiti keçir.',
     input_password_mismatch:'Şifrələr eyni deyil',
+    file_type_error:'Sənədin formatı pdf olmalıdır.',
 
     //components
     login_sign_in_button: 'Daxil ol',
@@ -55,6 +69,8 @@ export const az = {
     users_change_password: 'Şifrəni dəyiş',
     users_old_password: 'Əvvəlki şifrə',
     users_new_password: 'Yeni şifrə',
+    users_confirm_password: 'Şifrəni təkrarlayın',
+
     users_username: 'İstifadəçi adı',
     users_super: 'Super Admin',
     users_admin: 'Admin',

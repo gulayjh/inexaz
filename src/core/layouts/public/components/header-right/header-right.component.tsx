@@ -169,7 +169,7 @@ const HeaderRightComponent = () => {
                         <Form.Item
                             rules={rules.confirmPassword}
                             name="confirmPassword"
-                            label={translate('users_new_password')}>
+                            label={translate('users_confirm_password')}>
                             <Input maxLength={50}/>
                         </Form.Item>
                         <div>

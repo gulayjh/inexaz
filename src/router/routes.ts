@@ -8,6 +8,8 @@ export enum Routes {
     signed = '/signed',
     unsigned = '/unsigned',
     users = 'users',
+    verify = 'verify',
+
     session='/session/:id'
 }
 

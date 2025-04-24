@@ -12,6 +12,7 @@ import SignedComponent from "../pages/signed/signed.component";
 import UsersComponent from '../pages/user/users.component';
 import SessionComponent from '../pages/session/sessions.component';
 import SessionLayoutComponent from '../core/layouts/sessionLayout/sessionLayout.component';
+import VerifyComponent from '../pages/check/verify.component';
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
             {
                 path: Routes.unsigned,
                 element: <UnsignedComponent/>,
+            },
+            {
+                path: Routes.verify,
+                element: <VerifyComponent/>,
             },
             {
                 path: Routes.signed,
