@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query';
-import { getSessionsPost } from './table.service';
+import {getSessionsPost, sessionDelete} from './table.service';
 
 interface SessionParams {
     searchFin: any;
@@ -11,12 +11,25 @@ interface SessionParams {
 
 export const useGetSessionPost = (
     onSuccess: (data: any) => void
+
 ) => {
     return useMutation({
         mutationFn: ({ searchFin, current, signed, startDate, endDate }: SessionParams) =>
             getSessionsPost(searchFin, current, signed, startDate, endDate),
         onSuccess: (response: any) => {
             onSuccess(response);
+        },
+    });
+};
+
+
+export const useDeleteSession = (onSuccess: any) => {
+    return useMutation({
+        mutationFn: (credentials: any) => {
+            return sessionDelete(credentials);
+        },
+        onSuccess: (response: any) => {
+            onSuccess();
         },
     });
 };

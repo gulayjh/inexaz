@@ -5,7 +5,6 @@ import {CheckedDate, ExpiredDate,  InfoIcon, SignPlusIcon} from '../../assets/im
 import useLocalization from '../../assets/lang';
 import {useUpload} from './actions/mutations';
 import {errorToast} from '../../core/shared/toast/toast';
-import {useQueryClient} from 'react-query';
 import {useCheckUser} from './actions/queries';
 
 function VerifyComponent() {
@@ -43,12 +42,8 @@ function VerifyComponent() {
     return (
         <div>
             <h3 className={title}>{translate('check_title')}</h3>
-            <div className={titleInfo}><InfoIcon/>
 
-                <span>Sənədlərin hər birinin həcmi 10 mbdan artıq olmamalı, maksimum sayı isə 5 olmalıdır.</span>
-            </div>
-
-            {file ?
+            {fileName ?
                 <div className="col-lg-6 col-md-4 col-sm-12 mt-25">
                     <div className={list}>
                         {file && file.length > 0 ?

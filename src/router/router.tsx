@@ -13,6 +13,7 @@ import UsersComponent from '../pages/user/users.component';
 import SessionComponent from '../pages/session/sessions.component';
 import SessionLayoutComponent from '../core/layouts/sessionLayout/sessionLayout.component';
 import VerifyComponent from '../pages/check/verify.component';
+import RolesComponent from '../pages/roles/roles.component';
 
 const router = createBrowserRouter([
     {
@@ -38,7 +39,10 @@ const router = createBrowserRouter([
                 path: Routes.users,
                 element: <UsersComponent/>,
             },
-
+            {
+                path: Routes.roles,
+                element: <RolesComponent/>,
+            },
         ],
     },
     {

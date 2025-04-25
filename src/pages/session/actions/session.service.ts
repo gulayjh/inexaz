@@ -14,7 +14,7 @@ export const startSession = (dynamicLinkPart: any): Promise<any> => {
 };
 
 export const deleteSession = (credentials: any): Promise<any> => {
-    return axiosInstance.post(API.users, credentials)
+    return axiosInstance.post(API.sessionsDelete, credentials)
         .then((res) => res.data);
 };
 

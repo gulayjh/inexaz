@@ -3,14 +3,13 @@ export enum Routes {
     auth = '/auth',
     home = '/',
     table = '/table',
-    form = '/form',
     login = '/auth/login',
     signed = '/signed',
     unsigned = '/unsigned',
     users = 'users',
     verify = 'verify',
-
-    session='/session/:id'
+    roles = 'roles',
+    session = '/session/:id'
 }
 
 

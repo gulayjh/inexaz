@@ -59,6 +59,15 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             hasUnderLine: true,
             show: user?.Roles.includes('Admin') || user?.Roles.includes('SuperAdmin')
 
+        },
+        {
+            id: 5,
+            name: translate('roles'),
+            link: Routes.roles,
+            icon: <UsersIcon/>,
+            hasUnderLine: true,
+            show: user?.Roles.includes('Admin') || user?.Roles.includes('SuperAdmin')
+
 
         },
     ];

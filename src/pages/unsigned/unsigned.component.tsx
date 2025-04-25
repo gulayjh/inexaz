@@ -1,9 +1,9 @@
-import {Collapse, DatePicker, Skeleton, Table, Tooltip} from 'antd';
+import {Button, Collapse, DatePicker, Form, FormRule, Input, Select, Skeleton, Table, Tooltip} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
-import React, {useCallback, useEffect, useState} from 'react';
-import {useSigningsStyles} from './signing.style';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {useSigningsStyles} from '../unsigned/signing.style';
 import useLocalization from '../../assets/lang';
-import {Active, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
+import {Active, DeleteIcon, DownloadIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
 import {downloadPDF} from '../../core/helpers/downloadPdf';
 import {debounce} from '../../core/helpers/debounce';
 import SearchComponent from '../../core/shared/search/search.component';
@@ -12,21 +12,20 @@ import {useNavigate} from 'react-router-dom';
 import {successToast} from '../../core/shared/toast/toast';
 import {ArrowCircleDown, ArrowLeft} from '../../assets/images/icons/arrows';
 import devizeSize from '../../core/helpers/devize-size';
-import {useGetSessionPost} from '../signed/actions/mutations';
+import {useDeleteSession, useGetSessionPost} from '../signed/actions/mutations';
 import moment from 'moment';
 
 
-function UnsignedComponent() {
+function UnSignedComponent() {
     const navigate = useNavigate();
     const width = devizeSize();
 
     const [searchField, setSearchField] = useState('');
     const [page, setPage] = useState(1);
-    const {list, listItem, bold, panel, title} = useSigningsStyles();
+    const {list, listItem, bold, panel, title, icons} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
     const check = useCheckUser();
-    const [dateFilter, setFilterDate] = useState<boolean>(false);
 
     const [sessionData, setSessionData] = useState<any>();
     const [startDate, setStartDate] = useState({date: undefined, dateString: undefined});
@@ -35,7 +34,7 @@ function UnsignedComponent() {
         setSessionData(value);
     });
 
-    useEffect(() => {
+    const handlegetAll = useCallback(() => {
         getSession({
             searchFin: searchField,
             current: page,
@@ -44,11 +43,28 @@ function UnsignedComponent() {
             endDate: endDate.date
 
         });
-    }, [searchField, page, dateFilter, startDate, endDate]);
+    }, [searchField, page, startDate, endDate]);
 
-    const handleFilterDate = useCallback(() => {
-        setFilterDate(!dateFilter);
-    }, [dateFilter]);
+    const {mutate: sessionDelete} = useDeleteSession(() => {
+        handlegetAll();
+    });
+
+
+    useEffect(() => {
+        handlegetAll();
+    }, [searchField, page, startDate, endDate]);
+
+
+    const handleDelete = useCallback((user: any) => {
+        const confirmation = prompt(`Silmək üçün şifrəni adını yazın`);
+        if (confirmation) {
+            const postData = {
+                sessionIds: [user.id],
+                deleteDocumentPassword: confirmation,
+            };
+            sessionDelete(postData);
+        }
+    }, []);
 
 
     const handleFromTime = useCallback((date: any, dateString: any) => {
@@ -113,22 +129,27 @@ function UnsignedComponent() {
                                       onClick={() => {
                                           navigate(`/session/${signing.dynamicLinkPart}`);
                                       }}><ArrowLeft/></span>
+
                             </span>
 
-                                    <span className={bold}>
+                                    <span className={icons}>
                                         {signing.status === 1 ?
-                                            <Tooltip title={'gözləmədə'}
+                                            <Tooltip placement="left" title={'gözləmədə'}
                                                      overlayInnerStyle={{backgroundColor: '#474975', color: 'white'}}>
                                                 <span><Pending/></span>
                                             </Tooltip>
                                             : signing.status === 2 ?
-                                                <Tooltip title={'aktiv'}>
+                                                <Tooltip placement="left" title={'aktiv'}>
                                                     <span><Active/></span>
                                                 </Tooltip>
                                                 :
-                                                <Tooltip title={'imzalanmış'}>
+                                                <Tooltip placement="left" title={'imzalanmış'}>
                                                     <span><Signed/></span>
                                                 </Tooltip>}
+                                        <span onClick={() => {
+                                            handleDelete(signing);
+                                        }}><DeleteIcon/></span>
+
                                     </span>
 
                                 </div>
@@ -301,7 +322,6 @@ function UnsignedComponent() {
                             }}
                             rowKey={generateGuid}
                         />
-
                     </>
                     : <Skeleton active/>
             }
@@ -309,4 +329,4 @@ function UnsignedComponent() {
     );
 }
 
-export default UnsignedComponent;
+export default UnSignedComponent;

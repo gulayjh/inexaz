@@ -55,7 +55,17 @@ const styles = {
         lineHeight: `${rem(32)} !important`,
         display: 'inline-block',
     },
-
+    icons: {
+        fontFamily: `${fonts.fontBold} !important`,
+        lineHeight: `${rem(32)} !important`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& >span': {
+            flexBasis: '50%',
+            width: '100%',
+        }
+    },
     title: {
         fontFamily: fonts.fontBold,
         lineHeight: rem(32),

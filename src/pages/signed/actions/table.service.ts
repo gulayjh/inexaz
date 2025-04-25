@@ -29,3 +29,8 @@ export const getSessionsPost = (searchFin: string, current: number, signed: bool
 
     });
 };
+
+export const sessionDelete = ( credentials: any): Promise<any> => {
+    return axiosInstance.post(`${API.sessionsDelete}`, credentials)
+        .then(res => res.data);
+};

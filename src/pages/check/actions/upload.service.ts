@@ -1,7 +1,7 @@
 import {API} from '../../../core/configs/api.config';
 import axiosInstance from '../../../core/configs/axios.config';
 
-export const upload = (credentials: any): Promise<{ token: string }> => {
+export const upload = (credentials: any): Promise<any> => {
     return axiosInstance.post(API.upload, credentials)
         .then((res) => res.data);
 };

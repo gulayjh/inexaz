@@ -8,6 +8,7 @@ export const API = {
     logout: base + '/auth/logout',
     sessions: base + '/sessions',
     getSessions: base + '/sessions/getAll',
+    sessionsDelete: base + '/sessions/delete',
 
     users: base + '/users',
     changePassword: base + '/users/changePassword',

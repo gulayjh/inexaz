@@ -9,6 +9,7 @@ export const az = {
     add_title: 'Sənəd əlavə et',
     users: 'İstifadəçilər',
     verify_title: 'Sənəd yoxla',
+    roles: 'Rollar',
 
     //file
     file_number: 'No',
@@ -75,7 +76,10 @@ export const az = {
     users_super: 'Super Admin',
     users_admin: 'Admin',
     users_user: 'User',
-    users_logout: 'Çıxış et'
+    users_logout: 'Çıxış et',
+
+    roles_title:'Rol',
+    roles_description:'Təsvir'
 
 
 };
