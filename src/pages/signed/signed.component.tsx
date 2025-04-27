@@ -15,6 +15,8 @@ import devizeSize from '../../core/helpers/devize-size';
 import {useDeleteSession, useGetSessionPost} from '../signed/actions/mutations';
 import moment from 'moment';
 import {deleteSession} from '../session/actions/session.service';
+import {useSelector} from 'react-redux';
+import {IState} from '../../store/store';
 
 
 function SignedComponent() {
@@ -49,6 +51,7 @@ function SignedComponent() {
     const {mutate: sessionDelete} = useDeleteSession(() => {
         handlegetAll();
     });
+    const user = useSelector((state: IState) => state.user);
 
 
     useEffect(() => {
@@ -102,6 +105,7 @@ function SignedComponent() {
                     <div className={panel} style={{padding: '0 25px'}}>
                         <span>№</span>
                         <span>{translate('session_fullname')}</span>
+                        <span>{translate('session_created_by')}</span>
                         <span>{translate('session_pin')}</span>
                         <span>{translate('session_date')}</span>
                         <span>{translate('session_link')}</span>
@@ -116,8 +120,10 @@ function SignedComponent() {
                             <Panel header={
                                 <div className={panel}>
                                     <span className={bold}>{index + (page - 1) * 10 + 1}. </span>
-                                    <span className={bold}>{signing.assignedFullName}</span>
-                                    <span className={bold}>{signing.assignedPin}</span>
+                                    <span className={bold}>{signing?.assignedFullName}</span>
+                                    <span className={bold}>{signing?.createdBy}</span>
+
+                                    <span className={bold}>{signing?.assignedPin}</span>
                                     <span
                                         className={bold}>{signing?.created}</span>
 
@@ -147,9 +153,14 @@ function SignedComponent() {
                                                 <Tooltip placement="left" title={'imzalanmış'}>
                                                     <span><Signed/></span>
                                                 </Tooltip>}
-                                        <span onClick={() => {
-                                            handleDelete(signing);
-                                        }}><DeleteIcon/></span>
+                                        <span>
+                                            {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                                <span style={{width: '20px'}} onClick={() => {
+                                                    handleDelete(signing);
+                                                }}><DeleteIcon/></span>
+                                                : null}
+                                            </span>
+
 
                                     </span>
 
@@ -208,7 +219,7 @@ function SignedComponent() {
                                 header={
                                     <div className={panel}>
                                         <span className={bold}>{index + (page - 1) * 10 + 1}. </span>
-                                        <span className={bold}>{signing.assignedFullName}</span>
+                                        <span className={bold}>{signing?.assignedFullName}</span>
                                         <span className={bold}>
                                         {signing.status === 1 ?
                                             <Tooltip title={'gözləmədə'}
@@ -224,6 +235,11 @@ function SignedComponent() {
                                                     <span><Signed/></span>
                                                 </Tooltip>}
                                     </span>
+                                        {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                            <span style={{width: '20px'}} onClick={() => {
+                                                handleDelete(signing);
+                                            }}><DeleteIcon/></span>
+                                            : null}
 
                                     </div>
                                 }
@@ -231,9 +247,14 @@ function SignedComponent() {
                                 <div>
                                     <div>
                                         <div>
-                                            <span className={bold}>{translate('session_pin')}: </span>
-                                            <span>{signing.assignedPin}</span>
+                                            <span className={bold}>{translate('session_created_by')}: </span>
+                                            <span>{signing?.createdBy}</span>
                                         </div>
+                                        <div>
+                                            <span className={bold}>{translate('session_pin')}: </span>
+                                            <span>{signing?.assignedPin}</span>
+                                        </div>
+
                                         <div>
                                             <span className={bold}>{translate('session_date')}: </span>
                                             <span>{signing?.created}</span>

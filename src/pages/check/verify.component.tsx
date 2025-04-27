@@ -6,18 +6,20 @@ import useLocalization from '../../assets/lang';
 import {useUpload} from './actions/mutations';
 import {errorToast} from '../../core/shared/toast/toast';
 import {useCheckUser} from './actions/queries';
+import {store} from '../../store/store.config';
+import {setLoader} from '../../store/store.reducer';
 
 function VerifyComponent() {
     const {title, titleInfo, chooseButton, upload, list, row, noData} = useUploadStyles();
     const translate = useLocalization();
-    const check = useCheckUser();
+   // const check = useCheckUser();
     const [fileName, setFileName] = useState<string>('');
     const [file, setFile] = useState<any>([]);
 
 
     const onUploadSucces = useCallback((value: any) => {
         setFile(value);
-    }, []);
+    }, [file]);
 
 
     const {mutate} = useUpload((value: any) => {
@@ -30,8 +32,12 @@ function VerifyComponent() {
         showUploadList: false,
         beforeUpload: (file: any) => {
             if (file.type === 'application/pdf') {
-                setFile(file.name);
-                mutate(file);
+                setFileName(file.name);
+                store.dispatch(setLoader(true));
+                const formData: any = new FormData();
+
+                formData.append(`File`, file);
+                mutate(formData);
             } else {
                 errorToast(translate('file_type_error'));
             }
@@ -46,22 +52,11 @@ function VerifyComponent() {
             {fileName ?
                 <div className="col-lg-6 col-md-4 col-sm-12 mt-25">
                     <div className={list}>
-                        {file && file.length > 0 ?
-                            file.map((item: any, index: number) => {
+                        <h3>{fileName}</h3>
+                        {file?.signedPdfVerifierDtos && file?.signedPdfVerifierDtos.length > 0 ?
+                            file.signedPdfVerifierDtos.map((item: any, index: number) => {
                                 return (
                                     <>
-                                        {item.center ?
-                                            <ol className={row}>
-                                                <li>{index + 1}. {item?.name}</li>
-                                                {item?.signing_time ?
-                                                    <li>{translate('check_sign_time')} {item?.signing_time.substring(0, 10)}</li>
-                                                    : null}
-                                                <li>{translate('check_sign_country')} {item?.country}</li>
-                                                <li>{translate('check_voen')} {item?.voen}</li>
-                                                <li>{translate('check_role')} {item?.role}</li>
-
-                                            </ol>
-                                            :
                                             <ol className={row}>
                                                 <li>{index + 1}. {item.fullname}</li>
                                                 <li>{translate('check_pin')} {item?.pin}</li>
@@ -76,8 +71,6 @@ function VerifyComponent() {
                                                     {item?.signDate ? item?.signDate.substring(0, 10) : null}
                                                 </li>
                                             </ol>
-
-                                        }
                                     </>
 
                                 );

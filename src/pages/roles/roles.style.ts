@@ -14,6 +14,19 @@ const styles = {
         marginTop: rem(10),
         color: '#474975'
     },
+    titleInfo: {
+        display: 'flex',
+        alignItems: 'center',
+        fontFamily: fonts.font,
+        lineHeight: rem(32),
+        fontSize: rem(14),
+        color: '#474975',
+        marginBottom: rem(25),
+
+        '& span': {
+            paddingLeft: rem(5),
+        }
+    },
 
 };
 

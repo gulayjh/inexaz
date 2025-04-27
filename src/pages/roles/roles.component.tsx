@@ -6,27 +6,24 @@ import useLocalization from '../../assets/lang';
 import {useUserStyles} from './roles.style';
 
 import {useCheckUser} from '../home/actions/queries';
+import {InfoIcon} from '../../assets/images/icons/sign';
 
 function RolesComponent() {
     const {data, isLoading} = useGetRoles();
-    const { title} = useUserStyles();
+    const { title, titleInfo} = useUserStyles();
     const translate = useLocalization();
     const check = useCheckUser();
 
 
     const columns = [
-        {
-            title: '№',
-            dataIndex: 'id',
-            width: '80px',
-        },
+
         {
             title: translate('roles_title'),
-            dataIndex: 'userName',
+            dataIndex: 'name',
         },
         {
             title: translate('roles_description'),
-            dataIndex: 'password',
+            dataIndex: 'description',
             ellipsis: true,
         },
 
@@ -35,9 +32,12 @@ function RolesComponent() {
 
     return (
         <div>
-            <div className="d-flex justify-between align-center mb-25">
+            <div className="d-flex justify-between align-center">
                 <h3 className={title}>{translate('roles')}</h3>
+            </div>
+            <div className={titleInfo}><InfoIcon/>
 
+                <span>Rollar haqqında məlumat</span>
             </div>
             {
                 isLoading ? <Skeleton active/> : <Table

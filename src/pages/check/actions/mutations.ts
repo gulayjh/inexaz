@@ -12,8 +12,7 @@ export const useUpload = (onSucces: any) => {
             return upload(credentials);
         },
         onSuccess: (response: any) => {
-            store.dispatch(setOperationId(response));
-            onSucces();
+            onSucces(response);
         },
     });
 };

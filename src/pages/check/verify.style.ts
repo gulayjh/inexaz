@@ -35,10 +35,10 @@ const styles = {
 
     list: {
         boxShadow: '0px 4px 18px 0px rgba(0, 0, 0, 0.06)',
-        width: rem(360),
+        width: '100%',
         background: colors.white,
         padding: {
-            top: rem(72),
+            top: 14,
             bottom: 14,
             left: 12,
             right: 12
@@ -47,6 +47,13 @@ const styles = {
         color: '#474975',
         fontFamily: fonts.font,
         fontSize: rem(18),
+        '& h3': {
+            color: '#474975',
+            fontFamily: fonts.fontBold,
+            fontSize: rem(16),
+            marginBottom: rem(10),
+
+        }
     },
     row: {
         paddingBottom: rem(15),
@@ -57,6 +64,7 @@ const styles = {
             fontFamily: fonts.font,
             fontSize: rem(16),
             letterSpacing: rem(0.045),
+            paddingBottom: rem(5)
         }
     },
     title: {

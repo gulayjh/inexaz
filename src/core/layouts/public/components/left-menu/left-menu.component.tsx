@@ -53,25 +53,25 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
         },
         {
             id: 5,
-            name: translate('users'),
-            link: Routes.users,
-            icon: <UsersIcon/>,
-            hasUnderLine: true,
-            show: user?.Roles.includes('Admin') || user?.Roles.includes('SuperAdmin')
-
-        },
-        {
-            id: 5,
             name: translate('roles'),
             link: Routes.roles,
             icon: <UsersIcon/>,
             hasUnderLine: true,
-            show: user?.Roles.includes('Admin') || user?.Roles.includes('SuperAdmin')
+            show: true
 
 
         },
-    ];
+        {
+            id: 6,
+            name: translate('users'),
+            link: Routes.users,
+            icon: <UsersIcon/>,
+            hasUnderLine: true,
+            show: user?.Roles.includes('SuperAdmin')
 
+        },
+
+    ];
 
     const leftMenuClasses = classNames({
         [classes.leftMenu]: true,

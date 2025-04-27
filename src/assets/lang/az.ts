@@ -24,6 +24,7 @@ export const az = {
     //session
     session_title: 'Sessiya',
     session_fullname: 'Ad, soyad',
+    session_created_by: 'Tərəfindən',
     session_pin: 'FİN',
     session_date: 'Tarix',
     session_link: 'Link',
@@ -31,6 +32,7 @@ export const az = {
     session_search: 'Ad, soyad və FIN üzrə axtarın...',
     signing_from_date: 'Tarixdən',
     signing_to_date: 'Tarixədək',
+    login_steps: '<ul><li>SİMA İmza mobil tətbiqini açın.</li><li><strong>Skan et </strong> düyməsinə {icon} klikləyin.</li><li>QR-kodu skan edərək sənədi imzalayın.</li></ul>',
 
     //check
     check_title: 'İmzalanmış sənədlərin siyahısı',

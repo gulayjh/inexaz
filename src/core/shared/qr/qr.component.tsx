@@ -8,13 +8,14 @@ import useLocalization from '../../../assets/lang';
 import {useModalStyles} from '../modal/modal.style';
 import {useQRStyles} from './qr.style';
 import {errorToast, successToast} from '../toast/toast';
+import ScanIcon from '../../../assets/images/icons/sign';
 
 const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, onExpire}: any) => {
     const [status, setStatus] = useState<string | null>(null);
     const [signedDocument, setSignedDocument] = useState<{ name: string, url: string } | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
     const translate = useLocalization();
-    const {qrMainContent} = useQRStyles();
+    const {qrMainContent, steps} = useQRStyles();
     const [width, setWidth] = useState(0);
     const [timeEnd, setTimeEnd] = useState(false);
 
@@ -26,7 +27,7 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
     const [isRunning, setIsRunning] = useState<boolean>(true);
 
     // Initialize the countdown based on expireDate
-    useEffect(() => {
+/*    useEffect(() => {
         const now = new Date();
         const expire = new Date(expireDate);
         const diffInSeconds = Math.floor((expire.getTime() - now.getTime()) / 1000);
@@ -39,8 +40,8 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
             setSecondsLeft(diffInSeconds);
             setIsRunning(true);
         }
-    }, [expireDate, onExpire]);
-
+    }, [expireDate, onExpire]);*/
+/*
     // Countdown logic
     useEffect(() => {
         if (!isRunning || secondsLeft <= 0) return;
@@ -67,7 +68,7 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
         const seconds = secs % 60;
 
         return `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    };
+    };*/
 
     useEffect(() => {
         handleWindowResize();
@@ -119,7 +120,11 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
                     {width > 1024 ?
                         <>
                             <img src={base64ToBlobUrl(qrCode)}/>
-                            <h2>{formatTime(secondsLeft)}</h2>
+                            <div className={steps}>
+                                {
+                                    translate('login_steps', {icon: <ScanIcon className="mx-10"/>})
+                                }
+                            </div>
                         </>
                         :
                         <Button type="primary" onClick={() => {

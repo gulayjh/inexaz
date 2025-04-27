@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {getRoles} from './user.service';
+import {getRoles} from './roles.service';
 
 export const useGetRoles = () => {
     return useQuery<any[], Error>(['getRoles'], () => {

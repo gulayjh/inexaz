@@ -24,6 +24,34 @@ const styles = {
             color: '#474975'
         }
     },
+    steps: {
+        marginTop: rem(15),
+        '& ul': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: rem(25)
+        },
+        '& li': {
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: rem(16),
+            '&::before': {
+                content: '""',
+                width: rem(20),
+                height: rem(20),
+                borderRadius: '50%',
+                backgroundColor: '#474975',
+                marginRight: rem(10),
+                flexShrink: 0
+
+            },
+            '& strong': {
+                fontWeight: 500,
+                marginRight: rem(7),
+                flexShrink: 0
+            }
+        }
+    },
 
 };
 
