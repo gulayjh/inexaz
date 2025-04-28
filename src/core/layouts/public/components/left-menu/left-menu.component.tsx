@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {IState} from '../../../../../store/store';
 import {setLocale, toggleLeftMenu} from '../../../../../store/store.reducer';
 import devizeSize from '../../../../helpers/devize-size';
+import {UserRolesIcon, VerifyIcon} from '../../../../../assets/images/icons/sign';
 
 const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
     const classes = useLeftMenuStyles();
@@ -29,7 +30,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             id: 2,
             name: translate('verify_title'),
             link: Routes.verify,
-            icon: <HomeIcon/>,
+            icon: <VerifyIcon/>,
             show: true,
             hasUnderLine: true
         },
@@ -65,7 +66,7 @@ const LeftMenuComponent = memo(({isOpen}: { isOpen: boolean }) => {
             id: 6,
             name: translate('users'),
             link: Routes.users,
-            icon: <UsersIcon/>,
+            icon: <UserRolesIcon/>,
             hasUnderLine: true,
             show: user?.Roles.includes('SuperAdmin')
 

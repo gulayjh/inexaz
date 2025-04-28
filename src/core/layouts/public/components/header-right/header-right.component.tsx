@@ -103,6 +103,10 @@ const HeaderRightComponent = () => {
             key: '0'
         },
         {
+            label: (<h3 className={classes.userTitle}>Rol:  {user && user?.Roles}</h3>),
+            key: '0'
+        },
+        {
             label: (
                 <span className="custom-dropdown-btn" onClick={() => {
                     setShowPasswordModal(true);

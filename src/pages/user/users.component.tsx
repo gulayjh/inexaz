@@ -324,17 +324,17 @@ function UsersComponent() {
                     <Form.Item
                         rules={rules.username}
                         name="username"
-                        label="Username">
+                        label={translate('users_username')}>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="password" label="Password">
+                        name="password" label={translate('users_password')}>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.confirmPassword}
-                        name="confirmPassword" label="Password">
+                        name="confirmPassword" label={translate('users_confirm_password')}>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item

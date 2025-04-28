@@ -78,12 +78,12 @@ const LoginComponent = () => {
                         <Form.Item
                             rules={rules.username}
                             name='username'
-                            label='Username'>
+                            label='İstifadəçi adı'>
                             <Input maxLength={50}/>
                         </Form.Item>
                         <Form.Item
                             rules={rules.password}
-                            name='password' label='Password'>
+                            name='password' label='Şifrə'>
                             <Input type='password' maxLength={50}/>
                         </Form.Item>
                         <Form.Item
