@@ -339,12 +339,12 @@ function UsersComponent() {
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="deleteDocumentPassword" label="Delete Document Password">
+                        name="deleteDocumentPassword" label='Silmək üçün şifrə'>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         name="roles"
-                        label="Roles"
+                        label="Rollar"
                         rules={rules.roles}>
                         <Select
                             mode="multiple"
