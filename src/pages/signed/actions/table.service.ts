@@ -21,8 +21,8 @@ export const getSessionsPost = (searchFin: string, current: number, signed: bool
         page: current,
         take: 10,
         isSigned: signed,
-        startDate: startDate,
-        endDate: endDate
+        startDate: startDate ? startDate + 'T00:00:00' : undefined,
+        endDate: endDate ? endDate + 'T00:00:00' : undefined,
 
     }).then(res => {
         return res.data;
@@ -30,7 +30,7 @@ export const getSessionsPost = (searchFin: string, current: number, signed: bool
     });
 };
 
-export const sessionDelete = ( credentials: any): Promise<any> => {
+export const sessionDelete = (credentials: any): Promise<any> => {
     return axiosInstance.post(`${API.sessionsDelete}`, credentials)
         .then(res => res.data);
 };

@@ -2,10 +2,11 @@ import {ILeftMenuItemProps} from '../../public';
 import {useLeftMenuItemStyles} from './left-menu-item.style';
 import {NavLink} from 'react-router-dom';
 import {generateGuid} from '../../../../helpers/generate-guid';
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import {ArrowDown, ArrowRight} from '../../../../../assets/images/icons/arrows';
 import classNames from 'classnames';
-import { Divider } from 'antd';
+import {handleLeftMenu} from '../../../../../store/store.reducer';
+import {useDispatch} from 'react-redux';
 
 const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: ILeftMenuItemProps) => {
     const classes = useLeftMenuItemStyles();
@@ -15,6 +16,11 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
         [classes.link]: true,
         'active': submenuOpen,
     });
+    const dispatch = useDispatch();
+
+    const onMenuClick = useCallback(() => {
+        dispatch(handleLeftMenu(false));
+    }, []);
     return (
         <li className={classes.item}>
             {
@@ -61,7 +67,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                             className={classes.link}
                             to={{pathname: link}}
                         >
-                            <div className={classes.itemText}>
+                            <div className={classes.itemText} onClick={onMenuClick}>
                                 {icon}
                                 <span>{name}</span>
                             </div>

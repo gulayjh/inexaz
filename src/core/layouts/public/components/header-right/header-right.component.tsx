@@ -103,7 +103,8 @@ const HeaderRightComponent = () => {
             key: '0'
         },
         {
-            label: (<h3 className={classes.userTitle}>Rol:  {user && user?.Roles}</h3>),
+            label: (
+                <h3 className={classes.userTitle}>Rol: {user && user?.Roles?.toString()}</h3>),
             key: '0'
         },
         {

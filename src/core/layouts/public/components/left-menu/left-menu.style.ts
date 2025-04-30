@@ -27,7 +27,7 @@ const styles = {
     hide: {
         transform: `translateX(-${rem(sizes.leftMenu)})`,
         [breakpoint(1200)]: {
-            transform: `translateX(99%)`,
+            transform: `translateX(101%)`,
         }
     },
 };

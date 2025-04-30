@@ -42,6 +42,9 @@ export const rootSlice = createSlice({
         toggleLeftMenu: (state: IState) => {
             state.leftMenu = !state.leftMenu;
         },
+        handleLeftMenu: (state: IState, action: PayloadAction<boolean>) => {
+            state.leftMenu = action.payload;
+        },
         setLocale: (state: IState, action: PayloadAction<ILang>) => {
             const lang = {
                 az,
@@ -61,6 +64,6 @@ export const rootSlice = createSlice({
     },
 });
 
-export const {setLoader, toggleLeftMenu, setLocale, setUser, setOperationId} = rootSlice.actions;
+export const {setLoader, handleLeftMenu, toggleLeftMenu, setLocale, setUser, setOperationId} = rootSlice.actions;
 
 export default rootSlice.reducer;

@@ -30,7 +30,7 @@ function SearchComponent({placeholder, handleSearch, searchText}: ISearchProps) 
 
     return (
         <Form.Item className={search}>
-            <Input placeholder={placeholder} onInput={handleSubmit} autoFocus
+            <Input placeholder={placeholder} onInput={handleSubmit} autoFocus={false}
                    suffix={<span className={button} onClick={handleSubmit}> <SearchIcon/>
             </span>} onChange={handleSearchField} value={searchField}/>
         </Form.Item>
