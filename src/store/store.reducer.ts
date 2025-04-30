@@ -9,7 +9,7 @@ import jwtDecode from 'jwt-decode';
 
 const initialState: IState = {
     loader: false,
-    leftMenu: true,
+    leftMenu: false,
     languages: [
         {
             id: 1,
