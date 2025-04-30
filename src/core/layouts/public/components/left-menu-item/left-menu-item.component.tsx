@@ -32,7 +32,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                 dispatch(handleLeftMenu(false));
             }
         }
-    }, [width]);
+    }, []);
     return (
         <li className={classes.item}>
             {
