@@ -2,11 +2,12 @@ import {ILeftMenuItemProps} from '../../public';
 import {useLeftMenuItemStyles} from './left-menu-item.style';
 import {NavLink} from 'react-router-dom';
 import {generateGuid} from '../../../../helpers/generate-guid';
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {ArrowDown, ArrowRight} from '../../../../../assets/images/icons/arrows';
 import classNames from 'classnames';
 import {handleLeftMenu} from '../../../../../store/store.reducer';
 import {useDispatch} from 'react-redux';
+import devizeSize from '../../../../helpers/devize-size';
 
 const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: ILeftMenuItemProps) => {
     const classes = useLeftMenuItemStyles();
@@ -17,10 +18,21 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
         'active': submenuOpen,
     });
     const dispatch = useDispatch();
+    const width = devizeSize();
 
     const onMenuClick = useCallback(() => {
         dispatch(handleLeftMenu(false));
     }, []);
+
+    useEffect(() => {
+        if (width > 0) {
+            if (width > 1024) {
+                dispatch(handleLeftMenu(true));
+            } else {
+                dispatch(handleLeftMenu(false));
+            }
+        }
+    }, [width]);
     return (
         <li className={classes.item}>
             {
@@ -49,7 +61,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                                                         {item.icon}
                                                         <span>{item.name}</span>
                                                     </NavLink>
-                                                    
+
                                                 </li>
                                             );
                                         })
@@ -62,7 +74,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                     :
 
                     show ?
-                    
+
                         <NavLink
                             className={classes.link}
                             to={{pathname: link}}
@@ -72,7 +84,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                                 <span>{name}</span>
                             </div>
                         </NavLink>
-                        
+
                         : null
             }
 
