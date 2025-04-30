@@ -30,7 +30,7 @@ function UsersComponent() {
     const [createForm] = Form.useForm();
 
     const check = useCheckUser();
-
+    console.log(rolesList.toString() === '3');
     const {mutate: createUser} = useCreateUser(() => {
         setShowModal(false);
         createForm.resetFields();
@@ -170,11 +170,11 @@ function UsersComponent() {
                             >
                                 <div>
                                     <div>
-                                        <span  className={bold}>{translate('users_password')}: </span>
+                                        <span className={bold}>{translate('users_password')}: </span>
                                         <span>{user?.password}</span>
                                     </div>
                                     <div>
-                                        <span  className={bold}>{translate('users_roles')}: </span>
+                                        <span className={bold}>{translate('users_roles')}: </span>
                                         {user?.roles && user.roles.map((role: any, index: number) => (
 
                                             <span key={index}>
@@ -242,6 +242,7 @@ function UsersComponent() {
                 message: translate('input_min_length', {min: 8}),
             }
         ],
+
         roles: [
             {
                 required: true,
@@ -337,11 +338,13 @@ function UsersComponent() {
                         name="confirmPassword" label={translate('users_confirm_password')}>
                         <Input maxLength={50}/>
                     </Form.Item>
-                    <Form.Item
-                        rules={rules.password}
-                        name="deleteDocumentPassword" label='Silmək üçün şifrə'>
-                        <Input maxLength={50}/>
-                    </Form.Item>
+                    {rolesList.toString() === '3' ? null :
+                        < Form.Item
+                            rules={rules.password}
+                            name="deleteDocumentPassword" label="Silmək üçün şifrə">
+                            <Input maxLength={50}/>
+                        </Form.Item>
+                    }
                     <Form.Item
                         name="roles"
                         label="Rollar"
@@ -387,11 +390,13 @@ function UsersComponent() {
                         name="password" label="Password">
                         <Input maxLength={50}/>
                     </Form.Item>
-                    <Form.Item
-                        rules={rules.password}
-                        name="deleteDocumentPassword" label="Delete Document Password">
-                        <Input maxLength={50}/>
-                    </Form.Item>
+                    {rolesList.toString() === '3' ? null :
+                        <Form.Item
+                            rules={rules.password}
+                            name="deleteDocumentPassword" label="Delete Document Password">
+                            <Input maxLength={50}/>
+                        </Form.Item>
+                    }
                     <Form.Item
                         name="roles"
                         label="Roles"

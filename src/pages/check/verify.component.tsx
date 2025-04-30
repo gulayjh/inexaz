@@ -1,7 +1,7 @@
-import {Form, Upload} from 'antd';
+import {Button, Form, Upload} from 'antd';
 import React, {useCallback, useState} from 'react';
 import {useUploadStyles} from './verify.style';
-import {CheckedDate, ExpiredDate,  InfoIcon, SignPlusIcon} from '../../assets/images/icons/sign';
+import {CheckedDate, ExpiredDate, InfoIcon, SignPlusIcon} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
 import {useUpload} from './actions/mutations';
 import {errorToast} from '../../core/shared/toast/toast';
@@ -12,7 +12,7 @@ import {setLoader} from '../../store/store.reducer';
 function VerifyComponent() {
     const {title, titleInfo, chooseButton, upload, list, row, noData} = useUploadStyles();
     const translate = useLocalization();
-   // const check = useCheckUser();
+    // const check = useCheckUser();
     const [fileName, setFileName] = useState<string>('');
     const [file, setFile] = useState<any>([]);
 
@@ -20,6 +20,11 @@ function VerifyComponent() {
     const onUploadSucces = useCallback((value: any) => {
         setFile(value);
     }, [file]);
+
+    const handleReset = useCallback(() => {
+        setFile('');
+        setFileName('');
+    }, [file, fileName]);
 
 
     const {mutate} = useUpload((value: any) => {
@@ -57,20 +62,19 @@ function VerifyComponent() {
                             file.signedPdfVerifierDtos.map((item: any, index: number) => {
                                 return (
                                     <>
-                                            <ol className={row}>
-                                                <li>{index + 1}. {item.fullname}</li>
-                                                <li>{translate('check_pin')} {item?.pin}</li>
-                                                {item?.tin ?
-                                                    <li>{translate('check_voen')} {item?.tin.substring(4)}</li>
-                                                    : null}
-                                                <li>{translate('check_role')} {item?.role}</li>
-                                                <li>{translate('check_sign_country')} {item?.location}</li>
-                                                <li>
+                                        <ol className={row}>
+                                            <li>{index + 1}. {item.fullname}</li>
+                                            <li>{translate('check_pin')} {item?.pin}</li>
+                                            {item?.tin ?
+                                                <li>{translate('check_voen')} {item?.tin.substring(4)}</li>
+                                                : null}
+                                            <li>{translate('check_sign_country')} {item?.location}</li>
+                                            <li>
                                                 <span className="pr-5">{item.isIntegrity ? <CheckedDate/> :
                                                     <ExpiredDate/>}</span>
-                                                    {item?.signDate ? item?.signDate.substring(0, 10) : null}
-                                                </li>
-                                            </ol>
+                                                {item?.signDate ? item?.signDate.substring(0, 10) : null}
+                                            </li>
+                                        </ol>
                                     </>
 
                                 );
@@ -81,6 +85,9 @@ function VerifyComponent() {
                                 <span>{translate('no_data')}</span>
                             </div>
                         }
+                    </div>
+                    <div className='mt-15'>
+                    <Button type='primary' onClick={()=>{handleReset();}}>{translate('reset')}</Button>
                     </div>
                 </div>
                 :

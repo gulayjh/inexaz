@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useUserStyles} from './sessions.style';
 import {useParams} from 'react-router-dom';
 import {useGetSession} from './actions/queries';
-import {Active, FileIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
+import ScanIcon, {Active, FileIcon, LookUpIcon, Pending, Signed} from '../../assets/images/icons/sign';
 import useLocalization from '../../assets/lang';
 import {Button, Tooltip} from 'antd';
 import {successToast} from '../../core/shared/toast/toast';
@@ -10,6 +10,8 @@ import {useQueryClient} from 'react-query';
 import {useSessionStart} from './actions/mutations';
 import ModalComponent from '../../core/shared/modal/modal.component';
 import QRComponent from '../../core/shared/qr/qr.component';
+import {base64ToBlobUrl} from '../../core/helpers/base64-to-blob';
+import devizeSize from '../../core/helpers/devize-size';
 
 function SessionComponent() {
 
@@ -52,6 +54,7 @@ function SessionComponent() {
         mutate(link);
 
     }, []);
+    const width = devizeSize();
 
     return (
         <div className={mainContent}>
@@ -93,29 +96,54 @@ function SessionComponent() {
                                 </div>
                             ))}
                         </div>
-                        {data.status !== 3 ?
-                            <Button
-                                style={{width: '250px', marginLeft: '15px', marginTop: '30px'}}
-                                type="primary"
-                                onClick={() => {
-                                    if (data.status === 2) {
-                                        setShowModal(true);
-                                    } else {
-                                        onSubmit(data?.dynamicLinkPart);
-                                    }
-                                }}
-                            >
-                                {translate('sign')}
-                            </Button> : null}
-                        {qrCode && buttonLink ?
-                            <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
-                                <QRComponent operationId={data?.dynamicLinkPart} qrCode={qrCode}
-                                             buttonLink={buttonLink} handleClose={() => setShowModal(false)}
-                                             expireDate={expireDate}
-                                             onExpire={() => setShowModal(false)}/>
+                        {width > 1024 ?
+                            data.status !== 3 ?
+                                <Button
+                                    style={{width: '250px', marginLeft: '15px', marginTop: '30px'}}
+                                    type="primary"
+                                    onClick={() => {
+                                        if (data.status === 2) {
+                                            setShowModal(true);
+                                        } else {
+                                            onSubmit(data?.dynamicLinkPart);
+                                        }
+                                    }}
+                                >
+                                    {translate('sign')}
+                                </Button> : null
 
-                            </ModalComponent>
                             : null}
+                        {width > 1024 ?
+                            <>
+                                {qrCode && buttonLink ?
+                                    <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
+                                        <QRComponent operationId={data?.dynamicLinkPart} qrCode={qrCode}
+                                                     buttonLink={buttonLink} handleClose={() => setShowModal(false)}
+                                                     expireDate={expireDate}
+                                                     onExpire={() => setShowModal(false)}/>
+
+                                    </ModalComponent>
+                                    : null}
+                            </>
+                            :
+
+                            data.status !== 3 ?
+                                <Button
+                                    style={{width: '250px', marginLeft: '15px', marginTop: '30px'}}
+                                    type="primary"
+                                    onClick={() => {
+                                        if (data.status === 2) {
+                                            window.location.href = buttonLink;
+                                        } else {
+                                            onSubmit(data?.dynamicLinkPart);
+                                        }
+                                    }}
+                                >
+                                    {data.status === 1 ? translate('submit') : translate('sign')}
+                                </Button> : null
+
+                        }
+
                     </div>
                 )}
         </div>
