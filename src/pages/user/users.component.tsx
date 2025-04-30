@@ -382,13 +382,15 @@ function UsersComponent() {
                     <Form.Item
                         rules={rules.username}
                         name="username"
-                        label="Username">
+                        label={translate('users_username')}>
                         <Input maxLength={50}/>
                     </Form.Item>
                     <Form.Item
                         rules={rules.password}
-                        name="password" label="Password">
-                        <Input maxLength={50}/>
+                        name="password"
+                        label={translate('users_password')}>
+
+                    <Input maxLength={50}/>
                     </Form.Item>
                     {rolesList.toString() === '3' ? null :
                         <Form.Item
@@ -399,7 +401,7 @@ function UsersComponent() {
                     }
                     <Form.Item
                         name="roles"
-                        label="Roles"
+                        label="Rollar"
                         rules={rules.roles}>
                         <Select
                             mode="multiple"
