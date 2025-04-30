@@ -26,6 +26,8 @@ function HomeComponent() {
 
     }, []);
 
+
+
     const {mutate} = useUpload(() => {
         onUploadSucces();
     });

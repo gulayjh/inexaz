@@ -17,12 +17,19 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
         [classes.link]: true,
         'active': submenuOpen,
     });
+
     const dispatch = useDispatch();
     const width = devizeSize();
 
     const onMenuClick = useCallback(() => {
-        dispatch(handleLeftMenu(false));
-    }, []);
+        if (width > 0) {
+            if (width > 1024) {
+                dispatch(handleLeftMenu(true));
+            } else {
+                dispatch(handleLeftMenu(false));
+            }
+        }
+    }, [width]);
 
     useEffect(() => {
         if (width > 0) {
