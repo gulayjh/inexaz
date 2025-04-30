@@ -44,8 +44,8 @@ function UnSignedComponent() {
             searchFin: searchField,
             current: page,
             signed: false,
-            startDate: startDate.date,
-            endDate: endDate.date
+            startDate: startDate.dateString,
+            endDate: endDate.dateString
 
         });
     }, [searchField, page, startDate, endDate]);
