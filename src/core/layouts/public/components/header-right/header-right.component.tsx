@@ -56,7 +56,6 @@ const HeaderRightComponent = () => {
 
     }, []);
 
-
     const rules: { [key: string]: FormRule[] } = useMemo(() => ({
         username: [
             {
@@ -109,21 +108,21 @@ const HeaderRightComponent = () => {
         },
         {
             label: (
-                <span className="custom-dropdown-btn" onClick={() => {
+                <div className="custom-dropdown-btn" onClick={() => {
                     setShowPasswordModal(true);
                 }}>
                     {translate('users_change_password')}
-                </span>
+                </div>
             ),
             key: '1',
         },
         {
             label: (
-                <span className="custom-dropdown-btn" onClick={() => {
+                <div className="custom-dropdown-btn" onClick={() => {
                     handleLogout();
                 }}>
                     {translate('users_logout')}
-                </span>
+                </div>
             ),
             key: '2',
         },
@@ -134,6 +133,7 @@ const HeaderRightComponent = () => {
     return (
         <>
             <ul className={classes.items}>
+                <h3>{user?.UserName}</h3>
                 <li className={classes.avatar}>
                     <Dropdown menu={{items}} trigger={['click']} placement="bottomCenter">
                         <a onClick={(e) => e.preventDefault()}>

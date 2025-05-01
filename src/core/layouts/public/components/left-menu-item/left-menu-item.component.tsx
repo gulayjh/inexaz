@@ -50,12 +50,6 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                                 {icon}
                                 <span>{name}</span>
                             </div>
-                            <span className={classes.arrow}>{
-                                submenuOpen ?
-                                    <ArrowRight/>
-                                    :
-                                    <ArrowDown/>
-                            }</span>
                         </div>
                         {
                             submenuOpen ?

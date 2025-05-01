@@ -1,4 +1,4 @@
-import {Button, Collapse, DatePicker, Form, FormRule, Input, Select, Skeleton, Table, Tooltip} from 'antd';
+import {Button, Collapse, DatePicker, Divider, Form, FormRule, Input, Select, Skeleton, Table, Tooltip} from 'antd';
 import {generateGuid} from '../../core/helpers/generate-guid';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useSigningsStyles} from '../unsigned/signing.style';
@@ -25,7 +25,7 @@ function UnSignedComponent() {
 
     const [searchField, setSearchField] = useState('');
     const [page, setPage] = useState(1);
-    const {list, listItem, bold, panel, title, icons} = useSigningsStyles();
+    const {list, listItem, bold, panel, title, icons, panelItem, listItemMobile} = useSigningsStyles();
     const translate = useLocalization();
     const {Panel} = Collapse;
     const check = useCheckUser();
@@ -36,8 +36,6 @@ function UnSignedComponent() {
     const {mutate: getSession} = useGetSessionPost((value) => {
         setSessionData(value);
     });
-    const user = useSelector((state: IState) => state.user);
-
 
     const handlegetAll = useCallback(() => {
         getSession({
@@ -53,6 +51,7 @@ function UnSignedComponent() {
     const {mutate: sessionDelete} = useDeleteSession(() => {
         handlegetAll();
     });
+    const user = useSelector((state: IState) => state.user);
 
 
     useEffect(() => {
@@ -128,15 +127,14 @@ function UnSignedComponent() {
                                     <span
                                         className={bold}>{signing?.created}</span>
 
-                                    <span>
-                                        <span
-                                            onClick={() => handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`)}
-                                            className={bold}><ArrowCircleDown/>
+                                    <span className="d-flex align-center" onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`);
+                                    }}>
+                                        <span className={bold}>Kopyala </span>
+                                        <span><ArrowCircleDown/>
+
                                 </span>
-                                <span title="Linkə keçid et" style={{cursor: 'pointer', paddingLeft: '10px'}}
-                                      onClick={() => {
-                                          navigate(`/session/${signing.dynamicLinkPart}`);
-                                      }}><ArrowLeft/></span>
 
                             </span>
 
@@ -154,11 +152,14 @@ function UnSignedComponent() {
                                                 <Tooltip placement="left" title={'imzalanmış'}>
                                                     <span><Signed/></span>
                                                 </Tooltip>}
-                                        <span>     {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
-                                            <span style={{width: '20px'}} onClick={() => {
-                                                handleDelete(signing);
-                                            }}><DeleteIcon/></span>
-                                            : null}</span>
+                                        <span>
+                                            {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                                <span style={{width: '20px'}} onClick={(e) => {
+                                                    handleDelete(signing);
+                                                    e.stopPropagation();
+                                                }}><DeleteIcon/></span>
+                                                : null}
+                                            </span>
 
 
                                     </span>
@@ -218,8 +219,13 @@ function UnSignedComponent() {
                                 header={
                                     <div className={panel}>
                                         <span className={bold}>{index + (page - 1) * 10 + 1}. </span>
-                                        <span className={bold}>{signing?.assignedFullName}</span>
-                                        <span className={bold}>
+                                        <div className={panelItem}>
+                                            <div className={bold}
+                                                 title={signing?.assignedFullName}>{signing?.assignedFullName}</div>
+                                            <div className={bold}>{translate('session_pin')}: {signing?.assignedPin}
+                                            </div>
+                                        </div>
+                                        <span className={bold} style={{width: '20px'}}>
                                         {signing.status === 1 ?
                                             <Tooltip title={'gözləmədə'}
                                                      overlayInnerStyle={{backgroundColor: '#474975', color: 'white'}}>
@@ -235,8 +241,9 @@ function UnSignedComponent() {
                                                 </Tooltip>}
                                     </span>
                                         {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
-                                            <span style={{width: '20px'}} onClick={() => {
+                                            <span style={{width: '20px'}} onClick={(e) => {
                                                 handleDelete(signing);
+                                                e.stopPropagation();
                                             }}><DeleteIcon/></span>
                                             : null}
 
@@ -247,38 +254,25 @@ function UnSignedComponent() {
                                     <div>
                                         <div>
                                             <span className={bold}>{translate('session_created_by')}: </span>
-                                            <span>{signing?.createdBy}</span>
+                                            <span className="pl-5">{signing?.createdBy}</span>
                                         </div>
-                                        <div>
-                                            <span className={bold}>{translate('session_pin')}: </span>
-                                            <span>{signing?.assignedPin}</span>
-                                        </div>
-
                                         <div>
                                             <span className={bold}>{translate('session_date')}: </span>
-                                            <span>{signing?.created}</span>
-                                        </div>
-                                        <div className="d-flex justify-between">
-                                            <span className={bold}>{translate('session_link')}</span>
-
-                                            <span>
-                                        <span
-                                            onClick={() => handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`)}
-                                            className={bold}><ArrowCircleDown/>
-                                </span>
-                                <span title="Linkə keçid et" style={{cursor: 'pointer', paddingLeft: '10px'}}
-                                      onClick={() => {
-                                          navigate(`/session/${signing.dynamicLinkPart}`);
-                                      }}><ArrowLeft/></span>
-                            </span>
+                                            <span className="pl-5">{signing?.created}</span>
                                         </div>
 
+                                        <div style={{width: '100%'}} className="mt-10 mb-10">
+                                            <Button style={{width: '100%'}} type="primary"
+                                                    onClick={() => handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`)}> Kopyala </Button>
+                                        </div>
 
                                     </div>
+                                    <Divider/>
                                     <div className={list}>
+                                        <h5 className="mt-0 mb-5">Sənədlər</h5>
                                         {signing.documents && signing.documents.length && signing.documents.map((item: any, index: number) => {
                                             return (
-                                                <div className={listItem}>
+                                                <div className={listItemMobile}>
                                                     <span>{index + 1}. {item.name}</span>
                                                     <div>
                                                 <span>
@@ -337,9 +331,12 @@ function UnSignedComponent() {
                             pagination={{
                                 current: page,
                                 pageSize: 10,
+                                hideOnSinglePage: true,
+                                size:'small',
                                 total: sessionData?.count,
                                 onChange: (newPage) => setPage(newPage),
                                 showSizeChanger: false,
+
                             }}
                             rowKey={generateGuid}
                         />

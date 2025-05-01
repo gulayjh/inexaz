@@ -93,7 +93,49 @@ const styles = {
 
         },
     },
+    panelItem: {
+        flexBasis: '60%',
+        '& >div': {
+            display:'inline-block',
+            width:'100%',
+            maxWidth:rem(150),
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+        }
+    },
+    listItemMobile:{
+        fontFamily: fonts.fontMain,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: {
+            top: rem(5),
+            bottom: rem(5),
+            left: rem(10)
+        },
+        '& >span:nth-child(1)': {
+            display: 'inline-block',
+            wordBreak: 'break-word',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: rem(180),
+            whiteSpace: 'nowrap',
+            flexBasis:'90%',
+            width:'100%',
 
+        },
+        '& div': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: rem(80),
+            '& span': {
+                cursor: 'pointer'
+
+            }
+
+        },
+    }
 
 };
 

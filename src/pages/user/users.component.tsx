@@ -49,7 +49,6 @@ function UsersComponent() {
     });
 
     const options = [
-        {label: translate('users_super'), value: 1},
         {label: translate('users_admin'), value: 2},
         {label: translate('users_user'), value: 3},
 
@@ -90,11 +89,6 @@ function UsersComponent() {
     const width = devizeSize();
     const columns = [
         {
-            title: '№',
-            dataIndex: 'id',
-            width: '80px',
-        },
-        {
             title: translate('users_users'),
             dataIndex: 'userName',
         },
@@ -102,6 +96,10 @@ function UsersComponent() {
             title: translate('users_password'),
             dataIndex: 'password',
             ellipsis: true,
+        },
+        {
+            title: translate('users_password_delete'),
+            dataIndex: 'deleteDocumentPassword',
         },
         {
             title: translate('users_roles'),
@@ -174,6 +172,11 @@ function UsersComponent() {
                                         <span>{user?.password}</span>
                                     </div>
                                     <div>
+                                        <span className={bold}>{translate('users_password_delete')}: </span>
+                                        <span>{user?.deleteDocumentPassword}</span>
+                                    </div>
+
+                                    <div>
                                         <span className={bold}>{translate('users_roles')}: </span>
                                         {user?.roles && user.roles.map((role: any, index: number) => (
 
@@ -242,7 +245,16 @@ function UsersComponent() {
                 message: translate('input_min_length', {min: 8}),
             }
         ],
-
+        passwordDelete: [
+            {
+                required: true,
+                message: translate('input_required'),
+            },
+            {
+                min: 3,
+                message: translate('input_min_length', {min: 3}),
+            }
+        ],
         roles: [
             {
                 required: true,
@@ -292,7 +304,7 @@ function UsersComponent() {
 
     }, [selectedUser, rolesList]);
 
-
+    console.log(rolesList.toString());
     return (
         <div>
             <div className="d-flex justify-between align-center mb-25">
@@ -338,10 +350,11 @@ function UsersComponent() {
                         name="confirmPassword" label={translate('users_confirm_password')}>
                         <Input maxLength={50}/>
                     </Form.Item>
+
                     {rolesList.toString() === '3' ? null :
                         < Form.Item
-                            rules={rules.password}
-                            name="deleteDocumentPassword" label="Silmək üçün şifrə">
+                            rules={rules.passwordDelete}
+                            name="deleteDocumentPassword" label={translate('users_password_delete')}>
                             <Input maxLength={50}/>
                         </Form.Item>
                     }
@@ -353,7 +366,7 @@ function UsersComponent() {
                             mode="multiple"
                             allowClear
                             style={{width: '100%'}}
-                            placeholder="Please select"
+                            placeholder="Rol seçin..."
                             options={options}
                             onChange={(e) => {
                                 handleChange(e);
@@ -390,12 +403,12 @@ function UsersComponent() {
                         name="password"
                         label={translate('users_password')}>
 
-                    <Input maxLength={50}/>
+                        <Input maxLength={50}/>
                     </Form.Item>
                     {rolesList.toString() === '3' ? null :
                         <Form.Item
-                            rules={rules.password}
-                            name="deleteDocumentPassword" label="Delete Document Password">
+                            rules={rules.passwordDelete}
+                            name="deleteDocumentPassword" label={translate('users_password_delete')}>
                             <Input maxLength={50}/>
                         </Form.Item>
                     }
@@ -407,8 +420,9 @@ function UsersComponent() {
                             mode="multiple"
                             allowClear
                             style={{width: '100%'}}
-                            placeholder="Please select"
+                            placeholder="Rol seçin..."
                             options={options}
+                            value={rolesList}
                             onChange={(e) => {
                                 handleChange(e);
                             }}

@@ -10,7 +10,7 @@ import {useQRStyles} from './qr.style';
 import {errorToast, successToast} from '../toast/toast';
 import ScanIcon from '../../../assets/images/icons/sign';
 
-const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, onExpire}: any) => {
+const QRComponent = ({operationId, qrCode, buttonLink, handleClose, onSuccess}: any) => {
     const [status, setStatus] = useState<string | null>(null);
     const [signedDocument, setSignedDocument] = useState<{ name: string, url: string } | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
@@ -26,7 +26,6 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
     const [secondsLeft, setSecondsLeft] = useState<number>(0);
     const [isRunning, setIsRunning] = useState<boolean>(true);
 
-    // Initialize the countdown based on expireDate
 /*    useEffect(() => {
         const now = new Date();
         const expire = new Date(expireDate);
@@ -78,8 +77,8 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
     useEffect(() => {
         signalRService.onGetSuccessStatus(() => {
             setStatus('Success');
-            successToast('Document signed successfully.');
             handleClose();
+            onSuccess();
         });
 
         signalRService.onGetErrorStatus((errorMsg: string) => {
@@ -90,7 +89,6 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
 
         signalRService.onGetSignedDocument((documentName: string, documentUrl: string) => {
             setSignedDocument({name: documentName, url: documentUrl});
-            antdMessage.success(`Signed document received: ${documentName}`);
         });
         signalRService.startConnection(operationId, () => {
             setConnectionStatus('connected');
@@ -135,12 +133,6 @@ const QRComponent = ({operationId, qrCode, buttonLink, handleClose, expireDate, 
                     }
                 </div>
                 : null}
-            {signedDocument && (
-                <div>
-                    <p>Document: {signedDocument.name}</p>
-                    <a href={signedDocument.url} target="_blank" rel="noopener noreferrer">Open Document</a>
-                </div>
-            )}
 
         </div>
     );

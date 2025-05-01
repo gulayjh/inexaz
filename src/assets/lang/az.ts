@@ -66,6 +66,7 @@ export const az = {
     //users
     users_users: 'İstifadəçi',
     users_password: 'Şifrə',
+    users_password_delete: 'Silmək üçün şifrə',
     users_new: 'Yeni İstifadəçi',
     users_create: 'Yarat',
     users_roles: 'Rollar',

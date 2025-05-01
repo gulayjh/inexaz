@@ -62,18 +62,10 @@ function SessionComponent() {
 
                 <h3>{translate('session_title')}</h3>
                 {data && data.status ?
-                    <h5 className={title}>{translate('session_status')}: {data.status === 1 ?
-                        <span>
-                            <span>Gözləmədə</span><Pending/>
-                        </span>
-                        : data.status === 2 ?
-                            <span>
-                            <span>Aktiv</span><Active/>
-                        </span>
-                            :
-                            <span>
-                            <span>İmzalanmış</span><Signed/>
-                        </span>
+                    <h5 className={title}>{translate('session_status')}: {data.status === 3 ?
+                        <span>İmzalanmış</span>
+                        :
+                        <span>İmzalanmamış</span>
                     }</h5>
                     : null}
             </div>
@@ -118,6 +110,7 @@ function SessionComponent() {
                                 {qrCode && buttonLink ?
                                     <ModalComponent showModal={showModal} handleClose={() => setShowModal(false)}>
                                         <QRComponent operationId={data?.dynamicLinkPart} qrCode={qrCode}
+                                                     onSuccess={()=>{onSubmitSuccess();}}
                                                      buttonLink={buttonLink} handleClose={() => setShowModal(false)}
                                                      expireDate={expireDate}
                                                      onExpire={() => setShowModal(false)}/>
