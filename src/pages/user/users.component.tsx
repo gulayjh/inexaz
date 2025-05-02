@@ -397,7 +397,7 @@ function UsersComponent() {
                     }
                     <Form.Item
                         name="roles"
-                        label="Rollar"
+                        label="Rol"
                         rules={rules.roles}>
                         <Select
                             allowClear

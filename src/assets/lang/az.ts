@@ -9,7 +9,7 @@ export const az = {
     add_title: 'Sənəd əlavə et',
     users: 'İstifadəçilər',
     verify_title: 'Sənəd yoxla',
-    roles: 'Rollar',
+    roles: 'Rol',
 
     //file
     file_number: 'No',
@@ -69,7 +69,7 @@ export const az = {
     users_password_delete: 'Silmək üçün şifrə',
     users_new: 'Yeni İstifadəçi',
     users_create: 'Yarat',
-    users_roles: 'Rollar',
+    users_roles: 'Rol',
     users_edit: 'Dəyiş',
     users_change_password: 'Şifrəni dəyiş',
     users_old_password: 'Əvvəlki şifrə',
