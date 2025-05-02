@@ -24,7 +24,7 @@ function RolesComponent() {
         {
             title: translate('roles_description'),
             dataIndex: 'description',
-            ellipsis: true,
+            ellipsis: false,
         },
 
     ];

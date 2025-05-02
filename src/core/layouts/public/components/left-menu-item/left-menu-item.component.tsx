@@ -79,8 +79,9 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
                         <NavLink
                             className={classes.link}
                             to={{pathname: link}}
+                            onClick={onMenuClick}
                         >
-                            <div className={classes.itemText} onClick={onMenuClick}>
+                            <div className={classes.itemText}>
                                 {icon}
                                 <span>{name}</span>
                             </div>

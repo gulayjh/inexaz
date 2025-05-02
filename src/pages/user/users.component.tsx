@@ -23,24 +23,23 @@ function UsersComponent() {
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState<number>();
-    const [rolesList, setRolesList] = useState<any>([]);
+    const [rolesList, setRolesList] = useState<number>(0);
     const userMain = useSelector((state: IState) => state.user);
 
     const [editForm] = Form.useForm();
     const [createForm] = Form.useForm();
 
     const check = useCheckUser();
-    console.log(rolesList.toString() === '3');
     const {mutate: createUser} = useCreateUser(() => {
         setShowModal(false);
         createForm.resetFields();
-        setRolesList([]);
+        setRolesList(0);
         queryClient.invalidateQueries(['getUsers']);
     });
     const {mutate: editUser} = useEditUser(() => {
         setShowEditModal(false);
         editForm.resetFields();
-        setRolesList([]);
+        setRolesList(0);
         queryClient.invalidateQueries(['getUsers']);
     });
 
@@ -56,7 +55,6 @@ function UsersComponent() {
 
     const handleChange = useCallback((e: any) => {
         setRolesList(e);
-
     }, [rolesList]);
 
     const queryClient = useQueryClient();
@@ -67,9 +65,9 @@ function UsersComponent() {
             username: user.userName,
             password: user.password,
             deleteDocumentPassword: user.deleteDocumentPassword,
-            roles: user.roles
+            roles: user.role
         });
-        setRolesList(user.roles);
+        setRolesList(user.role);
         setSelectedUser(user.id);
 
     }, [showEditModal, selectedUser]);
@@ -80,12 +78,11 @@ function UsersComponent() {
                 id: user.id,
                 userName: user.username,
                 password: user.password,
-                roles: user.roles,
+                role: user.role,
             };
             deleteUser(postData);
         }
     }, [selectedUser]);
-
     const width = devizeSize();
     const columns = [
         {
@@ -105,15 +102,8 @@ function UsersComponent() {
             title: translate('users_roles'),
             render: (user: any) => {
                 return (
-                    <>
-                        {user?.roles && user.roles.map((role: any, index: number) => (
+                        <span> {user?.role === 1 ? translate('users_super') : user?.role === 2 ? translate('users_admin') : translate('users_user')}</span>
 
-                            <span key={index}>
-                                {index > 0 ? ', ' : ''}
-                                {role === 1 ? translate('users_super') : role === 2 ? translate('users_admin') : translate('users_user')}
-                    </span>
-                        ))}
-                    </>
                 );
             }
         },
@@ -123,7 +113,7 @@ function UsersComponent() {
             render: (user: any) => {
                 return (
                     <div className={list}>
-                        {userMain?.UserName === user?.userName || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin'))
+                        {userMain?.UserName === user?.userName || (user?.role === 1 && !(userMain.Roles === 'SuperAdmin'))
                             ? <span></span>
                             :
                             <span onClick={() => {
@@ -131,7 +121,7 @@ function UsersComponent() {
                             }}> <EditIcon/></span>
                         }
 
-                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin')) ?
+                        {(userMain?.UserName === user?.userName) || (user?.role === 1 && !(userMain.Roles === 'SuperAdmin')) ?
                             <span> </span> :
                             <span onClick={() => {
                                 handleDelete(user);
@@ -178,15 +168,10 @@ function UsersComponent() {
 
                                     <div>
                                         <span className={bold}>{translate('users_roles')}: </span>
-                                        {user?.roles && user.roles.map((role: any, index: number) => (
-
-                                            <span key={index}>
-                                {index > 0 ? ', ' : ''}
-                                                {role === 1 ? translate('users_super') : role === 2 ? translate('users_admin') : translate('users_user')}</span>
-                                        ))}
+                                        <span> {user?.role === 1 ? translate('users_super') : user?.role === 2 ? translate('users_admin') : translate('users_user')}</span>
                                     </div>
                                     <div className={list}>
-                                        {userMain?.UserName === user?.userName || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin'))
+                                        {userMain?.UserName === user?.userName || (user?.role === 1 && !(userMain.Roles === 'SuperAdmin'))
                                             ? <span></span>
                                             :
                                             <span onClick={() => {
@@ -194,7 +179,7 @@ function UsersComponent() {
                                             }}> <EditIcon/></span>
                                         }
 
-                                        {(userMain?.UserName === user?.userName) || (user?.roles.includes(1) && !userMain.Roles.includes('SuperAdmin')) ?
+                                        {(userMain?.UserName === user?.userName) || (user?.role === 1 && !(userMain.Roles === 'SuperAdmin')) ?
                                             <span> </span> :
                                             <span onClick={() => {
                                                 handleDelete(user);
@@ -287,7 +272,7 @@ function UsersComponent() {
             'userName': values.username,
             'password': values.password,
             'deleteDocumentPassword': values.deleteDocumentPassword,
-            'roles': rolesList
+            'role': rolesList
         };
         createUser(postData);
     }, [showModal, rolesList]);
@@ -298,20 +283,19 @@ function UsersComponent() {
             'userName': values.username,
             'password': values.password,
             'deleteDocumentPassword': values.deleteDocumentPassword,
-            'roles': rolesList
+            'role': rolesList
         };
         editUser(postData);
 
     }, [selectedUser, rolesList]);
 
-    console.log(rolesList.toString());
     return (
         <div>
             <div className="d-flex justify-between align-center mb-25">
                 <h3 className={title}>{translate('users')}</h3>
                 <Button type="primary" onClick={() => {
                     setShowModal(true);
-                    setRolesList([]);
+                    setRolesList(0);
                 }}>{translate('users_new')}</Button>
             </div>
             {
@@ -324,7 +308,7 @@ function UsersComponent() {
             }
             <ModalComponent showModal={showModal} handleClose={() => {
                 setShowModal(false);
-                setRolesList([]);
+                setRolesList(0);
                 createForm.resetFields();
             }}>
                 <Form
@@ -351,7 +335,7 @@ function UsersComponent() {
                         <Input maxLength={50}/>
                     </Form.Item>
 
-                    {rolesList.toString() === '3' ? null :
+                    {rolesList === 3 ? null :
                         < Form.Item
                             rules={rules.passwordDelete}
                             name="deleteDocumentPassword" label={translate('users_password_delete')}>
@@ -360,16 +344,15 @@ function UsersComponent() {
                     }
                     <Form.Item
                         name="roles"
-                        label="Rollar"
+                        label="Rol"
                         rules={rules.roles}>
                         <Select
-                            mode="multiple"
                             allowClear
                             style={{width: '100%'}}
                             placeholder="Rol seçin..."
                             options={options}
                             onChange={(e) => {
-                                handleChange(e);
+                                setRolesList(e);
                             }}
                         />
                     </Form.Item>
@@ -383,7 +366,7 @@ function UsersComponent() {
 
             <ModalComponent showModal={showEditModal} handleClose={() => {
                 setShowEditModal(false);
-                setRolesList([]);
+                setRolesList(0);
                 editForm.resetFields();
             }}>
                 <Form
@@ -405,7 +388,7 @@ function UsersComponent() {
 
                         <Input maxLength={50}/>
                     </Form.Item>
-                    {rolesList.toString() === '3' ? null :
+                    {rolesList === 3 ? null :
                         <Form.Item
                             rules={rules.passwordDelete}
                             name="deleteDocumentPassword" label={translate('users_password_delete')}>
@@ -417,7 +400,6 @@ function UsersComponent() {
                         label="Rollar"
                         rules={rules.roles}>
                         <Select
-                            mode="multiple"
                             allowClear
                             style={{width: '100%'}}
                             placeholder="Rol seçin..."

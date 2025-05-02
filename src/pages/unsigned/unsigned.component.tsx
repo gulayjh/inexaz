@@ -60,7 +60,7 @@ function UnSignedComponent() {
 
 
     const handleDelete = useCallback((user: any) => {
-        const confirmation = prompt(`Silmək üçün şifrəni adını yazın`);
+        const confirmation = prompt(`Silmək üçün şifrəni yazın`);
         if (confirmation) {
             const postData = {
                 sessionIds: [user.id],
@@ -153,7 +153,7 @@ function UnSignedComponent() {
                                                     <span><Signed/></span>
                                                 </Tooltip>}
                                         <span>
-                                            {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                            {user?.Roles === 'SuperAdmin' || user?.Roles === 'Admin' ?
                                                 <span style={{width: '20px'}} onClick={(e) => {
                                                     handleDelete(signing);
                                                     e.stopPropagation();
@@ -240,7 +240,7 @@ function UnSignedComponent() {
                                                     <span><Signed/></span>
                                                 </Tooltip>}
                                     </span>
-                                        {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                        {user?.Roles === 'SuperAdmin' || user?.Roles === 'Admin' ?
                                             <span style={{width: '20px'}} onClick={(e) => {
                                                 handleDelete(signing);
                                                 e.stopPropagation();

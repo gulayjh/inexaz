@@ -60,7 +60,7 @@ function SignedComponent() {
 
 
     const handleDelete = useCallback((user: any) => {
-        const confirmation = prompt(`Silmək üçün şifrəni adını yazın`);
+        const confirmation = prompt(`Silmək üçün şifrəni yazın`);
         if (confirmation) {
             const postData = {
                 sessionIds: [user.id],
@@ -87,7 +87,7 @@ function SignedComponent() {
         setSearchField(value);
         setPage(1);
     }, []), 500);
-
+    console.log(user);
 
     const handleCopy = useCallback((text: string) => {
         navigator.clipboard.writeText(text)
@@ -153,7 +153,7 @@ function SignedComponent() {
                                                     <span><Signed/></span>
                                                 </Tooltip>}
                                         <span>
-                                            {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                            {user?.Roles === 'SuperAdmin' || user?.Roles === 'Admin' ?
                                                 <span style={{width: '20px'}} onClick={(e) => {
                                                     handleDelete(signing);
                                                     e.stopPropagation();
@@ -240,7 +240,7 @@ function SignedComponent() {
                                                     <span><Signed/></span>
                                                 </Tooltip>}
                                     </span>
-                                        {user?.Roles.includes('SuperAdmin') || user?.Roles.includes('Admin') ?
+                                        {user?.Roles === 'SuperAdmin' || user?.Roles === 'Admin' ?
                                             <span style={{width: '20px'}} onClick={(e) => {
                                                 handleDelete(signing);
                                                 e.stopPropagation();
@@ -332,7 +332,7 @@ function SignedComponent() {
                                 current: page,
                                 pageSize: 10,
                                 hideOnSinglePage: true,
-                                size:'small',
+                                size: 'small',
                                 total: sessionData?.count,
                                 onChange: (newPage) => setPage(newPage),
                                 showSizeChanger: false,
