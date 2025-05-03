@@ -13,7 +13,7 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
     const classes = useLeftMenuItemStyles();
     const [submenuOpen, setSubmenuOpen] = useState(false);
 
-    const leftMenuItemClasses = classNames({
+    const sleftMenuItemClasses = classNames({
         [classes.link]: true,
         'active': submenuOpen,
     });

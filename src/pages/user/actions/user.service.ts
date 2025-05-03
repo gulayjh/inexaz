@@ -1,8 +1,9 @@
 import {API} from '../../../core/configs/api.config';
 import axiosInstance from '../../../core/configs/axios.config';
+import axiosInstanceLoader from '../../../core/configs/axiosLoader.config';
 
 export const getUsers = (searchFin: string, current: number) => {
-    return axiosInstance.get(API.users, {
+    return axiosInstanceLoader.get(API.users, {
         params: {
             search: searchFin.trim(),
             page: current,

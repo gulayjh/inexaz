@@ -1,5 +1,6 @@
 import {API} from '../../../core/configs/api.config';
 import axiosInstance from '../../../core/configs/axios.config';
+import axiosInstanceLoader from '../../../core/configs/axiosLoader.config';
 
 export const getSessions = (searchFin: string, current: number, signed: boolean) => {
     return axiosInstance.get(API.sessions, {
@@ -16,7 +17,7 @@ export const getSessions = (searchFin: string, current: number, signed: boolean)
 };
 
 export const getSessionsPost = (searchFin: string, current: number, signed: boolean, startDate: any, endDate: any) => {
-    return axiosInstance.post(API.getSessions, {
+    return axiosInstanceLoader.post(API.getSessions, {
         search: searchFin?.trim(),
         page: current,
         take: 10,
