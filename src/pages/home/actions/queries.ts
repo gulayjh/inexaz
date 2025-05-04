@@ -4,5 +4,5 @@ import {checkUser} from './upload.service';
 export const useCheckUser = () => {
     return useQuery<any, Error>(['check'], () => {
         return checkUser();
-    }, {staleTime: Infinity, retry: false, refetchOnMount:true});
+    }, {staleTime: Infinity, retry: false, refetchOnMount:false});
 };

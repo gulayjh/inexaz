@@ -17,6 +17,7 @@ import moment from 'moment';
 import {deleteSession} from '../session/actions/session.service';
 import {useSelector} from 'react-redux';
 import {IState} from '../../store/store';
+import {environment} from '../../core/configs/app.config';
 
 
 function UnSignedComponent() {
@@ -58,6 +59,7 @@ function UnSignedComponent() {
         handlegetAll();
     }, [searchField, page, startDate, endDate]);
 
+    const linkAddres= `${environment?.applicationDomain}/session/`;
 
     const handleDelete = useCallback((user: any) => {
         const confirmation = prompt(`Silmək üçün şifrəni yazın`);
@@ -129,7 +131,7 @@ function UnSignedComponent() {
 
                                     <span className="d-flex align-center" onClick={(e) => {
                                         e.stopPropagation();
-                                        handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`);
+                                        handleCopy(`${linkAddres}${signing.dynamicLinkPart}`);
                                     }}>
                                         <span className={bold}>Kopyala </span>
                                         <span><ArrowCircleDown/>
@@ -263,7 +265,7 @@ function UnSignedComponent() {
 
                                         <div style={{width: '100%'}} className="mt-10 mb-10">
                                             <Button style={{width: '100%'}} type="primary"
-                                                    onClick={() => handleCopy(`inexaz.netlify.app/session/${signing.dynamicLinkPart}`)}> Kopyala </Button>
+                                                    onClick={() => handleCopy(`${linkAddres}${signing.dynamicLinkPart}`)}> Kopyala </Button>
                                         </div>
 
                                     </div>

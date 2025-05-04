@@ -13,6 +13,7 @@ import {ArrowCircleDown, ArrowLeft, ArrowRight} from '../../assets/images/icons/
 import {useQueryClient} from 'react-query';
 import {useNavigate} from 'react-router-dom';
 import {useCheckUser} from './actions/queries';
+import {environment} from '../../core/configs/app.config';
 
 function HomeComponent() {
     const {title, titleInfo, chooseButton, upload, list, listItem, deleteButton, form} = useUploadStyles();
@@ -25,7 +26,6 @@ function HomeComponent() {
         queryClient.invalidateQueries(['getSession']);
 
     }, []);
-
 
 
     const {mutate} = useUpload(() => {
@@ -112,6 +112,7 @@ function HomeComponent() {
                 console.error('Failed to copy text: ', err);
             });
     }, [operationId]);
+    const linkAddres= `${environment?.applicationDomain}/session/`;
 
     return (
         <div>
@@ -125,10 +126,10 @@ function HomeComponent() {
                 <div className='col-lg-6 col-md-4 col-sm-12 mt-25'>
                     <h3 className={title}>{translate('session_link')}</h3>
                     <div className='d-flex align-center'>
-                        <Input onClick={() => handleCopy(`inexaz.netlify.app/session/${operationId}`)}
-                               value={`inexaz.netlify.app/session/${operationId}`} readOnly/>
+                        <Input onClick={() => handleCopy(`${environment?.applicationDomain}/${operationId}`)}
+                               value={`${linkAddres}${operationId}`} readOnly/>
                         <span title='Linki kopyala' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
-                            handleCopy(`inexaz.netlify.app/session/${operationId}`);
+                            handleCopy(`${linkAddres}${operationId}`);
                         }}><ArrowCircleDown/></span>
                         <span title='Linkə keçid et' style={{cursor: 'pointer', paddingLeft: '10px'}} onClick={() => {
                             navigate(`/session/${operationId}`);
