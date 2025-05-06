@@ -159,7 +159,7 @@ function HomeComponent() {
                             <div className={list}>
                                 {fileList.map((file: any, index: number) => {
                                     return (
-                                        <div className='col-lg-4 col-md-6 col-sm-12' key={index}>
+                                        <div className='col-lg-2 col-md-2 col-sm-6' key={index}>
                                             <div className={listItem} title={file.name}>
                                                 <span><FileIcon/></span>
                                                 <h5>{file.name}</h5>

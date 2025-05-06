@@ -1,6 +1,7 @@
 import {createUseStyles} from 'react-jss';
 import fonts from '../../assets/styles/abstracts/fonts';
 import {rem} from '../../assets/styles/abstracts/functions';
+import {breakpoint} from '../../assets/styles/abstracts/mixins';
 
 
 const styles = {
@@ -10,7 +11,16 @@ const styles = {
 
     list: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        [breakpoint(1200)]: {
+            '& >div': {
+                width: '50%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: rem(5),
+            }
+        }
     },
     listItem: {
         display: 'flex',
@@ -18,8 +28,8 @@ const styles = {
         marginBottom: rem(15),
         flexDirection: 'column',
         justifyContent: 'center',
-        width: rem(250),
-        height: rem(200),
+        width: rem(180),
+        height: rem(180),
         backgroundColor: 'white',
         borderRadius: rem(10),
         padding: rem(10),
@@ -37,11 +47,31 @@ const styles = {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            width: rem(225)
+            width: rem(150)
         },
+        [breakpoint(1200)]: {
+            width: rem(100),
+            height: rem(100),
+            '& span:nth-child(1)': {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: rem(50),
+                '& svg': {
+                    transform: 'scale(1) !important'
+                },
+            },
+            '& svg': {
+                transform: 'scale(1) !important'
+            },
+            '& h5': {
 
-
+                width: rem(80)
+            },
+        },
     },
+
+
     button: {
         width: `${rem(10)} !important`,
         height: `${rem(10)} !important`,
@@ -80,4 +110,5 @@ const styles = {
 
 };
 
+// @ts-ignore
 export const useUserStyles = createUseStyles(styles);

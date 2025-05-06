@@ -64,6 +64,9 @@ const styles = {
         '& >span': {
             flexBasis: '50%',
             width: '100%',
+        },
+        '& span:nth-child(1)': {
+            paddingLeft: rem(30),
         }
     },
     title: {
@@ -88,7 +91,8 @@ const styles = {
         },
         [breakpoint(1200)]: {
             '& span:nth-child(1)': {
-                width: rem(50)
+                width: rem(50),
+                textAlign: 'center'
             }
 
         },
@@ -96,15 +100,15 @@ const styles = {
     panelItem: {
         flexBasis: '60%',
         '& >div': {
-            display:'inline-block',
-            width:'100%',
-            maxWidth:rem(150),
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: rem(150),
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
         }
     },
-    listItemMobile:{
+    listItemMobile: {
         fontFamily: fonts.fontMain,
         display: 'flex',
         justifyContent: 'space-between',
@@ -121,8 +125,8 @@ const styles = {
             textOverflow: 'ellipsis',
             maxWidth: rem(180),
             whiteSpace: 'nowrap',
-            flexBasis:'90%',
-            width:'100%',
+            flexBasis: '90%',
+            width: '100%',
 
         },
         '& div': {

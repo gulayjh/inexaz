@@ -35,7 +35,16 @@ const styles = {
 
     list: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        [breakpoint(1200)]: {
+            '& >div': {
+                width: '50%',
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginBottom: rem(5),
+            }
+        }
     },
     listItem: {
         display: 'flex',
@@ -43,7 +52,7 @@ const styles = {
         marginBottom: rem(15),
         flexDirection: 'column',
         justifyContent: 'center',
-        width: rem(250),
+        width: rem(180),
         height: rem(200),
         backgroundColor: 'white',
         borderRadius: rem(10),
@@ -63,11 +72,28 @@ const styles = {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            width: rem(225)
+            width: rem(150)
         },
 
         [breakpoint(1200)]: {
-            margin: `${rem(15)} auto`,
+            width: rem(100),
+            height: rem(100),
+            '& span:nth-child(1)': {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: rem(50),
+                '& svg': {
+                    transform: 'scale(2) !important'
+                },
+            },
+            '& svg': {
+                transform: 'scale(2) !important'
+            },
+            '& h5': {
+
+                width: rem(80)
+            },
         },
 
     },
@@ -77,7 +103,12 @@ const styles = {
         position: 'absolute',
         top: rem(-50),
         right: rem(20),
-        cursor: 'pointer'
+        cursor: 'pointer',
+        [breakpoint(1200)]:{
+            right: rem(10),
+            top: rem(-55),
+
+        }
     },
     title: {
         fontFamily: fonts.fontBold,
@@ -99,6 +130,14 @@ const styles = {
 
         '& span': {
             paddingLeft: rem(5),
+        },
+        [breakpoint(1200)]: {
+            alignItems: 'unset',
+            lineHeight: rem(20),
+
+            '& span': {
+                paddingLeft: rem(15),
+            },
         }
     },
 

@@ -134,6 +134,7 @@ function UnSignedComponent() {
                                         handleCopy(`${linkAddres}${signing.dynamicLinkPart}`);
                                     }}>
                                         <span className={bold}>Kopyala </span>
+
                                         <span><ArrowCircleDown/>
 
                                 </span>

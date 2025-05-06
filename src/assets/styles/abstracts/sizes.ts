@@ -4,7 +4,7 @@ const sizes = {
     borderRadiusSm: 6,
     borderRadiusCircle: '50%',
     leftMenu: 230,
-    leftMenuSpacing: 45,
+    leftMenuSpacing: 40,
 };
 
 export default sizes;

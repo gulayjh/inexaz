@@ -1,6 +1,6 @@
 import {ILeftMenuItemProps} from '../../public';
 import {useLeftMenuItemStyles} from './left-menu-item.style';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import {generateGuid} from '../../../../helpers/generate-guid';
 import {useCallback, useEffect, useState} from 'react';
 import {ArrowDown, ArrowRight} from '../../../../../assets/images/icons/arrows';
@@ -17,16 +17,19 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
         [classes.link]: true,
         'active': submenuOpen,
     });
-
+    const location = useLocation();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const width = devizeSize();
-
-    const onMenuClick = useCallback(() => {
+    const onMenuClick = useCallback((link: string) => {
         if (width > 0) {
             if (width > 1024) {
                 dispatch(handleLeftMenu(true));
+                navigate(link);
             } else {
                 dispatch(handleLeftMenu(false));
+                navigate(link);
+
             }
         }
     }, [width]);
@@ -76,16 +79,17 @@ const LeftMenuItemComponent = ({name, link, icon, submenu, show, hasUnderLine}: 
 
                     show ?
 
-                        <NavLink
-                            className={classes.link}
-                            to={{pathname: link}}
-                            onClick={onMenuClick}
+                        <div
+                            className={`${classes.link}  ${location.pathname === link ? 'active' : null}`}
+                            onClick={() => {
+                                onMenuClick(link);
+                            }}
                         >
                             <div className={classes.itemText}>
                                 {icon}
                                 <span>{name}</span>
                             </div>
-                        </NavLink>
+                        </div>
 
                         : null
             }

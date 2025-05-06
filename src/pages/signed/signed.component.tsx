@@ -88,7 +88,6 @@ function SignedComponent() {
         setSearchField(value);
         setPage(1);
     }, []), 500);
-    console.log(user);
 
     const handleCopy = useCallback((text: string) => {
         navigator.clipboard.writeText(text)

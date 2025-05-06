@@ -39,7 +39,7 @@ const styles = {
             backgroundColor: 'white',
             boxShadow: colors.leftMenuShadow,
             color: colors.paleBlack,
-            pointerEvents: 'none',
+            //pointerEvents: 'none',
             '& $itemText': {
                 color: colors.paleBlack,
                 '& svg': {
