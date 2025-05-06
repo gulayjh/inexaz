@@ -16,7 +16,7 @@ class SignalRService {
         this.operationId = pathSegments[pathSegments.length - 1];
 
         this.connection = new HubConnectionBuilder()
-            .withUrl('wss://api.inex-sima.az//signingHub', {
+            .withUrl('wss://api.inex-sima.az/signingHub', {
                 transport: HttpTransportType.WebSockets,
                 skipNegotiation: true
             })
