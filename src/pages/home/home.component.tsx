@@ -41,7 +41,7 @@ function HomeComponent() {
 
 
     const handleListUpload = useCallback((file: any) => {
-        setFileList((prevFileList: any) => [...prevFileList, file].slice(0, 5));
+        setFileList((prevFileList: any) => [...prevFileList, file].slice(0, 10));
     }, [fileList]);
 
     const handleRemove = useCallback((id: any, fileSize: number) => {
@@ -50,13 +50,16 @@ function HomeComponent() {
         }, 300);
     }, [fileList]);
 
-    const beforeUpload = useCallback((file: any) => {
-        if (file.size < 10485760) {
-            handleListUpload(file);
-        } else {
-            errorToast(translate('file_size_error'));
-
+    const beforeUpload = useCallback((file: File) => {
+        if (file.size > 10485760) {
+            errorToast(file.name + " " + translate('file_size_error'));
+            return;
+        } 
+        if (fileList.find((f:any) => f.name === file.name)) {
+            errorToast(file.name + ' sənəd artıq mövcuddur!');
+            return;
         }
+        handleListUpload(file);
         return false;
     }, []);
 
@@ -119,7 +122,7 @@ function HomeComponent() {
             <h3 className={title}>{translate('add_title')}</h3>
             <div className={titleInfo}><InfoIcon/>
 
-                <span>Sənədlərin hər birinin həcmi 10 mbdan artıq olmamalı, maksimum sayı isə 5 olmalıdır.</span>
+                <span>Sənədlərin hər birinin həcmi 10 mbdan artıq olmamalı, maksimum sayı isə 10 olmalıdır.</span>
             </div>
 
             {operationId ?

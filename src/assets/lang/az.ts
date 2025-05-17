@@ -53,7 +53,7 @@ export const az = {
     input_min_length: 'Ən azı {min} simvol olmalıdır',
     email_invalid: 'Email düzgün deyil',
     pin_min_length: 'FIN 7 simvol olmalıdır',
-    file_size_error: 'Sənədin ölçüsü limiti keçir.',
+    file_size_error: 'sənədinin ölçüsü limiti keçir.',
     input_password_mismatch: 'Şifrələr eyni deyil',
     file_type_error: 'Sənədin formatı pdf olmalıdır.',
 
